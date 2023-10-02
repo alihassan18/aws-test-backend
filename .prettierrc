@@ -1,0 +1,12 @@
+{
+    "extends": ["next", "prettier"],
+    "bracketSpacing": true,
+    "printWidth": 80,
+    "tabWidth": 4,
+    "useTabs": false,
+    "endOfLine": "auto",
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none"
+}

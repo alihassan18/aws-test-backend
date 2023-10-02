@@ -1,0 +1,32 @@
+export const en = {
+    Success: 'Operation is completed Success',
+    Error: 'Something Went Wrong',
+    unAuthrized: 'email or password is incorrect.',
+    blocked: 'You account is blocked by admin.',
+    loggedIn: 'Logged in successfully',
+    InvalidCrdentials: 'Invalid email or password.',
+    invalidEmailFormat: 'Invalid email format',
+    lettersError: 'Name should only consits of alphabats',
+    memeCreated: 'Meme created successfully',
+    accountCreated: 'Account created successfully',
+    passwordChanged: 'Password changed successfully',
+    notForSale: 'Meme is not for sale',
+    auctionCreated: 'Auction created successfully',
+    offerSent: 'Offer sent successfully',
+    offerAccepted: 'Offer accepted successfully.',
+    offerrejected: 'Offer rejected.',
+    offerWithdraw: 'Offer withdraw.',
+    bidAccepted: 'Highest bid accepted successfully.',
+    offerExist: 'You have already sent an offer to this meme.',
+    smallerBidPrice: 'Bid price must be greater than highest bid.',
+    NoMemeToClaim: 'You do not have any meme to claim.',
+    NoMemeExist: 'No meme exist.',
+    onlyAdmin: 'Only admin can access this data.',
+    onlyAdminLogin: 'Only admin can login into admin panel.',
+    verificationEmail: 'Confirmation email sent to your email account.',
+    userBlocked: 'User is blocked please contact admin.',
+    faSuccessfully:
+        'Your two-factor authentication code has been successfully verified',
+    faSuccessfullyRemove:
+        'Your two-factor authentication code has been successfully removed'
+};

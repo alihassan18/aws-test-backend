@@ -1,0 +1,15 @@
+export const USERS = 'User';
+export const WALLETS = 'wallets';
+export const SETTINGS = 'setting';
+export const COLLECTIONS = 'collections';
+export const FEEDS = 'feeds';
+export const POSTS = 'posts';
+export const COMMENTS = 'comments';
+export const HASHTAGS = 'hashtags';
+export const TIMESPENT = 'timespent';
+export const BIDS = 'bids';
+export const LISTINGS = 'listings';
+export const NFTS = 'nfts';
+export const NOTIFICATIONS = 'notifications';
+export const REACTIONS = 'reactions';
+export const REPORTS = 'reports';

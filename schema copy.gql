@@ -1,0 +1,2545 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SettingsAlert {
+  messenger: Boolean
+  bids: Boolean
+  sell: Boolean
+  buy: Boolean
+  like: Boolean
+  mint: Boolean
+  comment: Boolean
+  follow: Boolean
+}
+
+type Settings {
+  alerts: SettingsAlert!
+  email: SettingsAlert!
+  twoFa: Boolean
+  messagePrivacy: String!
+  isLinkedInEnabled: Boolean!
+  isTwitterEnabled: Boolean!
+  isAutoMintEnabled: Boolean!
+  lastMintedCollection: String!
+}
+
+type UserRefetchResult {
+  user: User!
+}
+
+type Currency {
+  contract: String
+  name: String
+  symbol: String
+  decimals: Float
+}
+
+type Amount {
+  raw: String
+  decimal: Float
+  usd: Float
+  native: Float
+}
+
+type FloorAskPrice {
+  currency: Currency!
+  amount: Amount!
+}
+
+type ReservoirSearchedCollection {
+  collectionId: String
+  name: String
+  slug: String
+  contract: String
+  image: String
+  allTimeVolume: Float
+  floorAskPrice: FloorAskPrice
+  openseaVerificationStatus: String
+  chainName: String
+  chainId: Float
+  lightChainIcon: String
+  darkChainIcon: String
+}
+
+type RoyaltyBreakdown {
+  bps: Int!
+  recipient: String
+}
+
+type Royalties {
+  recipient: String
+  bps: Int!
+  breakdown: [RoyaltyBreakdown!]!
+}
+
+type Price {
+  currency: Currency!
+  amount: Amount!
+  netAmount: Amount
+}
+
+type ReservoirToken {
+  contract: String
+  tokenId: String
+  name: String
+  image: String
+}
+
+type FloorAsk {
+  id: String
+  sourceDomain: String
+  price: Price!
+  maker: String
+  validFrom: Int!
+  validUntil: Int!
+  token: ReservoirToken!
+}
+
+type VolumeChange {
+  _1day: Int
+  _7day: Int
+  _30day: Int
+}
+
+type Rank {
+  _1day: Int!
+  _7day: Int!
+  _30day: Int
+  allTime: Int!
+}
+
+type Volume {
+  _1day: Float!
+  _7day: Float!
+  _30day: Float
+  allTime: Float!
+}
+
+type ReservoirCollection {
+  id: String
+  slug: String
+  createdAt: String
+  name: String
+  image: String
+  banner: String
+  discordUrl: String
+  externalUrl: String
+  twitterUsername: String
+  openseaVerificationStatus: String
+  description: String
+  sampleImages: [String!]!
+  tokenCount: String
+  onSaleCount: String
+  primaryContract: String
+  tokenSetId: String
+  royalties: Royalties!
+  floorAsk: FloorAsk!
+  rank: Rank!
+  volume: Volume!
+  volumeChange: VolumeChange
+  floorSale: VolumeChange
+  floorSaleChange: VolumeChange
+  collectionBidSupported: Boolean
+  ownerCount: Int!
+  contractKind: String
+  mintedTimestamp: String
+  mintStages: [String!]!
+}
+
+type ReservoirCollectionResults {
+  collections: [ReservoirCollection!]!
+  continuation: String
+}
+
+type Value {
+  count: Int!
+  value: String!
+  floorAskPrice: FloorAskPrice!
+}
+
+type Attribute {
+  contract: String!
+  key: String!
+  attributeCount: Int!
+  kind: String!
+  values: [Value!]!
+}
+
+type PollOption {
+  text: String!
+  votes: Float!
+  voters: [User!]!
+}
+
+type Poll {
+  question: String!
+  options: [PollOption!]!
+  expiresAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Hashtag {
+  """Id field"""
+  _id: String!
+
+  """Hashtag field"""
+  name: String!
+  followersCount: Int!
+}
+
+type StakingCollection {
+  _id: String!
+
+  """Name field (placeholder)"""
+  name: String!
+
+  """Category name field (placeholder)"""
+  category: String!
+
+  """Utility name field (placeholder)"""
+  utility: String!
+
+  """Metaverse name field (placeholder)"""
+  metaverse: String!
+  chain: String
+  chainId: Int
+  collectionAddress: String
+  stakingAddress: String
+  logoUrl: String
+  bannerUrl: String
+  status: String
+  description: String
+  likes: [User!]
+  views: [User!]
+
+  """Post ID of related post"""
+  post: Post
+  startedAt: DateTime
+}
+
+type Island {
+  _id: String!
+  island: Float
+  name: String
+  logo: String
+  description: String
+}
+
+type LeaderBoard {
+  owners: [IslandUser!]
+  island: Island!
+}
+
+type IslandUser {
+  user: [User!]
+  count: Float!
+}
+
+type IslandOwnerItem {
+  owner: String!
+  magnitude: Float!
+}
+
+type LikesAndDislikesBy {
+  user: User!
+  at: DateTime!
+}
+
+type IslandOwner {
+  user: User
+  landCount: Float
+  island: String
+  followers: [User!]
+  info: User
+  post: Post
+}
+
+type Mrlands {
+  lands: JSONObject!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type Mrland {
+  _id: String!
+  landID: Float!
+  posX: Float!
+  posY: Float!
+  status: Float!
+  owner: String!
+  island: Float!
+  width: Float!
+  height: Float!
+  isPlot: Float!
+  logo: String!
+  description: String!
+  name: String!
+  network: String!
+
+  """Post ID of related post"""
+  post: Post
+  likes: Int
+  likesBy: [LikesAndDislikesBy!]
+  dislikes: Int
+  dislikesBy: [LikesAndDislikesBy!]
+}
+
+type Tokens {
+  tokenId: String!
+  contract: String!
+  chain: String!
+  image: String!
+  _id: String!
+  name: String!
+}
+
+type RepostedAt {
+  user: User!
+  repostedAt: DateTime!
+}
+
+type Post {
+  _id: String
+  text: String
+  linkPreview: String
+  media: [String!]
+  author: User
+  staking: StakingCollection
+  mrland: Mrland
+  mentions: [User!]
+  hashtags: [Hashtag!]
+  videoViews: Int
+  postViews: Int!
+  viewedBy: [String!]
+  reactionCount: Int!
+  isRepost: Boolean!
+  twitterPost: Boolean
+  linkedinPost: Boolean
+  facebookPost: Boolean
+  instagramPost: Boolean
+  originalPost: Post
+  inReplyToPost: Post
+  _collection: Collection
+  collectionOfToken: Collection
+  token: Tokens
+  poll: Poll
+  repostedBy: [User!]
+  commentsBy: [User!]
+  repostCount: Int
+  quotedBy: [User!]
+  quoteCount: Int
+  commentsCount: Int
+  reactions: [Reactions!]!
+  repostedAtByUsers: [RepostedAt!]
+  scheduledAt: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  voters: User!
+  post: Post!
+}
+
+type Reactions {
+  emoji: String
+  count: Int
+}
+
+type CollectionToken {
+  tokenId: String!
+  description: String!
+  name: String!
+  image: String!
+  metadata_url: String!
+}
+
+type Collection {
+  _id: String!
+
+  """name field (placeholder)"""
+  name: String!
+  currency: String
+  token_count: Int
+  chain: String
+  chainId: Float
+  tokens: [CollectionToken!]
+  contract: String
+  contract_name: String
+  external_url: String
+  sample_images: [String!]
+  image: String
+  owner: String
+  banner: String
+  supply: Int
+  owners_total: Int
+  sales_1d: Float
+  sales_7d: Float
+  sales_30d: Float
+  sales_total: Float
+  volume_1d: Float
+  volume_7d: Float
+  volume_30d: Float
+  volume_total: Float
+  floor_price: Float
+  highest_price: Float
+  average_price_1d: Float
+  average_price_7d: Float
+  average_price_30d: Float
+  average_price_total: Float
+  average_price_change_1d: String
+  average_price_change_7d: Float
+  average_price_change_30d: Int
+  volume_change_1d: Float
+  volume_change_7d: Float
+  market_cap: Float
+  symbol: String
+  description: String
+  website: String
+  email: String
+  twitter: String
+  twitch: String
+  land_id: String
+  discord: String
+  telegram: String
+  github: String
+  youtube: String
+  facebook: String
+  tiktok: String
+  web: String
+  instagram: String
+  medium: String
+  linkedin: String
+  featured_url: String
+  large_image_url: String
+  ipfs_json_url: String
+  ipfs_image_url: String
+  attributes: [Attribute!]
+  erc_type: String
+  deploy_block_number: Int
+
+  """Creator of the collection"""
+  creator: User
+
+  """Related post for a collection"""
+  post: Post
+
+  """Deployer address"""
+  deployer_address: String
+  verified: Boolean
+  is_content_creator: Boolean
+  is_metaverse: Boolean
+  is_auto_auction: Boolean
+  is_auto_mint: Boolean
+  is_fetched: Boolean
+  is_all_tokens_fetched: Boolean
+  tokens_fetched_count: Int
+  is_all_listings_fetched: Boolean
+  listings_fetched_count: Int
+  listing_price: Float
+  listing_type: String
+
+  """Action duration in the unix timestamps"""
+  auction_duration: Int
+  opensea_verified: Boolean
+  royalty: Float
+  amounts_total: Int
+  collections_with_same_name: [String!]
+  price_symbol: String
+  followers: [User!]
+  followersCount: Int!
+  collectionViews: Int!
+  collectionViewsTimestamps: [DateTime!]!
+  favourites: [User!]
+  likes: [User!]
+  views: [User!]
+  is_deleted: Boolean
+}
+
+type Wallet {
+  _id: String!
+  userId: User!
+  address: String
+  isPrimary: Boolean!
+  isHidden: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FollowingTimestamps {
+  by: [User!]
+  createdAt: DateTime
+}
+
+type FollowersTimestamps {
+  by: [User!]
+  createdAt: DateTime
+}
+
+type User {
+  _id: ID!
+  firstName: String
+  lastName: String
+  userName: String
+  email: String
+  password: String
+  phoneNumber: String
+  avatar: String
+  coverImage: String
+  isEmailVerified: Boolean!
+  isActive: Boolean!
+  hideWallet: Boolean!
+  roles: [String!]!
+  land_id: String
+  isVerified: Boolean
+  isKing: Boolean
+  isDay1supporter: Boolean
+  isSCC: Boolean
+  verifyStatus: String
+  isBlocked: Boolean
+  isBanned: Boolean
+  facebook: String
+  instagram: String
+  reddit: String
+  twitter: String
+  discord: String
+  youtube: String
+  tiktok: String
+  web: String
+  bio: String
+  wallet: String
+  followers: [User!]
+  followersCount: Float
+  following: [User!]
+  followingCollections: [Collection!]
+  followingHashtags: [Hashtag!]
+  followingCount: Float
+  followingTimestamps: FollowingTimestamps
+  followersTimestamps: FollowersTimestamps
+  blockedBy: [User!]
+  wallets: [Wallet!]
+  points: Float
+  deletedAt: DateTime
+  isDeleted: Boolean
+  referral: User!
+  settings: Settings
+  blockedUsers: [User!]
+  twitterId: String
+  isLinkedInConnected: Boolean
+  backgroundTheme: String
+  userNameUpdateAt: DateTime
+  affiliatedUser: Boolean
+  lastLogin: DateTime
+  mintedNFTs: Float
+  boughtNFTs: Float
+  soldNFTs: Float
+  listedNFTs: Float
+  isTeacher: Boolean!
+  isComedian: Boolean!
+  isRuffyWorldUser: Boolean!
+  recentFollowersCount: Float
+  userId: User!
+}
+
+type Feed {
+  _id: String!
+  type: FeedTypes!
+  post: Post
+  _collection: Collection
+  hashtags: Hashtag
+  owner: User!
+  createdAt: DateTime
+  updatedAt: DateTime
+  scheduledAt: DateTime
+  author: User!
+}
+
+enum FeedTypes {
+  POST
+  REPOST
+  LIKE
+  COMMENT
+}
+
+type Referral {
+  allReferral: [User!]
+  count: Float!
+  user: User!
+  level: Float!
+  commissionPercentage: Float!
+  currentPrice: Float!
+  totalRedeemed: Float!
+  referralVolumeTraded: Float!
+  requested: Boolean!
+}
+
+type TokenData {
+  tokenId: String
+}
+
+type CriteriaData {
+  token: TokenData
+}
+
+type Criteria {
+  kind: String!
+  data: CriteriaData
+}
+
+type Source {
+  id: String!
+  domain: String!
+  name: String!
+  icon: String!
+  url: String!
+}
+
+type FeeBreakdown {
+  recipient: String!
+  name: String!
+  kind: String!
+  bps: Float!
+}
+
+type Listing {
+  """Example field (placeholder)"""
+  chain: String
+
+  """Example field (placeholder)"""
+  currency: String
+
+  """Example field (placeholder)"""
+  chainId: Int
+
+  """Example field (placeholder)"""
+  price: Price
+
+  """Example field (placeholder)"""
+  id: String
+
+  """Example field (placeholder)"""
+  kind: String
+
+  """Example field (placeholder)"""
+  side: String
+
+  """Example field (placeholder)"""
+  status: String
+
+  """Example field (placeholder)"""
+  tokenSetId: String
+
+  """Example field (placeholder)"""
+  tokenSetSchemaHash: String
+
+  """Example field (placeholder)"""
+  contract: String
+
+  """Example field (placeholder)"""
+  maker: String
+
+  """Example field (placeholder)"""
+  taker: String
+
+  """Example field (placeholder)"""
+  validFrom: Float
+
+  """Example field (placeholder)"""
+  validUntil: Int
+
+  """Example field (placeholder)"""
+  quantityFilled: Int
+
+  """Example field (placeholder)"""
+  quantityRemaining: Int
+
+  """Example field (placeholder)"""
+  dynamicPricing: Int
+
+  """Example field (placeholder)"""
+  criteria: Criteria
+  source: Source!
+
+  """Example field (placeholder)"""
+  feeBps: Int
+
+  """Example field (placeholder)"""
+  feeBreakdown: [FeeBreakdown!]
+
+  """Example field (placeholder)"""
+  expiration: Int
+}
+
+type Metadata {
+  imageOriginal: String
+}
+
+type TokenCollection {
+  id: String
+  name: String
+  image: String
+  slug: String
+  chain: String
+  contract: String
+  contract_name: String
+  image: String
+  owns_total: Float
+  items_total: Int
+  symbol: String
+  description: String
+  floor_price: Float
+  verified: Boolean
+  opensea_verified: Boolean
+}
+
+type Nft {
+  _id: String!
+  contract: String
+  chain: String!
+  tokenId: String
+  name: String
+  description: String
+  image: String
+  imageSmall: String
+  imageLarge: String
+  metadata: Metadata
+  media: String
+  kind: String
+  isFlagged: Boolean
+  lastFlagUpdate: DateTime
+  lastFlagChange: String
+  supply: String
+  remainingSupply: String
+  rarity: Float
+  rarityRank: Float
+  _collection: TokenCollection
+  collection: TokenCollection
+  owner: String
+  contractAddress: String
+  contractName: String
+  contractTokenId: String
+  ercType: String
+  amount: String
+  minter: String
+  ownTimestamp: Float
+  mintTimestamp: Float
+  mintTransactionHash: String
+  mintPrice: Float
+  tokenUri: String
+  metadataJson: String
+  contentType: String
+  contentUri: String
+  imageUri: String
+  externalLink: String
+  latestTradePrice: Float
+  latestTradeSymbol: String
+  latestTradeToken: String
+  latestTradeTimestamp: Float
+  nftscanId: String
+  nftscanUri: String
+  smallNftscanUri: String
+  attributes: [String!]
+  rarityScore: Float
+
+  """Related post for a collection"""
+  post: Post
+  market: Listing
+  is_deleted: Boolean
+}
+
+type Notification {
+  _id: String!
+  type: String!
+  sender: String!
+  message: String
+  seen: Boolean
+  receiver: User
+  from: User!
+  _collection: Collection!
+  nft: Nft
+  post: Post
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type MemberEntry {
+  member: User!
+  addedBy: User!
+}
+
+type GroupSetting {
+  image: Boolean!
+  video: Boolean!
+  voice: Boolean!
+  files: Boolean!
+  gif: Boolean!
+  link: Boolean!
+  poll: Boolean!
+  mute: Boolean!
+}
+
+type GroupPrivacy {
+  invite: Float!
+  post: Float!
+  call: Float!
+}
+
+type Group {
+  _id: String!
+  name: String!
+  description: String
+  avatar: String
+  createdBy: User!
+  admins: [User!]!
+  unseenMsgCount: Float
+  lastMessage: Message
+  members: [MemberEntry!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  setting: GroupSetting!
+  privacy: GroupPrivacy!
+  isLiveSupport: Boolean!
+  sender: User!
+}
+
+type Chat {
+  _id: String!
+  user1: User!
+  user2: User
+  unseenMsgCount: Float
+  lastMessage: Message
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Message {
+  _id: String!
+  content: String!
+  sender: User!
+  receiverUser: User
+  hiddenUsers: [User!]!
+  seenUsers: [String!]!
+  receiverGroup: Group
+  chatId: Chat
+
+  """Example field (placeholder)"""
+  type: String!
+
+  """Attachment field (placeholder)"""
+  attachment: [String!]
+  inReplyToMessage: Message
+  sent: Boolean!
+  edited: Boolean!
+  pinned: Boolean!
+  delivered: Boolean!
+  read: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  reactions: [Reactions!]!
+  emotions: [Emotion!]!
+  members: User!
+}
+
+type Emotion {
+  user: User
+  emoji: String
+  messageId: String
+}
+
+type Reaction {
+  _id: String!
+  user: User!
+  emoji: ReactionType!
+  post: String
+  message: String
+}
+
+enum ReactionType {
+  satisfaction
+  love
+  like
+  happy
+  smile
+  angry
+  sad
+}
+
+type Report {
+  _id: String!
+  text: String
+  reason: String!
+  listing: Listing
+  reportedBy: User!
+  user: User
+  nft: Nft
+  land: Mrland
+  type: ReportStatus!
+  post: Post
+  group: Group
+  _collection: Collection
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ReportStatus {
+  REPORTED
+  VIEWD
+  PENDING
+  COMPLETED
+}
+
+type TimeSpent {
+  socketId: String!
+  post: Post!
+}
+
+type Invitation {
+  _id: String!
+  from: User!
+  to: User!
+  groupId: Group
+  type: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ReferralVideo {
+  _id: String!
+  fb: [User!]
+  whatsapp: [User!]
+  twitter: [User!]
+  linkedin: [User!]
+  instagram: [User!]
+  tiktok: [User!]
+  youtube: [User!]
+  src: String
+}
+
+type Category {
+  _id: String!
+
+  """Name field (placeholder)"""
+  name: String!
+}
+
+type Metaverse {
+  _id: String!
+
+  """Name field (placeholder)"""
+  name: String!
+}
+
+type Utility {
+  _id: String!
+
+  """Name field (placeholder)"""
+  name: String!
+}
+
+type TradeDistribution {
+  contract: String!
+  transaction_hash: String!
+  timestamp: Int!
+  exchange_name: String!
+  trade_price: Float!
+}
+
+type AmountDistributionItem {
+  name: String!
+  value: Int!
+  proportion: String!
+}
+
+type AmountDistribution {
+  total: Float!
+  distribution: [AmountDistributionItem!]!
+}
+
+type Distributions {
+  contract: String!
+  amount: AmountDistribution!
+  period: AmountDistribution!
+}
+
+type BidTokenData {
+  tokenId: String
+}
+
+type BidCriteriaData {
+  token: BidTokenData
+}
+
+type BidCriteria {
+  kind: String!
+  data: BidCriteriaData
+}
+
+type BidSource {
+  id: String!
+  domain: String!
+  name: String!
+  icon: String!
+  url: String!
+}
+
+type Bid {
+  """Example field (placeholder)"""
+  chain: String
+
+  """Example field (placeholder)"""
+  currency: String
+
+  """Example field (placeholder)"""
+  chainId: Int
+
+  """Example field (placeholder)"""
+  price: Price
+
+  """Example field (placeholder)"""
+  id: String
+
+  """Example field (placeholder)"""
+  kind: String
+
+  """Example field (placeholder)"""
+  side: String
+
+  """Example field (placeholder)"""
+  status: String
+
+  """Example field (placeholder)"""
+  tokenSetId: String
+
+  """Example field (placeholder)"""
+  tokenSetSchemaHash: String
+
+  """Example field (placeholder)"""
+  contract: String
+
+  """Example field (placeholder)"""
+  maker: String
+
+  """Example field (placeholder)"""
+  taker: String
+
+  """Example field (placeholder)"""
+  validFrom: Float
+
+  """Example field (placeholder)"""
+  validUntil: Int
+
+  """Example field (placeholder)"""
+  quantityFilled: Int
+
+  """Example field (placeholder)"""
+  quantityRemaining: Int
+
+  """Example field (placeholder)"""
+  dynamicPricing: Int
+
+  """Example field (placeholder)"""
+  criteria: BidCriteria
+  source: BidSource!
+
+  """Example field (placeholder)"""
+  feeBps: Int
+
+  """Example field (placeholder)"""
+  expiration: Int
+}
+
+type HistoryToken {
+  tokenId: String
+  tokenName: String
+  tokenImage: String
+}
+
+type HistoryCollection {
+  collectionId: String
+  collectionName: String
+  collectionImage: String
+}
+
+type HistorySource {
+  domain: String
+  name: String
+  icon: String
+}
+
+type HistoryCriteria {
+  kind: String
+  token: HistoryToken
+  collection: HistoryCollection
+}
+
+type HistoryOrder {
+  id: String
+  side: String
+  source: HistorySource
+  criteria: HistoryCriteria
+}
+
+type History {
+  type: String
+  fromAddress: String
+  toAddress: String
+  price: Price
+  amount: Float
+  timestamp: Float
+  createdAt: String
+  contract: String
+  token: HistoryToken
+  _collection: HistoryCollection
+  txHash: String
+  logIndex: Float
+  batchIndex: Float
+  order: HistoryOrder
+}
+
+type RwEvent {
+  _id: String!
+  event_name: String!
+  event_description: String
+  start_date: DateTime!
+  end_date: DateTime!
+  cover_image: String!
+  EventTicketType: String!
+  Standard_Price: Float
+  Premium_Price: Float
+  vipPass_Price: Float
+  Max_Tickets: Float
+  Available_Tickets_for_Standard: Float
+  Available_Tickets_for_Premium: Float
+  Available_Tickets_for_VIP: Float
+  Genre: String
+  Location: String
+  Blockchain: String
+  ArrangedPersonName: String
+  Remaining_Days: Float
+}
+
+type RwTutorials {
+  title: String!
+  description: String
+  video: String!
+}
+
+type RwBuilding {
+  title: String!
+  desc: String!
+  title_images: [String!]!
+  nft_images: [String!]!
+  ubindex: String!
+}
+
+type RwBuildingTypes {
+  name: String!
+  index: String!
+  bigImages: Float!
+  smallImages: Float!
+  assigned: Boolean!
+}
+
+type RwLand {
+  LandID: Float!
+  Data: String!
+}
+
+type RWMessageNotification {
+  _msgFreindRequest: Boolean
+  _msgNewEvent: Boolean
+  _msgRecieveingGift: Boolean
+  _msgTerrainGridInvisible: Boolean
+}
+
+type RWPhoneNotification {
+  _phoneFreindRequest: Boolean
+  _phoneNewEvent: Boolean
+  _phoneRecieveingGift: Boolean
+  _phoneTerrainGridInvisible: Boolean
+}
+
+type RWMailNotification {
+  _mailFreindRequest: Boolean
+  _mailNewEvent: Boolean
+  _mailRecieveingGift: Boolean
+  _mailTerrainGridInvisible: Boolean
+}
+
+type RwSettings {
+  user: User!
+  MouseScrollSensitivity: Float!
+  GraphicsQuality: Float!
+  MessageNotification: RWMessageNotification!
+  PhoneNotification: RWPhoneNotification!
+  MailNotification: RWMailNotification!
+}
+
+type RwUsersMedia {
+  _id: String!
+  user: User!
+  media: [String!]!
+  isSS: Boolean
+  isSR: Boolean
+  isFavourite: Boolean
+  isReport: Boolean
+  isRepost: Boolean
+}
+
+type RwReport {
+  _id: String!
+  reporter: User!
+  reported: User
+  mediaId: RwUsersMedia
+  media: String
+  content: String
+  type: String
+  user: RwUsersMedia!
+}
+
+type RwFightLb {
+  _id: String!
+  email: String!
+  name: String!
+  damage: Float!
+  deathTime: Float!
+  updateTime: Float!
+}
+
+type RwRaceLb {
+  _id: String!
+  email: String!
+  name: String!
+  laptime: Float!
+  updateTime: Float!
+}
+
+type RwCharacter {
+  user: User!
+  skinColor: String!
+  gender: String!
+}
+
+type HashtagCount {
+  name: String!
+  count: Float!
+}
+
+type LoginResult {
+  user: User
+  access_token: String
+  twoFa: Boolean
+}
+
+type RWLoginResult {
+  user: User
+  access_token: String
+}
+
+type SignOutResult {
+  message: String
+}
+
+type EmailSentResult {
+  message: String!
+  success: Boolean!
+  status: Float!
+}
+
+type VerifyCodeOutput {
+  success: Boolean!
+}
+
+type LoginGoogleOutput {
+  user: User
+  access_token: String
+  message: String
+}
+
+type VerifyEmailOutput {
+  message: String
+  success: Boolean
+  loginResult: LoginResult
+}
+
+type SearchResult {
+  users: [User!]
+  hashtags: [Hashtag!]
+  hashtagCount: [HashtagCount!]
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+type FeedConnection {
+  records: [Feed!]!
+  pageInfo: PageInfo!
+}
+
+type PostConnection {
+  records: [Post!]!
+  pageInfo: PageInfo!
+  totalPostsCount: Float!
+}
+
+type PaginatedResults {
+  records: [Post!]!
+  hasNextPage: Boolean!
+  cursor: String
+}
+
+type LinkPreviewResult {
+  url: String
+  title: String
+  description: String
+  imageUrl: String
+}
+
+type CollectionResponse {
+  records: [Collection!]!
+  pageInfo: PageInfo!
+}
+
+type CollectionSearchResults {
+  collectionId: String
+  name: String
+  tokenCount: Int
+  image: String
+  slug: String
+  contract: String
+  allTimeVolume: Float
+  openseaVerificationStatus: String
+  chainName: String
+  chainId: Int
+  lightChainIcon: String
+  darkChainIcon: String
+}
+
+type TokensResponse {
+  records: [Nft!]!
+  pageInfo: PageInfo!
+}
+
+type TokensCountsByStatus {
+  listings: Int!
+  tokens: Int!
+}
+
+type CreateReferralOutput {
+  status: String
+  message: String
+}
+
+type ReferralsGraphData {
+  count: Float
+  createdAt: DateTime
+}
+
+type ReferralsOutput {
+  affiliatedData: Referral
+  graphData: [ReferralsGraphData!]
+}
+
+type NotificationResults {
+  records: [Notification!]!
+  hasNextPage: Boolean
+  cursor: String
+  totalRecords: Float
+  recordsFilterd: Float
+  allNotifications: Float
+  mentionedNotifications: Float
+  personalNotificationsCount: Float
+  systemNotificatiosCount: Float
+  nftNotificationsCount: Float
+}
+
+type MessageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+type MessageConnection {
+  records: [Message!]!
+  pageInfo: MessageInfo!
+  totalMessagesCount: Float!
+}
+
+type GetTopReactions {
+  """Example field (placeholder)"""
+  emoji: String!
+
+  """Example field (placeholder)"""
+  count: Int!
+}
+
+type GetReactions {
+  """Example field (placeholder)"""
+  reactions: [Reaction!]!
+
+  """Example field (placeholder)"""
+  endCursor: String
+}
+
+type UsersDataOverview {
+  usersCount: Float
+  kycCount: Float
+  kingsCount: Float
+  postsCount: Float
+  contentCreators: Float
+  blockedUsersCount: Float
+  bannedUsersCount: Float
+  day1SupportersCount: Float
+  hashtagCount: Float
+  groupsCount: Float
+  sharedPosts: Float
+  repostsCount: Float
+  commentsCount: Float
+  likeCount: Float
+  stageCount: Float
+}
+
+type SingleUserGraphOutput {
+  date: String!
+  count: Float!
+}
+
+type SingleUsersDataOutput {
+  _id: ID!
+  userName: String!
+  followersCount: Float
+  followingCount: Float
+  points: Float
+  avatar: String
+  isVerified: Boolean
+  isBlocked: Boolean
+  isBanned: Boolean
+  isKing: Boolean
+  isDay1supporter: Boolean
+  isSCC: Boolean
+  postCount: Float
+  repostCount: Float
+  commentCount: Float
+  likeCount: Float
+}
+
+type UsersDataOutput {
+  pageSize: Float
+  currentPage: Float
+  next: Boolean
+  data: [SingleUsersDataOutput!]!
+}
+
+type SuccessPayload {
+  message: String
+  success: Boolean
+}
+
+type AffiliateStats {
+  affiliatedUsersCount: Float
+  referralUsers: Float
+  referralVideos: Float
+}
+
+type AffiliateUsers {
+  _id: ID!
+  userName: String!
+  followersCount: Int
+  followingCount: Int
+  isVerified: Boolean
+  isBlocked: Boolean
+  isBanned: Boolean
+  isKing: Boolean
+  isDay1supporter: Boolean
+  isSCC: Boolean
+  avatar: String
+  referralCount: Int
+  referralLevel: Int
+  commissionPercentage: Int
+  videoShared: Int
+}
+
+type ScoresResult {
+  _id: String
+  user: User
+  monthScore: Float
+  rank: Float
+}
+
+type HighScoreResult {
+  userId: String
+  score: Float!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+  searchUsers(query: String!, groupId: String): [User!]!
+  userProfile(userName: String!): User!
+  wallets(userId: String!): [Wallet!]!
+  wallet(address: String!): Wallet
+  search(search: String!): SearchResult!
+  ownBlockedUsers: [User!]!
+  collections(query: CollectionFilterInput, limit: Int = 10, cursor: String): CollectionResponse
+  collection(address: String!, chain: String!): Collection
+  collectionById(id: String!): Collection!
+  collectionFindById(id: String!): Collection
+  getSearchCollections(name: String, community: String, displayCurrency: String, collectionsSetId: String, offset: Float, limit: Float): [ReservoirSearchedCollection!]!
+  getCollections(query: CollectionQueryInput): ReservoirCollectionResults!
+  searchCollection(keyword: String!): [CollectionSearchResults!]!
+  findByConctractAddress(address: String!): ReservoirCollectionResults
+  getTradeDistribution(contract: String!, filter: String!): [TradeDistribution!]
+  findAmountAndPeriodDistributions(contract: String!): Distributions
+
+  """Search users who have created a collection"""
+  searchUsersWithCollection(keyword: String): [User!]
+  isUsernameAvailable(userName: String!): VerifyEmailOutput!
+  isEmailAvailable(email: String!): VerifyEmailOutput!
+  listings(query: FindListingsQuery!): [Listing!]!
+  listing(id: Int!): Listing!
+  tokens(query: TokenFilterInput, limit: Int = 10, cursor: String): TokensResponse
+  token(contract: String!, chain: String!, tokenId: String!): Nft!
+  getToken(contract: String!, chain: String! = "ethereum", tokenId: String!): Nft
+  getUserTokens(userId: String!): [Nft!]
+  tokenCountsByStatus(contract: String!, chain: String! = "ethereum"): TokensCountsByStatus!
+  bids(query: FindBidsQuery!): [Bid!]!
+  bid(id: Int!): Bid!
+  posts(query: PostFilterInput, limit: Int! = 10, cursor: String): PostConnection!
+  post(id: String!): Post!
+  replies(id: String!, limit: Float! = 10, cursor: String, loggedUserId: String): PaginatedResults!
+  checkIfUserVoted(postId: String!): PollOption
+  getSchedulePosts: [Post!]
+  feed(id: String!): Feed!
+  feeds(query: FeedFilterInput, limit: Int! = 10, cursor: String, loggedUserId: String): FeedConnection!
+  linkPreview(link: String!): LinkPreviewResult!
+  hashtag(name: String!): Hashtag!
+  searchHashtags(query: String!): [Hashtag!]!
+  getTopHashtags(limit: Float! = 5): [Hashtag!]!
+  getTopHashtagsByDays(days: Float! = 1, limit: Float! = -1, query: String! = ""): [HashtagCount!]!
+  usersUseHashtag(hashtag: String!): [Post!]
+  hashtagFollowersUsers(hashtag: String!): [User!]!
+  affiliatedData(duration: String!): ReferralsOutput!
+  notifications(query: NotificationFilterInput, limit: Int! = 10, cursor: String, currentPage: Int): NotificationResults!
+  notification(id: String!): Notification
+  getUnSeenCounts: Float!
+  getChats: [Chat!]!
+  messages: [Message!]!
+  message(id: String!): Message!
+  groupMessages(groupId: String!, cursor: String, limit: Int): MessageConnection!
+  privateMessages(receiverId: String!, cursor: String, limit: Int): MessageConnection!
+  supportMessages: [Message!]!
+  groups: [Group!]!
+  group(groupId: String!): Group!
+  invitations: [Invitation!]!
+  reactions(postId: String!, limit: Float! = 10, cursor: String): GetReactions!
+  getUserReaction(postId: String!, emoji: String): Reaction
+  countReactionsForPost(postId: String!): Int!
+  getTopReactions(postId: String!, limit: Float): [GetTopReactions!]!
+  hasUserReactedToPost(postId: String!): Boolean!
+  hasUserReactedToMessage(messageId: String!): Boolean!
+  userReactionsOnPost(postId: String!): [Reaction!]!
+  userReactiononsMessage(messageId: String!): [Reaction!]!
+  getUserByPostReaction(postId: String!, emoji: String!): Reaction!
+  getMonthTopScore: [ScoresResult!]!
+  getMonthScore: [ScoresResult!]!
+  getUserMonthScore: ScoresResult!
+  highestScore: HighScoreResult!
+  getUsersReports: [Report!]!
+  getPostReports: [Report!]!
+  getNftsReports: [Report!]!
+  getCollectionsReports: [Report!]!
+  getlandsReports: [Report!]!
+  getTotalTimeSpentOnPost(postId: String!): Float!
+  leaderboard(islandNum: Float!): LeaderBoard!
+  leaderboards: [LeaderBoard!]!
+  getTopGlobal: [IslandUser!]!
+  searchUserByWallet(wallet: String!): IslandUser!
+  getIslandOwnersInfo(cnt: Float!): [IslandOwner!]!
+  nfts: Mrlands!
+  nftsAddress(owner: String!): Mrlands!
+  nftsListing: Mrlands!
+  islands: [Island!]!
+  islandOwners: [IslandOwnerItem!]!
+  getMrLandById(id: String!): Mrland!
+  stakingCollections(query: StakingFilterInput): [StakingCollection!]!
+  stakingCollection(id: String!): StakingCollection!
+  referralVideos: [ReferralVideo!]!
+  referralVideo(id: Int!): ReferralVideo!
+  categories(query: CategoryFilterInput): [Category!]!
+  category(id: Int!): Category!
+  metaverses(query: MetaverseFilterInput): [Metaverse!]!
+  metaverse(id: Int!): Metaverse!
+  utilities(query: UtilityFilterInput): [Utility!]!
+  utility(id: Int!): Utility!
+  usersStats: UsersDataOverview!
+  usersGraphStats: [SingleUserGraphOutput!]!
+  todayUsersStats: UsersDataOverview!
+  usersData(page: Float!, filter: String, search: String): UsersDataOutput!
+  affiliateStats: AffiliateStats!
+  affiliateUsers(search: String): [AffiliateUsers!]!
+  histories(query: FindHistoryQuery!): [History!]!
+  history(id: Int!): History!
+  rw_events: [RwEvent!]!
+  rw_tutorials: String!
+  rw_character: RwCharacter!
+  rw_buildings(title: String): String!
+  rw_buildingTypes: String!
+  rw_lands: String!
+  rw_landById(id: String!): RwLand!
+  rw_settings: RwSettings!
+  rw_uMedias: [RwUsersMedia!]!
+  rw_uMediasSS: [RwUsersMedia!]!
+  rw_uMediasSR: [RwUsersMedia!]!
+  rw_uMediasFvrts: [RwUsersMedia!]!
+  rw_uMediasReports: [RwUsersMedia!]!
+  rw_uMediasReposts: [RwUsersMedia!]!
+  rw_reports: [RwReport!]!
+  rw_reportsUsers: RwReport!
+  rw_fightsLB(count: Float): [RwFightLb!]!
+  rw_fightsLBYesterdayRank: RwFightLb!
+  rw_fightsLBWeeklyRank: RwRaceLb!
+  rw_racesLB(count: Float): [RwRaceLb!]!
+  rw_racesLBYesterdayRank: RwRaceLb!
+}
+
+input CollectionFilterInput {
+  chain: [String!]
+  creator: String
+  creators: [String!]
+  owner: String
+  follower: String
+  is_content_creator: Boolean
+  is_metaverse: Boolean
+  is_auto_auction: Boolean
+  sort: CollectionSortInput
+}
+
+input CollectionSortInput {
+  type: String!
+  value: Int!
+}
+
+input CollectionQueryInput {
+  id: String
+  chain: String
+  slug: String
+  collectionsSetId: String
+  community: String
+  contract: String
+  name: String
+  maxFloorAskPrice: Int
+  minFloorAskPrice: Int
+  includeTopBid: Boolean
+  includeAttributes: Boolean
+  includeSalesCount: Boolean
+  includeMintStages: Boolean
+  normalizeRoyalties: Boolean
+  useNonFlaggedFloorAsk: Boolean
+  sortBy: SortByOptions
+  limit: Int = 10
+  continuation: String
+  displayCurrency: String
+}
+
+enum SortByOptions {
+  allTimeVolume
+  createdAt
+  floorAskPrice
+}
+
+input FindListingsQuery {
+  """Contract address of the collection."""
+  contract: String!
+}
+
+input TokenFilterInput {
+  keyword: String
+  chain: String
+  creator: String
+  contract: String
+  owner: String
+  follower: String
+  is_content_creator: Boolean
+  is_auto_auction: Boolean
+  status: String = "all"
+}
+
+input FindBidsQuery {
+  """Contract address of the collection."""
+  contract: String!
+}
+
+input PostFilterInput {
+  author: String
+  hashtag: String
+  repost: Boolean
+  scheduled: Boolean
+}
+
+input FeedFilterInput {
+  """The id of the user who created feeds."""
+  owner: String
+  follow: Boolean! = false
+  collection: String
+}
+
+input NotificationFilterInput {
+  mentioned: Boolean
+  personal: Boolean
+  nft: Boolean
+  system: Boolean
+}
+
+input StakingFilterInput {
+  status: [String!]
+  category: [String!]
+  keyword: String
+  chainId: Int
+}
+
+input CategoryFilterInput {
+  name: String
+}
+
+input MetaverseFilterInput {
+  name: String
+}
+
+input UtilityFilterInput {
+  name: String
+}
+
+input FindHistoryQuery {
+  """Contract address of the collection."""
+  contract: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  follow(id: String!): User!
+  removeUser(id: Int!): User!
+  changeSettings(data: SettingsInput!): VerifyEmailOutput!
+  addWallet(signature: String!): Wallet!
+  deleteWallet(walletId: String!): Wallet!
+  editProfile(data: ProfileInput!): User!
+  refetchUser: UserRefetchResult!
+  blockUser(targetUserId: String!): User!
+  unblockUser(targetUserId: String!): User!
+  adddWallet(signature: String!): Wallet!
+  rw_toComedian(status: Boolean!, id: String!): User!
+  rw_toTeacher(status: Boolean!, id: String!): User!
+  createCollection(createCollectionInput: CreateCollectionInput!): Collection!
+  createToken(input: CreateCollectionTokenInput!, contract: String!): Collection!
+  updateCollection(updateCollectionInput: UpdateCollectionInput!): Collection!
+  toggleFollowCollection(collectionId: String!): Collection!
+  updateTokenCount(collectionId: String!): Collection!
+  login(user: LoginUserInput!): LoginResult!
+  signup(data: SignInInput!): SignOutResult!
+  passwordResetEmail(email: String!): EmailSentResult!
+  loginByGoogle(data: LoginGoogleInput!): LoginGoogleOutput!
+  sendPasswordResetEmail(email: String!): String!
+  verifyCode(data: VerifyCodeInput!): VerifyCodeOutput!
+  resetPassword(data: ResetPasswordInput!): VerifyCodeOutput!
+  verifyEmail: VerifyEmailOutput!
+  send2faCode: VerifyEmailOutput!
+  verify2faCode(code: String!): VerifyEmailOutput!
+  verify2faLogin(code: String!): LoginResult!
+  deleteUserAccount: VerifyEmailOutput!
+  updatePassword(currentPassword: String!, newPassword: String!): Boolean!
+  adminLogin(user: LoginUserInput!): LoginResult!
+  rw_loginById(id: String!): RWLoginResult!
+  createListing(createListingInput: CreateListingInput!): Listing!
+  updateListing(updateListingInput: UpdateListingInput!): Listing!
+  removeListing(id: String!): Utility!
+  createNft(createNftInput: CreateNftInput!): Nft!
+  updateNft(updateNftInput: UpdateNftInput!): Nft!
+  removeNft(id: Int!): Nft!
+  createBid(createBidInput: CreateBidInput!): Bid!
+  updateBid(updateBidInput: UpdateBidInput!): Bid!
+  removeBid(id: Int!): Bid!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updateFeed(updateFeedInput: UpdateFeedInput!): Post!
+  removePost(postId: String!): Post!
+  repostWithThouths(repostInput: CreateRePostInput!): Post!
+  instantRepost(postId: String, collectionId: String, nftTokenData: UpdateNftForPost, landId: String): Post!
+  vote(postId: String!, optionIndex: Float!): Post!
+  withholdVote(postId: String!, optionIndex: Float!): Post!
+  addPostView(postId: String!): Post!
+  followHashtag(tagId: String!): User!
+  postOnTwitter(createTwitterPostInput: CreateTwitterPostInput!): VerifyEmailOutput!
+  removeFeed(feedId: String!): Feed!
+  createReferral: CreateReferralOutput!
+  markNotificationAsSeen(id: String!): Notification!
+  markAllNotificationAsSeen: String!
+  deleteNotification(id: String!): Notification!
+  createMessage(content: String!): Message!
+  createGroupMessage(createGroupMessageInput: CreateGroupMessageInput!): Message!
+  createSupportMessage(createSupportMessageInput: CreatePrivateMessageInput!): Message!
+  deleteMessage(messageId: String!, toAll: Boolean!): Message!
+  deleteDirectChat(userId: String!, toAll: Boolean!): Boolean!
+  createPrivateMessage(createPrivateMessageInput: CreatePrivateMessageInput!): Message!
+  setMessagePinned(messageId: String!, isPinned: Boolean!): Message!
+  setEmotion(messageId: String!, emoji: String!): Boolean!
+  emitTypingEvent(groupId: String!): Boolean!
+  removeTypingEvent(groupId: String!): Boolean!
+  setMessageSeen(messageId: String!): Boolean!
+  createGroup(name: String!, description: String!, avatar: String!): Group!
+  updateGroup(groupId: String!, name: String!, description: String!, avatar: String!): Group!
+  updateGroupSetting(groupId: String!, setting: GroupSettingInput!): Group!
+  updateGroupPrivacy(groupId: String!, privacy: GroupPrivacyInput!): Group!
+  joinGroup(groupId: String!): Group!
+  addNewMember(groupId: String!, userId: String!): Group!
+  leaveGroup(groupId: String!): Group!
+  makeRemoveAdminUser(groupId: String!, userId: String!): Group!
+  removeMemberFromGroup(groupId: String!, userId: String!): Group!
+  deleteGroup(groupId: String!): Group!
+  inviteMember(groupId: String!, userId: String!): Invitation!
+  acceptInvitation(invitationId: String!): Invitation!
+  rejectInvitation(invitationId: String!): Invitation!
+  addReactionToPost(postId: String, emoji: String!, collectionId: String, nftTokenData: UpdateNftForPost): Reaction!
+  removeReactionForPost(postId: String!): Reaction!
+  toggleReactionForPost(postId: String!, emoji: String!): Reaction!
+  addReactionToMessage(messageId: String!, emoji: String!): Reaction!
+  removeReactionForMessage(messageId: String!, emoji: String!): Reaction!
+  toggleReactionForMessage(messageId: String!, emoji: String!): Reaction!
+  createReport(data: CreateReportDto!): Report!
+  resolveReport(id: String!): SuccessPayload!
+  removeCollection(id: String!): SuccessPayload!
+  removeNFT(id: String!): SuccessPayload!
+  addTimeSpentOnPost(postId: String!, time: Float!): TimeSpent!
+  updateLandProfile(landId: String!, name: String!, description: String!, logo: String!, applyAll: Boolean!): [Mrland!]!
+  updateIslandProfile(islandId: String!, name: String!, description: String!, logo: String!): Island!
+  getMrlandEvent(events: CreateMrlandEventInput!): Boolean!
+  updateLandForPost(id: String!): Mrland!
+  likeMrLand(landId: String): Mrland!
+  dislikeMrLand(landId: String): Mrland!
+  createStakingCollection(createStakingCollectionInput: CreateStakingCollectionInput!): StakingCollection!
+  updateStakingCollection(updateStakingCollectionInput: UpdateStakingCollectionInput!): StakingCollection!
+  createReferralVideo(createReferralVideoInput: CreateReferralVideoInput!): ReferralVideo!
+  updateReferralVideo: ReferralVideo!
+  removeReferralVideo(id: String!): ReferralVideo!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  createMetaverse(createMetaverseInput: CreateMetaverseInput!): Metaverse!
+  updateMetaverse(updateMetaverseInput: UpdateMetaverseInput!): Metaverse!
+  createUtility(createUtilityInput: CreateUtilityInput!): Utility!
+  updateUtility(updateUtilityInput: UpdateUtilityInput!): Utility!
+  blockUserByAdmin(id: String!, status: Boolean!): SuccessPayload!
+  banUserByAdmin(id: String!, status: Boolean!): SuccessPayload!
+  createHistory(createHistoryInput: CreateHistoryInput!): History!
+  updateHistory(updateHistoryInput: UpdateHistoryInput!): History!
+  removeHistory(id: Int!): History!
+  rw_createEvent(createRwEventInput: CreateRwEventInput!): RwEvent!
+  rw_updateEvent(updateRwEventInput: UpdateRwEventInput!): String!
+  rw_removeEvent(id: String!): String!
+  rw_createTutorial(createRwTutorialsInput: CreateRwTutorialsInput!): RwTutorials!
+  rw_updateTutorial(updateRwTutorialsInput: UpdateRwTutorialsInput!): String!
+  rw_removeTutorial(id: String!): String!
+  rw_characterCreate(createRwCharacterInput: CreateRwCharacterInput!): RwCharacter!
+  rw_characterUpdate(updateRwCharacterInput: UpdateRwCharacterInput!): RwCharacter!
+  rw_chracterRemove: RwCharacter!
+  rw_buildingCreate(createRwBuildingInput: CreateRwBuildingInput!): RwBuilding!
+  rw_buildingUpdate(updateRwBuildingInput: UpdateRwBuildingInput!): RwBuilding!
+  rw_buildingRemove(id: String!, bIndex: String!): String!
+  rw_buildingTypeCreate(createRwBuildingTypesInput: CreateRwBuildingTypesInput!): RwBuildingTypes!
+  rw_landCreate(createRwLandInput: CreateRwLandInput!): RwLand!
+  rw_landRemove(id: String!): RwLand!
+  rw_settingsUpdate(updateRwSettingInput: UpdateRwSettingInput!): RwSettings!
+  rw_uMediaCreate(createRwUsersMediaInput: CreateRwUsersMediaInput!): RwUsersMedia!
+  rw_uMediaCreateFvrt(id: String!, status: Boolean!): RwUsersMedia!
+  rw_uMediaCreateReport(id: String!): RwUsersMedia!
+  rw_uMediaCreateRepost(id: String!): RwUsersMedia!
+  removeRwUsersMedia(id: String!): String!
+  rw_reportCreate(createRwReportInput: CreateRwReportInput!): RwReport!
+  rw_reportResolve(id: String!): RwReport!
+  rw_requestFightLB(createRwFightLbInput: CreateRwFightLbInput!): RwFightLb!
+  rw_requestRaceLB(createRwRaceLbInput: CreateRwRaceLbInput!): RwRaceLb!
+}
+
+input CreateUserInput {
+  """Name field (placeholder)"""
+  name: String!
+}
+
+input SettingsInput {
+  alerts: SettingsAlertInput
+  email: SettingsAlertInput
+  messagePrivacy: String
+  isLinkedInEnabled: Boolean
+  isTwitterEnabled: Boolean
+  isAutoMintEnabled: Boolean
+  lastMintedCollection: String
+  twoFa: Boolean
+}
+
+input SettingsAlertInput {
+  messenger: Boolean
+  bids: Boolean
+  sell: Boolean
+  buy: Boolean
+  like: Boolean
+  mint: Boolean
+  comment: Boolean
+  follow: Boolean
+}
+
+input ProfileInput {
+  firstName: String
+  lastName: String
+  userName: String
+  phoneNumber: String
+  avatar: String
+  coverImage: String
+  hideWallet: Boolean
+  wallet: String
+  roles: [String!]
+  facebook: String
+  instagram: String
+  reddit: String
+  twitter: String
+  discord: String
+  youtube: String
+  tiktok: String
+  web: String
+  bio: String
+  country: String
+  backgroundTheme: String
+  land_id: String
+}
+
+input CreateCollectionInput {
+  """Name field (placeholder)"""
+  name: String!
+
+  """Name field (placeholder)"""
+  description: String
+
+  """Name field (placeholder)"""
+  image: String
+
+  """Contract address field (placeholder)"""
+  contract: String!
+
+  """Contract address field (placeholder)"""
+  deploy_block_number: String!
+
+  """Currency name field"""
+  currency: String
+
+  """Chain name field (placeholder)"""
+  chain: String!
+
+  """Chain id field (placeholder)"""
+  chainId: Int!
+  is_content_creator: Boolean
+  is_auto_auction: Boolean
+  is_auto_mint: Boolean
+  listing_price: Int
+
+  """Action duration in the unix timestamps"""
+  auction_duration: Int
+
+  """Total supply field (placeholder)"""
+  supply: Int!
+
+  """symbol field (placeholder)"""
+  symbol: String!
+  website: String
+  linkedin: String
+  twitter: String
+  facebook: String
+  twitch: String
+  tiktok: String
+  land_id: String
+  youtube: String
+  discord: String
+  telegram: String
+  web: String
+  github: String
+  instagram: String
+  erc_type: String = "ERC721"
+  deployer_address: String
+  owner: String
+  royalty: Int
+
+  """Chain name field (placeholder)"""
+  listing_type: String
+}
+
+input CreateCollectionTokenInput {
+  tokenId: String!
+  description: String!
+  name: String!
+  image: String!
+  metadata_url: String!
+}
+
+input UpdateCollectionInput {
+  """Name field (placeholder)"""
+  name: String
+
+  """Name field (placeholder)"""
+  description: String
+
+  """Name field (placeholder)"""
+  image: String
+
+  """Contract address field (placeholder)"""
+  contract: String
+
+  """Contract address field (placeholder)"""
+  deploy_block_number: String
+
+  """Currency name field"""
+  currency: String
+
+  """Chain name field (placeholder)"""
+  chain: String
+
+  """Chain id field (placeholder)"""
+  chainId: Int
+  is_content_creator: Boolean
+  is_auto_auction: Boolean
+  is_auto_mint: Boolean
+  listing_price: Int
+
+  """Action duration in the unix timestamps"""
+  auction_duration: Int
+
+  """Total supply field (placeholder)"""
+  supply: Int
+
+  """symbol field (placeholder)"""
+  symbol: String
+  website: String
+  linkedin: String
+  twitter: String
+  facebook: String
+  twitch: String
+  tiktok: String
+  land_id: String
+  youtube: String
+  discord: String
+  telegram: String
+  web: String
+  github: String
+  instagram: String
+  erc_type: String = "ERC721"
+  deployer_address: String
+  owner: String
+  royalty: Int
+
+  """Chain name field (placeholder)"""
+  listing_type: String
+  id: String!
+}
+
+input LoginUserInput {
+  email: String
+  password: String
+}
+
+input SignInInput {
+  email: String
+  password: String!
+  firstName: String
+  lastName: String
+  userName: String
+  phoneNumber: String
+  avatar: String
+  referral: String
+  isRuffyWorldUser: Boolean
+  isComedian: Boolean
+  isTeacher: Boolean
+}
+
+input LoginGoogleInput {
+  referral: String
+  token: String!
+}
+
+input VerifyCodeInput {
+  email: String!
+  code: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+  code: String!
+  password: String!
+  confirmPassword: String!
+}
+
+input CreateListingInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateListingInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateNftInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateNftInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateBidInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateBidInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreatePostInput {
+  """Text field (placeholder)"""
+  text: String!
+  linkPreview: String
+
+  """Media field (placeholder)"""
+  media: [String!]
+  token: Token
+  poll: CreatePollInput
+  scheduledAt: DateTime
+  twitter: Boolean
+  linkedin: Boolean
+  facebook: Boolean
+  instagram: Boolean
+  inReplyToPost: String
+  originalPost: String
+  _collection: String
+}
+
+input Token {
+  tokenId: String!
+  contract: String!
+  chain: String!
+  image: String!
+}
+
+input CreatePollInput {
+  options: [CreateOptionsInput!]!
+  question: String!
+  expiresAt: DateTime!
+}
+
+input CreateOptionsInput {
+  text: String!
+}
+
+input UpdateFeedInput {
+  text: String
+  linkPreview: String
+  media: [String!]
+  token: Token
+  poll: CreatePollInput
+  scheduledAt: DateTime
+  twitter: Boolean
+  linkedin: Boolean
+  facebook: Boolean
+  instagram: Boolean
+  inReplyToPost: String
+  originalPost: String
+  _collection: String
+  id: String!
+  _id: String
+  videoViews: Int
+  postViews: Int! = 0
+  viewedBy: [String!] = []
+  reactionCount: Int! = 0
+  isRepost: Boolean! = false
+  repostCount: Int = 0
+  quoteCount: Int = 0
+  commentsCount: Int = 0
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CreateRePostInput {
+  """Text field (placeholder)"""
+  text: String!
+  originalPost: String
+}
+
+input UpdateNftForPost {
+  tokenId: String!
+  contract: String!
+  chain: String!
+  collectionId: String!
+}
+
+input CreateTwitterPostInput {
+  text: String
+  refVideo: String
+
+  """Media field (placeholder)"""
+  media: [String!]
+}
+
+input CreateGroupMessageInput {
+  _id: String
+  receiverGroup: String
+
+  """Media field (placeholder)"""
+  attachment: [String!]
+  content: String
+  inReplyToMessage: String
+  createdAt: DateTime
+}
+
+input CreatePrivateMessageInput {
+  _id: String
+  receiverUser: String
+
+  """Media field (placeholder)"""
+  attachment: [String!]
+  content: String
+  inReplyToMessage: String
+  createdAt: DateTime
+}
+
+input GroupSettingInput {
+  image: Boolean!
+  video: Boolean!
+  voice: Boolean!
+  files: Boolean!
+  gif: Boolean!
+  link: Boolean!
+  poll: Boolean!
+  mute: Boolean!
+}
+
+input GroupPrivacyInput {
+  invite: Float!
+  post: Float!
+  call: Float!
+}
+
+input CreateReportDto {
+  text: String
+  reason: String!
+  post: String
+  group: String
+  user: String
+  listing: String
+  nft: String
+  land: String
+  _collection: String
+}
+
+input CreateMrlandEventInput {
+  name: String!
+  contract: String!
+  timestamp: DateTime!
+  blockHash: String!
+  blockNumber: Float!
+  transactionHash: String!
+  transactionIndex: Float!
+  from: String!
+  to: String!
+  values: EventValueType!
+}
+
+input EventValueType {
+  from: String!
+  to: String!
+  tokenId: String!
+}
+
+input CreateStakingCollectionInput {
+  """Category of the staking collection"""
+  category: String!
+
+  """Utility of the staking collection"""
+  utility: String!
+
+  """Metaverse of the staking collection"""
+  metaverse: String!
+
+  """Chain of the staking collection"""
+  chain: String
+
+  """Chain ID of the staking collection"""
+  chainId: Int
+
+  """Address of the collection"""
+  collectionAddress: String
+
+  """Address of the staking contract"""
+  stakingAddress: String
+
+  """URL of the logo"""
+  logoUrl: String
+
+  """URL of the banner"""
+  bannerUrl: String
+
+  """Description of the staking collection"""
+  description: String
+
+  """Description of the staking collection"""
+  startedAt: DateTime
+}
+
+input UpdateStakingCollectionInput {
+  """Category of the staking collection"""
+  category: String
+
+  """Utility of the staking collection"""
+  utility: String
+
+  """Metaverse of the staking collection"""
+  metaverse: String
+
+  """Chain of the staking collection"""
+  chain: String
+
+  """Chain ID of the staking collection"""
+  chainId: Int
+
+  """Address of the collection"""
+  collectionAddress: String
+
+  """Address of the staking contract"""
+  stakingAddress: String
+
+  """URL of the logo"""
+  logoUrl: String
+
+  """URL of the banner"""
+  bannerUrl: String
+
+  """Description of the staking collection"""
+  description: String
+
+  """Description of the staking collection"""
+  startedAt: DateTime
+  id: String!
+}
+
+input CreateReferralVideoInput {
+  src: String!
+}
+
+input CreateCategoryInput {
+  """Name of the staking collection"""
+  name: String!
+}
+
+input UpdateCategoryInput {
+  """Name of the staking collection"""
+  name: String
+  id: String!
+}
+
+input CreateMetaverseInput {
+  """Name of the staking collection"""
+  name: String!
+}
+
+input UpdateMetaverseInput {
+  """Name of the staking collection"""
+  name: String
+  id: String!
+}
+
+input CreateUtilityInput {
+  """Name of the staking collection"""
+  name: String!
+}
+
+input UpdateUtilityInput {
+  """Name of the staking collection"""
+  name: String
+  id: String!
+}
+
+input CreateHistoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateHistoryInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateRwEventInput {
+  event_name: String!
+  event_description: String
+  start_date: DateTime!
+  end_date: DateTime!
+  cover_image: String!
+  EventTicketType: String!
+  Standard_Price: Float
+  Premium_Price: Float
+  vipPass_Price: Float
+  Max_Tickets: Float
+  Available_Tickets_for_Standard: Float
+  Available_Tickets_for_Premium: Float
+  Available_Tickets_for_VIP: Float
+  Genre: String
+  Location: String
+  Blockchain: String
+  ArrangedPersonName: String
+}
+
+input UpdateRwEventInput {
+  event_name: String
+  event_description: String
+  start_date: DateTime
+  end_date: DateTime
+  cover_image: String
+  EventTicketType: String
+  Standard_Price: Float
+  Premium_Price: Float
+  vipPass_Price: Float
+  Max_Tickets: Float
+  Available_Tickets_for_Standard: Float
+  Available_Tickets_for_Premium: Float
+  Available_Tickets_for_VIP: Float
+  Genre: String
+  Location: String
+  Blockchain: String
+  ArrangedPersonName: String
+  id: String!
+}
+
+input CreateRwTutorialsInput {
+  title: String!
+  description: String
+  video: String!
+}
+
+input UpdateRwTutorialsInput {
+  title: String
+  description: String
+  video: String
+  id: String!
+}
+
+input CreateRwCharacterInput {
+  skinColor: String!
+  gender: String!
+}
+
+input UpdateRwCharacterInput {
+  skinColor: String
+  gender: String
+}
+
+input CreateRwBuildingInput {
+  title: String!
+  desc: String!
+  title_images: [String!]!
+  nft_images: [String!]
+  ubindex: String!
+}
+
+input UpdateRwBuildingInput {
+  title: String
+  desc: String
+  title_images: [String!]
+  nft_images: [String!]
+  ubindex: String
+  id: String!
+}
+
+input CreateRwBuildingTypesInput {
+  id: String
+  name: String!
+  index: String!
+  bigImages: Float!
+  smallImages: Float!
+  assigned: Boolean!
+}
+
+input CreateRwLandInput {
+  id: String
+  LandID: Float!
+  Data: String!
+}
+
+input UpdateRwSettingInput {
+  MouseScrollSensitivity: Float
+  GraphicsQuality: Float
+  MessageNotification: RWMessageNotificationInput
+  PhoneNotification: RWPhoneNotificationInput
+  MailNotification: RWMailNotificationInput
+}
+
+input RWMessageNotificationInput {
+  _msgFreindRequest: Boolean
+  _msgNewEvent: Boolean
+  _msgRecieveingGift: Boolean
+  _msgTerrainGridInvisible: Boolean
+}
+
+input RWPhoneNotificationInput {
+  _phoneFreindRequest: Boolean
+  _phoneNewEvent: Boolean
+  _phoneRecieveingGift: Boolean
+  _phoneTerrainGridInvisible: Boolean
+}
+
+input RWMailNotificationInput {
+  _mailFreindRequest: Boolean
+  _mailNewEvent: Boolean
+  _mailRecieveingGift: Boolean
+  _mailTerrainGridInvisible: Boolean
+}
+
+input CreateRwUsersMediaInput {
+  media: [String!]
+  isSS: Boolean
+  isSR: Boolean
+  isFavourite: Boolean
+  isReport: Boolean
+  isRepost: Boolean
+}
+
+input CreateRwReportInput {
+  reported: String
+  mediaId: String
+  media: String
+  content: String!
+  type: String
+}
+
+input CreateRwFightLbInput {
+  email: String!
+  name: String!
+  damage: Float!
+  deathTime: Float!
+  updateTime: Float!
+}
+
+input CreateRwRaceLbInput {
+  email: String!
+  name: String!
+  laptime: Float!
+  dailylaptime: Float!
+  weeklylaptime: Float!
+  monthlylaptime: Float!
+  yearlylaptime: Float!
+  updateTime: Float!
+}
