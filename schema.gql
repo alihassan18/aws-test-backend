@@ -183,14 +183,6 @@ type Reactions {
   count: Int
 }
 
-type CollectionToken {
-  tokenId: String!
-  description: String!
-  name: String!
-  image: String!
-  metadata_url: String!
-}
-
 type LinkPreview {
   link_preview: String
 }
@@ -200,11 +192,19 @@ type Collection {
 
   """name field (placeholder)"""
   name: String!
+
+  """name field (placeholder)"""
+  slug: String!
+
+  """tokenCount"""
+  tokenCount: Int!
+
+  """onSaleCount"""
+  onSaleCount: Int!
   currency: String
   token_count: Float
   chain: String
   chainId: Float
-  tokens: [CollectionToken!]
   contract: String
   contract_name: String
   external_url: String

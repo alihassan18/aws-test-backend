@@ -1,33 +1,9 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Float, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { USERS } from 'src/constants/db.collections';
 import { Post } from 'src/modules/feeds/entities/post.entity';
 import { User } from 'src/modules/users/entities/user.entity';
-
-@Schema()
-@ObjectType()
-export class CollectionToken {
-    @Field(() => String)
-    @Prop()
-    tokenId: string;
-
-    @Field(() => String)
-    @Prop()
-    description: string;
-
-    @Field(() => String)
-    @Prop()
-    name: string;
-
-    @Field(() => String)
-    @Prop()
-    image: string;
-
-    @Field(() => String)
-    @Prop()
-    metadata_url: string;
-}
 
 @Schema()
 @ObjectType()
@@ -48,6 +24,18 @@ export class Collection extends Document {
     @Prop()
     name: string;
 
+    @Field(() => String, { description: 'name field (placeholder)' })
+    @Prop()
+    slug: 'space-id-arb-name';
+
+    @Field(() => Int, { description: 'tokenCount' })
+    @Prop()
+    tokenCount: number;
+
+    @Field(() => Int, { description: 'onSaleCount' })
+    @Prop()
+    onSaleCount: number;
+
     @Field(() => String, { nullable: true })
     @Prop()
     currency: string;
@@ -63,10 +51,6 @@ export class Collection extends Document {
     @Field(() => Number, { nullable: true })
     @Prop()
     chainId: number;
-
-    @Field(() => [CollectionToken], { nullable: true, defaultValue: [] })
-    @Prop({ default: [] })
-    tokens: [CollectionToken];
 
     @Field(() => String, { nullable: true })
     @Prop()
