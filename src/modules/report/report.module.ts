@@ -19,7 +19,6 @@ import { HttpModule } from '@nestjs/axios';
 import { CollectionsService } from '../collections/collections.service';
 import { ReservoirService } from '../shared/services/reservoir.service';
 import { sharedEmitterProvider } from '../shared/providers/shared-emitter.provider';
-import { LandmapService } from '../landmap/landmap.service';
 import { RedisPubSubService } from '../redis-pubsub/redis-pubsub.service';
 import { NftsService } from '../nfts/nfts.service';
 
@@ -45,7 +44,6 @@ import { NftsService } from '../nfts/nfts.service';
         CollectionsService,
         ReservoirService,
         sharedEmitterProvider,
-        LandmapService,
         NftsService
     ],
     exports: [ReportService]

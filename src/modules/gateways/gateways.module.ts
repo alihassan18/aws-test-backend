@@ -18,7 +18,6 @@ import { TwitterStrategy } from '../auth/strategies/twitter.strategy';
 import { ChatService } from '../chat/chat.service';
 import { PrivateChatGateway } from './private/private-chat.gateway';
 import { sharedEmitterProvider } from '../shared/providers/shared-emitter.provider';
-import { LandmapService } from '../landmap/landmap.service';
 import { PublicLandmapGateway } from './public/public-landmap.gateway';
 import { HashtagsService } from '../feeds/hashtags.service';
 import { PublicUserGateway } from './public/public-user.gateway';
@@ -62,7 +61,6 @@ import { NftsService } from '../nfts/nfts.service';
         AuthService,
         WSJwtAuthGuard,
         PrivateChatGateway,
-        LandmapService,
         sharedEmitterProvider,
         AppGateway,
         ReferralService,

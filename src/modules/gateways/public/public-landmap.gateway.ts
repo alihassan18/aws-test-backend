@@ -8,8 +8,6 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { GET_ISLAND, GET_MRLANDS } from 'src/constants/socket.constants';
-import { Island } from 'src/modules/landmap/entities/island.entity';
-import { Mrland } from 'src/modules/landmap/entities/mrland.entity';
 // import { SHARED_EMITTER } from 'src/constants/socket.constants';
 import { UsersService } from 'src/modules/users/users.service';
 
@@ -155,13 +153,4 @@ export class PublicLandmapGateway
     //         });
     //     }
     // }
-
-    async emitMrlandsUpdated(mrlands: Mrland[]) {
-        this.server.emit(GET_MRLANDS, mrlands);
-    }
-
-    async emitIslandUpdated(island: Island) {
-        this.server.emit(GET_ISLAND, island);
-    }
-    // Your public gateway methods...
 }

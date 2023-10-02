@@ -25,7 +25,6 @@ import { ReservoirService } from '../shared/services/reservoir.service';
 import { GatewaysModule } from '../gateways/gateways.module';
 import { sharedEmitterProvider } from '../shared/providers/shared-emitter.provider';
 import { IpAddressService } from '../ip-address/ip-address.service';
-import { LandmapService } from '../landmap/landmap.service';
 import { RedisPubSubService } from '../redis-pubsub/redis-pubsub.service';
 import { NftsService } from '../nfts/nfts.service';
 
@@ -56,7 +55,6 @@ import { NftsService } from '../nfts/nfts.service';
         ReservoirService,
         sharedEmitterProvider,
         IpAddressService,
-        LandmapService,
         NftsService
     ],
     exports: [NotificationService]

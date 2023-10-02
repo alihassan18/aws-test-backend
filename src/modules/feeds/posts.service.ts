@@ -49,7 +49,6 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { ScoresService } from '../scores/scores.service';
 // import { Collection, CollectionDocument } from '../collections/entities/collection.entity';
 import { Nft, NftDocument } from '../nfts/entities/nft.entity';
-import { LandmapService } from '../landmap/landmap.service';
 import { UsersService } from '../users/users.service';
 import { CollectionsService } from '../collections/collections.service';
 import {
@@ -71,7 +70,6 @@ export class PostService {
         private feedsService: FeedsService,
         private linkedinService: LinkedinService,
         private notificationService: NotificationService,
-        private landmapService: LandmapService,
         @InjectModel(Nft.name)
         private tokenModel: Model<NftDocument>,
         @Inject(forwardRef(() => PublicFeedsGateway))
@@ -1046,21 +1044,6 @@ export class PostService {
                 originalPost = await this.postModel
                     .findById(new Types.ObjectId(postId))
                     .exec();
-            }
-            if (!postId) {
-                const mrland = await this.landmapService.findMrLand(
-                    new Types.ObjectId(landId)
-                );
-                if (mrland.post) {
-                    originalPost = await this.postModel
-                        .findById(new Types.ObjectId(mrland.post))
-                        .exec();
-                }
-                if (!mrland.post) {
-                    const updatedLand =
-                        await this.landmapService.updateMrlandForPost(landId);
-                    originalPost = updatedLand.post;
-                }
             }
         } else if (!postId && stakingId) {
             const stakingCollection = await this.stakingCollectionModel.findOne(

@@ -23,7 +23,6 @@ import { CollectionsService } from '../collections/collections.service';
 import { ScoresService } from '../scores/scores.service';
 import { ReferralVideoService } from '../referral-video/referral-video.service';
 import { StakingCollectionService } from '../staking/staking.service';
-import { LandmapService } from '../landmap/landmap.service';
 import { ReservoirService } from '../shared/services/reservoir.service';
 import { sharedEmitterProvider } from '../shared/providers/shared-emitter.provider';
 import { IpAddressService } from '../ip-address/ip-address.service';
@@ -59,7 +58,6 @@ import { NftsService } from '../nfts/nfts.service';
         ScoresService,
         ReferralVideoService,
         StakingCollectionService,
-        LandmapService,
         ReservoirService,
         NftsService,
         sharedEmitterProvider,

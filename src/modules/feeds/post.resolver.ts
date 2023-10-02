@@ -44,8 +44,6 @@ import {
     StakingCollectionDocument
 } from '../staking/entities/collection.staking.entity';
 import { StakingCollectionService } from '../staking/staking.service';
-import { Mrland } from '../landmap/entities/mrland.entity';
-import { LandmapService } from '../landmap/landmap.service';
 import { Collection } from '../collections/entities/collection.entity';
 import { CollectionsService } from '../collections/collections.service';
 import { AdminGuard } from '../admin/admin.guard';
@@ -60,7 +58,6 @@ export class PostResolver {
         private readonly linkedinService: LinkedinService,
         private readonly referralVideoService: ReferralVideoService,
         private readonly stakingCollectionService: StakingCollectionService,
-        private readonly landmapService: LandmapService,
         private readonly collectionService: CollectionsService
     ) {}
 
@@ -104,11 +101,6 @@ export class PostResolver {
     @ResolveField(() => StakingCollection)
     async staking(@Parent() post: Post): Promise<StakingCollectionDocument> {
         return this.stakingCollectionService.findOne(post.staking);
-    }
-
-    @ResolveField(() => Mrland)
-    async mrland(@Parent() post: Post): Promise<Mrland> {
-        return this.landmapService.findMrLand(post.mrland);
     }
 
     @ResolveField(() => Collection)

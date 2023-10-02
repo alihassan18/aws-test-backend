@@ -633,7 +633,7 @@ export class UsersService {
     ): Promise<WalletDocument> {
         const recoveredAddress = await recoverMessageAddress({
             message:
-                'I acknowledge and agree to the terms, conditions, and privacy policy of Mintstartgram, a product created by Mintstartgram International FZCO, Dubai Silicon Oasis, DDP, Building A2, Dubai, United Arab Emirates.',
+                'I acknowledge and agree to the terms, conditions, and privacy policy of Mintstartgram, a product created by MetaRuffy International FZCO, Dubai Silicon Oasis, DDP, Building A2, Dubai, United Arab Emirates.',
             signature: signature as `0x${string}`
         });
 

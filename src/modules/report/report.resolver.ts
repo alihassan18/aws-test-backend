@@ -28,8 +28,6 @@ import {
     CollectionDocument
 } from '../collections/entities/collection.entity';
 import { CollectionsService } from '../collections/collections.service';
-import { Mrland, MrlandDocument } from '../landmap/entities/mrland.entity';
-import { LandmapService } from '../landmap/landmap.service';
 @Resolver(() => Report)
 export class ReportResolver {
     constructor(
@@ -37,8 +35,7 @@ export class ReportResolver {
         private readonly userService: UsersService,
         private readonly postService: PostService,
         private readonly nftService: NftsService,
-        private readonly collectionService: CollectionsService,
-        private readonly landmapService: LandmapService
+        private readonly collectionService: CollectionsService
     ) {}
 
     // @Query(() => [Report])
@@ -81,11 +78,6 @@ export class ReportResolver {
         return this.collectionService.findById(
             new Types.ObjectId(report?._collection)
         );
-    }
-
-    @ResolveField(() => Mrland)
-    async land(@Parent() report: Report): Promise<MrlandDocument> {
-        return this.landmapService.findById(new Types.ObjectId(report.land));
     }
 
     @UseGuards(AuthGuard)

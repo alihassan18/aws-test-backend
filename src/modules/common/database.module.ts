@@ -35,8 +35,6 @@ import {
     InvitationSchema
 } from '../chat/entities/invitation.entity';
 
-import { Mrland, MrlandSchema } from '../landmap/entities/mrland.entity';
-import { Island, IslandSchema } from '../landmap/entities/island.entity';
 import { Wallet, WalletSchema } from '../landmap/entities/wallet.entity';
 import { Chat, ChatSchema } from '../chat/entities/chat.entity';
 import { Score, ScoreSchema } from '../scores/entities/score.entity';
@@ -156,9 +154,7 @@ const models = [
     { name: Report.name, schema: ReportSchema },
     { name: TimeSpent.name, schema: TimeSpentSchema },
     { name: Invitation.name, schema: InvitationSchema },
-    { name: Island.name, schema: IslandSchema },
     { name: Wallet.name, schema: WalletSchema },
-    { name: Mrland.name, schema: MrlandSchema },
     { name: Chat.name, schema: ChatSchema },
     { name: ChatNotification.name, schema: ChatNotificationSchema },
     { name: Score.name, schema: ScoreSchema },

@@ -9,7 +9,6 @@ import { Collection } from '../collections/entities/collection.entity';
 import { COLLECTIONS, USERS } from 'src/constants/db.collections';
 import { Group } from '../chat/entities/group.entity';
 import { Nft } from '../nfts/entities/nft.entity';
-import { Mrland } from '../landmap/entities/mrland.entity';
 
 // Register the enum for GraphQL
 registerEnumType(ReportStatus, {
@@ -50,15 +49,6 @@ export class Report extends Document {
     @Field(() => Nft, { nullable: true })
     @Prop({ type: Types.ObjectId, ref: Nft.name, default: null, index: true })
     nft?: Types.ObjectId;
-
-    @Field(() => Mrland, { nullable: true })
-    @Prop({
-        type: Types.ObjectId,
-        ref: Mrland.name,
-        default: null,
-        index: true
-    })
-    land?: Types.ObjectId;
 
     @Field(() => ReportStatus)
     @Prop({ type: String, enum: ReportStatus, default: ReportStatus.REPORTED })

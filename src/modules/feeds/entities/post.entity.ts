@@ -6,7 +6,6 @@ import { Poll, PollSchema } from './poll.entity';
 import { Hashtag } from './hashtag.entity';
 import { /* COLLECTIONS, */ USERS } from 'src/constants/db.collections';
 import { StakingCollection } from 'src/modules/staking/entities/collection.staking.entity';
-import { Mrland } from 'src/modules/landmap/entities/mrland.entity';
 import { Collection } from 'src/modules/collections/entities/collection.entity';
 
 export type PostDocument = Post & Document;
@@ -179,10 +178,6 @@ export class Post extends Document {
     @Field(() => StakingCollection, { nullable: true })
     @Prop({ type: Types.ObjectId, ref: StakingCollection.name })
     staking: Types.ObjectId;
-
-    @Field(() => Mrland, { nullable: true })
-    @Prop({ type: Types.ObjectId, ref: Mrland.name })
-    mrland?: Types.ObjectId;
 
     @Field(() => [User], { nullable: true })
     @Prop({

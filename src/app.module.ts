@@ -22,7 +22,6 @@ import { TimespentModule } from './modules/timespent/timespent.module';
 import { sharedEmitterProvider } from './modules/shared/providers/shared-emitter.provider';
 import { SocialModule } from './modules/social/social.module';
 import { ConfigModule } from '@nestjs/config';
-import { LandmapModule } from './modules/landmap/landmap.module';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { ScoresModule } from './modules/scores/scores.module';
@@ -87,7 +86,6 @@ import { RecentSearchesModule } from './modules/recent_searches/recent_searches.
         ScoresModule,
         ReportModule,
         TimespentModule,
-        LandmapModule,
         SocialModule,
         StakingModule,
         ReferralVideoModule,
