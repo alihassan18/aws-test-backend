@@ -7,7 +7,6 @@ import {
     WebSocketServer
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { GET_ISLAND, GET_MRLANDS } from 'src/constants/socket.constants';
 // import { SHARED_EMITTER } from 'src/constants/socket.constants';
 import { UsersService } from 'src/modules/users/users.service';
 

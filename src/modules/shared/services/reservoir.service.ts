@@ -15,15 +15,10 @@ import EventEmitter from 'events';
 import { SHARED_EMITTER } from 'src/constants/socket.constants';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
-    Attribute,
-    AttributeDocument
-} from 'src/modules/attributes/entities/attribute.entities';
-import {
     Listing,
     ListingDocument
 } from 'src/modules/listings/entities/listing.entity';
 import { Bid, BidDocument } from 'src/modules/bids/entities/bid.entity';
-import { isEmpty } from 'class-validator';
 
 export type SearchCollectionResults =
     paths['/search/collections/v2']['get']['responses']['200']['schema'];
@@ -33,8 +28,6 @@ export type BidResults =
     paths['/orders/bids/v5']['get']['responses']['200']['schema'];
 type CollectionsResults =
     paths['/collections/v5']['get']['responses']['200']['schema'];
-type AttributeResults =
-    paths['/attributes/v1']['get']['responses']['200']['schema'];
 type ActivitiesResults =
     paths['/collections/activity/v5']['get']['responses']['200']['schema'];
 type TokensResults = paths['/tokens/v5']['get']['responses']['200']['schema'];
@@ -182,8 +175,6 @@ export class ReservoirService {
     constructor(
         private eventEmitter: EventEmitter2,
         @Inject(SHARED_EMITTER) private readonly sharedEmitter: EventEmitter,
-        @InjectModel(Attribute.name)
-        private attributeModel: Model<AttributeDocument>,
         @InjectModel(COLLECTIONS)
         private collectionModel: Model<CollectionDocument>,
         @InjectModel(Listing.name)
@@ -742,36 +733,6 @@ export class ReservoirService {
         });
     }
 
-    async createCollectionAttributes(contract: string, chainName = 'ethereum') {
-        try {
-            sdk.auth(process.env.RESERVOIR_API_KEY);
-            const chain = chains[chainName];
-
-            sdk.server(chain.reservoirBaseUrl);
-            const response = await sdk.getCollectionsCollectionAttributesAllV4({
-                collection: contract,
-                accept: '*/*'
-            });
-
-            const data = response?.data as AttributeResults;
-            if (isEmpty(data.attributes)) {
-                return data.attributes;
-            }
-
-            const updatedAttributes = data.attributes.map((attr) => ({
-                ...attr,
-                contract: contract
-            }));
-            const dbresponse = await this.attributeModel.insertMany(
-                updatedAttributes
-            );
-
-            return dbresponse;
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     async insertTopCollections(chainName: string) {
         try {
             if (!chainName) {
@@ -832,10 +793,6 @@ export class ReservoirService {
                     collection?.openseaVerificationStatus === 'verified',
                 royalty: collection?.royalties?.bps
             }));
-
-            updatedCollections.forEach((element) => {
-                this.createCollectionAttributes(element?.contract, chainName);
-            });
 
             await this.collectionModel.insertMany(updatedCollections, {
                 ordered: false

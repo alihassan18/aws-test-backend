@@ -2,7 +2,6 @@ import { ObjectType, Field, Float } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { USERS } from 'src/constants/db.collections';
-import { Attribute } from 'src/modules/attributes/entities/attribute.entities';
 import { Post } from 'src/modules/feeds/entities/post.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 
@@ -270,10 +269,6 @@ export class Collection extends Document {
     @Field(() => String, { nullable: true })
     @Prop()
     ipfs_image_url: string;
-
-    @Field(() => [Attribute], { nullable: true })
-    @Prop({ type: [{ type: [Types.ObjectId], ref: Attribute.name }] })
-    attributes: Types.ObjectId[];
 
     @Field(() => String, { nullable: true })
     @Prop()

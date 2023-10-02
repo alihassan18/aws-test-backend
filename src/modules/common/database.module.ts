@@ -61,10 +61,6 @@ import {
 } from '../metaverse/entities/metaverse.entity';
 import { Utility, UtilitySchema } from '../utilities/entities/utilities.entity';
 import {
-    Attribute,
-    AttributeSchema
-} from '../attributes/entities/attribute.entities';
-import {
     TradeDistribution,
     TradeDistributionSchema
 } from '../collections/entities/collection.trade.entity';
@@ -163,7 +159,6 @@ const models = [
     { name: Category.name, schema: CategorySchema },
     { name: Metaverse.name, schema: MetaverseSchema },
     { name: Utility.name, schema: UtilitySchema },
-    { name: Attribute.name, schema: AttributeSchema },
     { name: TradeDistribution.name, schema: TradeDistributionSchema },
     { name: Distributions.name, schema: DistributionSchema },
     { name: Listing.name, schema: ListingSchema },

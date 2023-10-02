@@ -28,144 +28,6 @@ type UserRefetchResult {
   user: User!
 }
 
-type Currency {
-  contract: String
-  name: String
-  symbol: String
-  decimals: Float
-}
-
-type Amount {
-  raw: String
-  decimal: Float
-  usd: Float
-  native: Float
-}
-
-type FloorAskPrice {
-  currency: Currency!
-  amount: Amount!
-}
-
-type ReservoirSearchedCollection {
-  collectionId: String
-  name: String
-  slug: String
-  contract: String
-  image: String
-  allTimeVolume: Float
-  floorAskPrice: FloorAskPrice
-  openseaVerificationStatus: String
-  chainName: String
-  chainId: Float
-  lightChainIcon: String
-  darkChainIcon: String
-}
-
-type RoyaltyBreakdown {
-  bps: Int!
-  recipient: String
-}
-
-type Royalties {
-  recipient: String
-  bps: Int!
-  breakdown: [RoyaltyBreakdown!]!
-}
-
-type Price {
-  currency: Currency!
-  amount: Amount!
-  netAmount: Amount
-}
-
-type ReservoirToken {
-  contract: String
-  tokenId: String
-  name: String
-  image: String
-}
-
-type FloorAsk {
-  id: String
-  sourceDomain: String
-  price: Price!
-  maker: String
-  validFrom: Int!
-  validUntil: Int!
-  token: ReservoirToken!
-}
-
-type VolumeChange {
-  _1day: Int
-  _7day: Int
-  _30day: Int
-}
-
-type Rank {
-  _1day: Int!
-  _7day: Int!
-  _30day: Int
-  allTime: Int!
-}
-
-type Volume {
-  _1day: Float!
-  _7day: Float!
-  _30day: Float
-  allTime: Float!
-}
-
-type ReservoirCollection {
-  id: String
-  slug: String
-  createdAt: String
-  name: String
-  image: String
-  banner: String
-  discordUrl: String
-  externalUrl: String
-  twitterUsername: String
-  openseaVerificationStatus: String
-  description: String
-  sampleImages: [String!]!
-  tokenCount: String
-  onSaleCount: String
-  primaryContract: String
-  tokenSetId: String
-  royalties: Royalties!
-  floorAsk: FloorAsk!
-  rank: Rank!
-  volume: Volume!
-  volumeChange: VolumeChange
-  floorSale: VolumeChange
-  floorSaleChange: VolumeChange
-  collectionBidSupported: Boolean
-  ownerCount: Int!
-  contractKind: String
-  mintedTimestamp: String
-  mintStages: [String!]!
-}
-
-type ReservoirCollectionResults {
-  collections: [ReservoirCollection!]!
-  continuation: String
-}
-
-type Value {
-  count: Int!
-  value: String!
-  floorAskPrice: FloorAskPrice!
-}
-
-type Attribute {
-  contract: String!
-  key: String!
-  attributeCount: Int!
-  kind: String!
-  values: [Value!]!
-}
-
 type PollOption {
   text: String!
   votes: Float!
@@ -393,7 +255,6 @@ type Collection {
   large_image_url: String
   ipfs_json_url: String
   ipfs_image_url: String
-  attributes: [Attribute!]
   erc_type: String
   deploy_block_number: Float
 
@@ -553,6 +414,130 @@ type Referral {
   totalRedeemed: Float!
   referralVolumeTraded: Float!
   requested: Boolean!
+}
+
+type Currency {
+  contract: String
+  name: String
+  symbol: String
+  decimals: Float
+}
+
+type Amount {
+  raw: String
+  decimal: Float
+  usd: Float
+  native: Float
+}
+
+type FloorAskPrice {
+  currency: Currency!
+  amount: Amount!
+}
+
+type ReservoirSearchedCollection {
+  collectionId: String
+  name: String
+  slug: String
+  contract: String
+  image: String
+  allTimeVolume: Float
+  floorAskPrice: FloorAskPrice
+  openseaVerificationStatus: String
+  chainName: String
+  chainId: Float
+  lightChainIcon: String
+  darkChainIcon: String
+}
+
+type RoyaltyBreakdown {
+  bps: Int!
+  recipient: String
+}
+
+type Royalties {
+  recipient: String
+  bps: Int!
+  breakdown: [RoyaltyBreakdown!]!
+}
+
+type Price {
+  currency: Currency!
+  amount: Amount!
+  netAmount: Amount
+}
+
+type ReservoirToken {
+  contract: String
+  tokenId: String
+  name: String
+  image: String
+}
+
+type FloorAsk {
+  id: String
+  sourceDomain: String
+  price: Price!
+  maker: String
+  validFrom: Int!
+  validUntil: Int!
+  token: ReservoirToken!
+}
+
+type VolumeChange {
+  _1day: Int
+  _7day: Int
+  _30day: Int
+}
+
+type Rank {
+  _1day: Int!
+  _7day: Int!
+  _30day: Int
+  allTime: Int!
+}
+
+type Volume {
+  _1day: Float!
+  _7day: Float!
+  _30day: Float
+  allTime: Float!
+}
+
+type ReservoirCollection {
+  id: String
+  slug: String
+  createdAt: String
+  name: String
+  image: String
+  banner: String
+  discordUrl: String
+  externalUrl: String
+  twitterUsername: String
+  openseaVerificationStatus: String
+  description: String
+  sampleImages: [String!]!
+  tokenCount: String
+  onSaleCount: String
+  primaryContract: String
+  tokenSetId: String
+  royalties: Royalties!
+  floorAsk: FloorAsk!
+  rank: Rank!
+  volume: Volume!
+  volumeChange: VolumeChange
+  floorSale: VolumeChange
+  floorSaleChange: VolumeChange
+  collectionBidSupported: Boolean
+  ownerCount: Int!
+  contractKind: String
+  mintedTimestamp: String
+  mintStages: [String!]!
+}
+
+type ReservoirCollectionResults {
+  collections: [ReservoirCollection!]!
+  continuation: String
 }
 
 type TokenData {

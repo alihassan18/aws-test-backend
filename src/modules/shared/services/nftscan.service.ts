@@ -23,18 +23,10 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 
 // const evm = new NftscanEvm(config);
 
-import {
-    Attribute,
-    AttributeDocument
-} from 'src/modules/attributes/entities/attribute.entities';
-
 type SearchCollectionResults =
     paths['/search/collections/v2']['get']['responses']['200']['schema'];
 type CollectionsResults =
     paths['/collections/v5']['get']['responses']['200']['schema'];
-type AttributeResults =
-    paths['/attributes/v1']['get']['responses']['200']['schema'];
-
 export type SearchCollection = NonNullable<
     paths['/search/collections/v1']['get']['responses']['200']['schema']['collections']
 >[0] & {
@@ -135,8 +127,6 @@ export class NFTScanService {
     constructor(
         private eventEmitter: EventEmitter2,
         @Inject(SHARED_EMITTER) private readonly sharedEmitter: EventEmitter,
-        @InjectModel(Attribute.name)
-        private attributeModel: Model<AttributeDocument>,
         @InjectModel(COLLECTIONS)
         private collectionModel: Model<CollectionDocument>
     ) {
@@ -746,7 +736,6 @@ export class NFTScanService {
                     })
                 );
             }
-            const attributes = await Promise.all(pa);
 
             // for (const item of attributes) {
             //     const attribute = item?.data as AttributeResults;
@@ -755,28 +744,6 @@ export class NFTScanService {
             //     );
             //     console.log(aa, 'attribute.attributes');
             // }
-
-            for (const [index, item] of attributes.entries()) {
-                try {
-                    const attribute = item?.data as AttributeResults;
-
-                    // Add contract to each attribute
-                    const updatedAttributes = attribute.attributes.map(
-                        (attr) => ({
-                            ...attr,
-                            contract: allCollections[index].contract
-                        })
-                    );
-
-                    const aa = await this.attributeModel.insertMany(
-                        updatedAttributes,
-                        { ordered: false }
-                    );
-                    console.log(aa, 'attribute.attributes');
-                } catch (error) {
-                    console.log(error);
-                }
-            }
 
             await this.collectionModel.insertMany(allCollections, {
                 ordered: false
