@@ -13,7 +13,7 @@ import {
     SettingsInput
 } from './dto/users.input';
 import { COLLECTIONS, USERS } from 'src/constants/db.collections';
-import { Wallet, WalletDocument } from '../landmap/entities/wallet.entity';
+import { Wallet, WalletDocument } from './entities/wallet.entity';
 import { HashtagsService } from '../feeds/hashtags.service';
 import { HashtagDocument } from '../feeds/entities/hashtag.entity';
 import { PublicUserGateway } from '../gateways/public/public-user.gateway';

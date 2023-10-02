@@ -13,7 +13,7 @@ import { Nft, NftDocument } from './entities/nft.entity';
 import { FilterQuery, Model, Types } from 'mongoose';
 import { ReservoirService, chains } from '../shared/services/reservoir.service';
 import { isEmpty } from 'class-validator';
-import { Wallet, WalletDocument } from '../landmap/entities/wallet.entity';
+import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { EvmChain, NftscanEvm } from 'nftscan-api';
 import { QueryMultiChainAssets } from 'nftscan-api/dist/src/types/evm';
 import { Listing, ListingDocument } from '../listings/entities/listing.entity';

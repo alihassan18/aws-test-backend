@@ -35,7 +35,7 @@ import {
     InvitationSchema
 } from '../chat/entities/invitation.entity';
 
-import { Wallet, WalletSchema } from '../landmap/entities/wallet.entity';
+import { Wallet, WalletSchema } from '../users/entities/wallet.entity';
 import { Chat, ChatSchema } from '../chat/entities/chat.entity';
 import { Score, ScoreSchema } from '../scores/entities/score.entity';
 import {
@@ -55,10 +55,6 @@ import {
     Category,
     CategorySchema
 } from '../categories/entities/categories.entity';
-import {
-    Metaverse,
-    MetaverseSchema
-} from '../metaverse/entities/metaverse.entity';
 import { Utility, UtilitySchema } from '../utilities/entities/utilities.entity';
 import {
     TradeDistribution,
@@ -157,7 +153,6 @@ const models = [
     { name: StakingCollection.name, schema: StakingCollectionSchema },
     { name: ReferralVideo.name, schema: ReferralVideoSchema },
     { name: Category.name, schema: CategorySchema },
-    { name: Metaverse.name, schema: MetaverseSchema },
     { name: Utility.name, schema: UtilitySchema },
     { name: TradeDistribution.name, schema: TradeDistributionSchema },
     { name: Distributions.name, schema: DistributionSchema },

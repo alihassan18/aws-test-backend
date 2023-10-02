@@ -31,7 +31,7 @@ import {
 import { Types } from 'mongoose';
 import { Hashtag, HashtagDocument } from '../feeds/entities/hashtag.entity';
 import { HashtagsService } from '../feeds/hashtags.service';
-import { Wallet, WalletDocument } from '../landmap/entities/wallet.entity';
+import { Wallet, WalletDocument } from './entities/wallet.entity';
 import { AdminGuard } from '../admin/admin.guard';
 import { UserRefetchResult } from './entities/user-settings.entity';
 import { SuccessPayload } from '../admin/dto/create-admin.input';

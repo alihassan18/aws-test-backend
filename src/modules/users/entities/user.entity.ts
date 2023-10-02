@@ -10,7 +10,7 @@ import { Types } from 'mongoose';
 import { jwtConstants } from 'src/constants/jwt.constant';
 import { Collection } from 'src/modules/collections/entities/collection.entity';
 import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
-import { Wallet } from 'src/modules/landmap/entities/wallet.entity';
+import { Wallet } from 'src/modules/users/entities/wallet.entity';
 import { FollowingTimestamps } from './user-following-timestamps.entity';
 import { FollowersTimestamps } from './user-followers-timestamps.entity';
 

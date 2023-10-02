@@ -914,13 +914,6 @@ type Category {
   name: String
 }
 
-type Metaverse {
-  _id: String!
-
-  """Name field (placeholder)"""
-  name: String!
-}
-
 type Utility {
   _id: String!
 
@@ -1725,8 +1718,6 @@ type Query {
   referralVideo(id: Int!): ReferralVideo!
   categories(query: CategoryFilterInput): [Category!]!
   category(id: Int!): Category!
-  metaverses(query: MetaverseFilterInput): [Metaverse!]!
-  metaverse(id: Int!): Metaverse!
   utilities(query: UtilityFilterInput): [Utility!]!
   utility(id: Int!): Utility!
   usersStats: UsersDataOverview!
@@ -1884,10 +1875,6 @@ input CategoryFilterInput {
   name: String
 }
 
-input MetaverseFilterInput {
-  name: String
-}
-
 input UtilityFilterInput {
   name: String
 }
@@ -2013,8 +2000,6 @@ type Mutation {
   removeReferralVideo(id: String!): ReferralVideo!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
-  createMetaverse(createMetaverseInput: CreateMetaverseInput!): Metaverse!
-  updateMetaverse(updateMetaverseInput: UpdateMetaverseInput!): Metaverse!
   createUtility(createUtilityInput: CreateUtilityInput!): Utility!
   updateUtility(updateUtilityInput: UpdateUtilityInput!): Utility!
   blockUserByAdmin(id: String!, status: Boolean!): SuccessPayload!
@@ -2604,17 +2589,6 @@ input CreateCategoryInput {
 }
 
 input UpdateCategoryInput {
-  """Name of the staking collection"""
-  name: String
-  id: String!
-}
-
-input CreateMetaverseInput {
-  """Name of the staking collection"""
-  name: String!
-}
-
-input UpdateMetaverseInput {
   """Name of the staking collection"""
   name: String
   id: String!

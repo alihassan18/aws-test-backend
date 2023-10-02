@@ -29,7 +29,6 @@ import { StakingModule } from './modules/staking/staking.module';
 // import { socketAuthMiddleware } from './modules/auth/socket-auth.middleware';
 import { ReferralVideoModule } from './modules/referral-video/referral-video.module';
 import { CategoryModule } from './modules/categories/categories.module';
-import { MetaverseModule } from './modules/metaverse/metaverse.module';
 import { UtilityModule } from './modules/utilities/utilities.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -90,7 +89,6 @@ import { RecentSearchesModule } from './modules/recent_searches/recent_searches.
         StakingModule,
         ReferralVideoModule,
         CategoryModule,
-        MetaverseModule,
         UtilityModule,
         AdminModule,
         HistoryModule,
