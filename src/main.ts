@@ -45,10 +45,10 @@ async function bootstrap() {
         })
     );
     const config = new DocumentBuilder()
-        .setTitle('Mintstartgram V2 API')
+        .setTitle('Mintstargram V2 API')
         .setDescription('The v2 API description')
         .setVersion('2.0')
-        .addTag('Mintstartgram-v2')
+        .addTag('Mintstargram-v2')
         .build();
     const document = SwaggerModule.createDocument(app, config);
     app.enableCors();

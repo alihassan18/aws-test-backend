@@ -283,7 +283,7 @@ export class NftsService {
                     }
                 }),
                 ...(query?.is_content_creator && {
-                    'source.domain': 'dev.mintstartgram.com'
+                    'source.domain': 'dev.mintstargram.com'
                 })
             };
 

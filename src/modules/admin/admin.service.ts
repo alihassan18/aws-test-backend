@@ -33,26 +33,6 @@ export class AdminService {
                         },
                         { $count: 'count' }
                     ],
-                    kingsCount: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $ifNull: ['$isKing', false]
-                                }
-                            }
-                        },
-                        { $count: 'count' }
-                    ],
-                    day1SupportersCount: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $ifNull: ['$isDay1supporter', false]
-                                }
-                            }
-                        },
-                        { $count: 'count' }
-                    ],
                     contentCreators: [
                         {
                             $match: {
@@ -324,34 +304,6 @@ export class AdminService {
                                 $expr: {
                                     $and: [
                                         { $ifNull: ['$isVerified', false] },
-                                        { $gte: ['$lastLogin', today] }
-                                    ]
-                                }
-                            }
-                        },
-                        { $count: 'count' }
-                    ],
-                    kingsCount: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $and: [
-                                        { $ifNull: ['$isKing', false] },
-                                        { $gte: ['$lastLogin', today] }
-                                    ]
-                                }
-                            }
-                        },
-                        { $count: 'count' }
-                    ],
-                    day1SupportersCount: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $and: [
-                                        {
-                                            $ifNull: ['$isDay1supporter', false]
-                                        },
                                         { $gte: ['$lastLogin', today] }
                                     ]
                                 }
@@ -673,12 +625,6 @@ export class AdminService {
                     isVerified: {
                         $ifNull: ['$isVerified', false]
                     },
-                    isKing: {
-                        $ifNull: ['$isKing', false]
-                    },
-                    isDay1supporter: {
-                        $ifNull: ['$isDay1supporter', false]
-                    },
                     isSCC: {
                         $ifNull: ['$isSCC', false]
                     },
@@ -747,8 +693,6 @@ export class AdminService {
                     isVerified: 1,
                     isBlocked: 1,
                     isBanned: 1,
-                    isKing: 1,
-                    isDay1supporter: 1,
                     isSCC: 1,
                     boughtNFTs: 1,
                     mintedNFTs: 1,
@@ -875,8 +819,6 @@ export class AdminService {
                     isVerified: { $ifNull: ['$isVerified', false] },
                     isBlocked: { $ifNull: ['$isBlocked', false] },
                     isBanned: { $ifNull: ['$isBanned', false] },
-                    isKing: { $ifNull: ['$isKing', false] },
-                    isDay1supporter: { $ifNull: ['$isDay1supporter', false] },
                     isSCC: { $ifNull: ['$isSCC', false] }
                 }
             },
@@ -990,8 +932,6 @@ export class AdminService {
                     isVerified: 1,
                     isBlocked: 1,
                     isBanned: 1,
-                    isKing: 1,
-                    isDay1supporter: 1,
                     isSCC: 1,
                     referralCount: { $arrayElemAt: ['$referralData.count', 0] },
                     referralLevel: { $arrayElemAt: ['$referralData.level', 0] },

@@ -111,17 +111,17 @@ export const generateOGImage = async (
         const ictx = canvas.getContext('2d');
         ictx.fillStyle = 'yellow';
 
-        const mintstartgramImgRes = await axios.get(
+        const mintstargramImgRes = await axios.get(
             'https://res.cloudinary.com/dq3jqnrem/image/upload/v1692279602/ejcwujareqp8zmn0ibo5.png',
             {
                 responseType: 'arraybuffer'
             }
         );
-        const mintstartgramImg = await sharp(mintstartgramImgRes.data)
+        const mintstargramImg = await sharp(mintstargramImgRes.data)
             .toFormat('png')
             .toBuffer();
-        const mintstartgramLogo = await loadImage(mintstartgramImg);
-        ictx.drawImage(mintstartgramLogo, 430, 160, 70, 70);
+        const mintstargramLogo = await loadImage(mintstargramImg);
+        ictx.drawImage(mintstargramLogo, 430, 160, 70, 70);
 
         /* END */
 
@@ -251,11 +251,11 @@ export const generateOGImage = async (
             .substring(maxLengthFirstPart);
         const secondLine =
             type === 'collection'
-                ? `${name} Collection Mintstartgram NFT Marketplace`
-                : `${name} | Mintstartgram`;
+                ? `${name} Collection Mintstargram NFT Marketplace`
+                : `${name} | Mintstargram`;
 
         bctx.fillStyle = '#727279';
-        bctx.fillText('Mintstartgram.COM', 20, 325);
+        bctx.fillText('Mintstargram.COM', 20, 325);
         bctx.fillStyle = 'white';
         bctx.fillText(truncateText(bctx, secondLine, width - 100), 20, 345);
         bctx.fillStyle = '#727279';

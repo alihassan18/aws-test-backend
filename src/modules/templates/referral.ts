@@ -9,7 +9,7 @@ export const referral = (name, url) => {
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Mintstartgram |  Referral</title>
+    <title>Mintstargram |  Referral</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -23,55 +23,55 @@ export const referral = (name, url) => {
       }
       @font-face {
         font-family: "proxima_novabold";
-        src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
+        src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
             format("woff2"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
             format("woff"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
             format("truetype");
         font-weight: normal;
         font-style: normal;
       }
       @font-face {
         font-family: "proxima_novaextrabold";
-        src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
+        src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
             format("woff2"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
             format("woff"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
             format("truetype");
         font-weight: normal;
         font-style: normal;
       }
       @font-face {
         font-family: "proxima_novaregular";
-        src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
+        src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
             format("woff2"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
             format("woff"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
             format("truetype");
         font-weight: normal;
         font-style: normal;
       }
       @font-face {
         font-family: "proxima_novalight";
-        src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
+        src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
             format("woff2"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
             format("woff"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
             format("truetype");
         font-weight: normal;
         font-style: normal;
       }
       @font-face {
         font-family: "proxima_novasemibold";
-        src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
+        src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
             format("woff2"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
             format("woff"),
-          url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
+          url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
             format("truetype");
         font-weight: normal;
         font-style: normal;
@@ -82,7 +82,7 @@ export const referral = (name, url) => {
           line-height: 20px !important;
           margin-bottom: 5px !important;
         }
-        /* .at-mintstartgramimg{width: 100% !important; height: auto !important;} */
+        /* .at-mintstargramimg{width: 100% !important; height: auto !important;} */
       }
     </style>
   </head>
@@ -126,7 +126,7 @@ export const referral = (name, url) => {
           <strong style="float: left; width: 78px; height: 32px">
             <a href="javascript:void(0);" style="display: block">
               <img
-                src="https://socket.mintstartgram.com/emails/images/logo.png"
+                src="https://socket.mintstargram.com/emails/images/logo.png"
                 alt=""
                 style="width: 100%; height: 100%; display: block"
               />
@@ -165,7 +165,7 @@ export const referral = (name, url) => {
                 color: #b8b8bc;
               "
             >
-              You have 1 new refferal who joined Mintstartgram using your referral link.
+              You have 1 new refferal who joined Mintstargram using your referral link.
             </p>
           </div>
           <div
@@ -185,7 +185,7 @@ export const referral = (name, url) => {
               "
             >
               Your Referral <span style="color: #efc74d">${name}</span> just
-              joined Mintstartgram! Now the community is a little bigger and you’re one
+              joined Mintstargram! Now the community is a little bigger and you’re one
               step closer to getting your referral bonus. When your referrals
               start trading we’ll reach out to let you know that the commision
               has been added to your account. You can keep an eye on your
@@ -234,11 +234,11 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://discord.com/invite/Mintstartgram"
+                  href="https://discord.com/invite/Mintstargram"
                   style="display: block"
               >
                   <img
-                      src="https://socket.mintstartgram.com/emails/images/social-icons/discord.png"
+                      src="https://socket.mintstargram.com/emails/images/social-icons/discord.png"
                       alt=""
                       style="
                           width: 100%;
@@ -256,11 +256,11 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://twitter.com/mintstartgram_com"
+                  href="https://twitter.com/mintstargram_com"
                   style="display: block"
               >
                   <img
-                      src="https://socket.mintstartgram.com/emails/images/social-icons/twitter.png"
+                      src="https://socket.mintstargram.com/emails/images/social-icons/twitter.png"
                       alt=""
                       style="
                           width: 100%;
@@ -278,11 +278,11 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://telegram.com/mintstartgram_com"
+                  href="https://telegram.com/mintstargram_com"
                   style="display: block"
               >
                   <img
-                      src="https://socket.mintstartgram.com/emails/images/social-icons/telegram.png"
+                      src="https://socket.mintstargram.com/emails/images/social-icons/telegram.png"
                       alt=""
                       style="
                           width: 100%;
@@ -303,7 +303,7 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://Mintstartgram.io"
+                  href="https://Mintstargram.io"
                   style="
                       display: block;
                       color: white;
@@ -311,7 +311,7 @@ export const referral = (name, url) => {
                   "
                   target="_blank"
               >
-                  Mintstartgram
+                  Mintstargram
               </a>
           </li>
           <li
@@ -325,7 +325,7 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://docs.Mintstartgram.io/Mintstartgram-and-mintstartgram-docs/mintstartgram/faq-mintstartgram"
+                  href="https://docs.Mintstargram.io/Mintstargram-and-mintstargram-docs/mintstargram/faq-mintstargram"
                   style="
                       display: block;
                       color: white;
@@ -347,7 +347,7 @@ export const referral = (name, url) => {
               "
           >
               <a
-                  href="https://Mintstartgram.io/wp-content/uploads/2022/09/Mintstartgram_Whitepaper_ETH_FINAL-1.pdf"
+                  href="https://Mintstargram.io/wp-content/uploads/2022/09/Mintstargram_Whitepaper_ETH_FINAL-1.pdf"
                   style="
                       display: block;
                       color: white;
@@ -370,7 +370,7 @@ export const referral = (name, url) => {
                 font-weight: 400;
               "
             >
-              © 2023 Mintstartgram
+              © 2023 Mintstargram
             </p>
           </div>
         </div>

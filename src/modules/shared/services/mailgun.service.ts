@@ -53,7 +53,7 @@
 //         .join('&');
 
 //       const response = await axios.post(
-//         `https://api.mailgun.net/v3/mail.mintstartgram.com/messages`,
+//         `https://api.mailgun.net/v3/mail.mintstargram.com/messages`,
 //         body,
 //         {
 //           auth: {
@@ -84,7 +84,7 @@
 // import { deleteAccountRequest } from 'src/modules/templates/delete-account-request';
 // import { confirmationEmail } from 'src/modules/templates/email-verification';
 // import { forgotPassword } from 'src/modules/templates/forgot-password';
-// import { invitation_mintstartgram } from 'src/modules/templates/invitation-mintstartgram';
+// import { invitation_mintstargram } from 'src/modules/templates/invitation-mintstargram';
 // import { mintedNFT } from 'src/modules/templates/minted-nft';
 // import { offerAccepted } from 'src/modules/templates/offer-accepted';
 // import { offerReceived } from 'src/modules/templates/offer-received';
@@ -117,7 +117,7 @@
 //     async MAIL_GUN(mailOptions) {
 //         try {
 //             const response = await axios.post(
-//                 `https://api.mailgun.net/v3/mail.mintstartgram.com/messages`,
+//                 `https://api.mailgun.net/v3/mail.mintstargram.com/messages`,
 //                 mailOptions,
 //                 {
 //                     auth: {
@@ -523,13 +523,13 @@
 //         });
 //     }
 
-//     async sendMintstartgramInvite(email, username, code) {
+//     async sendMintstargramInvite(email, username, code) {
 //         return new Promise((resolve, reject) => {
 //             const mailOptions = {
 //                 from: env.FROM_EMAIL,
 //                 to: email,
-//                 subject: 'Mintstartgram Invitation',
-//                 html: invitation_mintstartgram(username, code)
+//                 subject: 'Mintstargram Invitation',
+//                 html: invitation_mintstargram(username, code)
 //             };
 //             transporter.sendMail(mailOptions, function (error, info) {
 //                 if (error) {

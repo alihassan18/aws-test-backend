@@ -9,7 +9,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
 	  />
 	  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	  <title>Mintstartgram | Minted</title>
+	  <title>Mintstargram | Minted</title>
 	  <meta name="description" content="" />
 	  <meta name="viewport" content="width=device-width, initial-scale=1" />
 	  <style>
@@ -23,55 +23,55 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 		}
 		@font-face {
 			font-family: "proxima_novabold";
-			src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
+			src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
 					format("woff2"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
 					format("woff"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
 					format("truetype");
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: "proxima_novaextrabold";
-			src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
+			src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
 					format("woff2"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
 					format("woff"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
 					format("truetype");
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: "proxima_novaregular";
-			src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
+			src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
 					format("woff2"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
 					format("woff"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
 					format("truetype");
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: "proxima_novalight";
-			src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
+			src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
 					format("woff2"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
 					format("woff"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
 					format("truetype");
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: "proxima_novasemibold";
-			src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
+			src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
 					format("woff2"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
 					format("woff"),
-				url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
+				url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
 					format("truetype");
 			font-weight: normal;
 			font-style: normal;
@@ -82,7 +82,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				line-height: 20px !important;
 				margin-bottom: 5px !important;
 			}
-			/* .at-mintstartgramimg{width: 100% !important; height: auto !important;} */
+			/* .at-mintstargramimg{width: 100% !important; height: auto !important;} */
 		}
 	</style>
 	</head>
@@ -127,7 +127,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 			<a href="javascript:void(0);" style="display: block">
 			  <img
 			
-			  src="https://socket.mintstartgram.com/emails/images/logo.png"
+			  src="https://socket.mintstargram.com/emails/images/logo.png"
 			  alt=""
 			  style="width: 100%; height: 100%; display: block; "
 		  />
@@ -166,7 +166,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				  color: #b8b8bc;
 				"
 			  >
-			  You'r NFT ${name} is minted on Mintstartgram. You can list it to marketplace.
+			  You'r NFT ${name} is minted on Mintstargram. You can list it to marketplace.
 			  </p>
 			</div>
 			<div
@@ -179,7 +179,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 			>
 			<img
 			src=${image}
-			class="at-mintstartgramimg"
+			class="at-mintstargramimg"
 			style="
 				margin: 0 auto;
 				display: block;
@@ -224,11 +224,11 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://discord.com/invite/Mintstartgram"
+					href="https://discord.com/invite/Mintstargram"
 					style="display: block"
 				>
 					<img
-						src="https://socket.mintstartgram.com/emails/images/social-icons/discord.png"
+						src="https://socket.mintstargram.com/emails/images/social-icons/discord.png"
 						alt=""
 						style="
 							width: 100%;
@@ -246,11 +246,11 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://twitter.com/mintstartgram_com"
+					href="https://twitter.com/mintstargram_com"
 					style="display: block"
 				>
 					<img
-						src="https://socket.mintstartgram.com/emails/images/social-icons/twitter.png"
+						src="https://socket.mintstargram.com/emails/images/social-icons/twitter.png"
 						alt=""
 						style="
 							width: 100%;
@@ -272,7 +272,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 					style="display: block"
 				>
 					<img
-						src="https://socket.mintstartgram.com/emails/images/social-icons/reddit.png"
+						src="https://socket.mintstargram.com/emails/images/social-icons/reddit.png"
 						alt=""
 						style="
 							width: 100%;
@@ -290,11 +290,11 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://telegram.com/mintstartgram_com"
+					href="https://telegram.com/mintstargram_com"
 					style="display: block"
 				>
 					<img
-						src="https://socket.mintstartgram.com/emails/images/social-icons/telegram.png"
+						src="https://socket.mintstargram.com/emails/images/social-icons/telegram.png"
 						alt=""
 						style="
 							width: 100%;
@@ -316,7 +316,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://Mintstartgram.io"
+					href="https://Mintstargram.io"
 					style="
 						display: block;
 						color: white;
@@ -324,7 +324,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 					"
 					target="_blank"
 				>
-					Mintstartgram
+					Mintstargram
 				</a>
 			</li>
 			<li
@@ -338,7 +338,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://docs.Mintstartgram.io/Mintstartgram-and-mintstartgram-docs/mintstartgram/faq-mintstartgram"
+					href="https://docs.Mintstargram.io/Mintstargram-and-mintstargram-docs/mintstargram/faq-mintstargram"
 					style="
 						display: block;
 						color: white;
@@ -360,7 +360,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				"
 			>
 				<a
-					href="https://Mintstartgram.io/wp-content/uploads/2022/09/Mintstartgram_Whitepaper_ETH_FINAL-1.pdf"
+					href="https://Mintstargram.io/wp-content/uploads/2022/09/Mintstargram_Whitepaper_ETH_FINAL-1.pdf"
 					style="
 						display: block;
 						color: white;
@@ -383,7 +383,7 @@ export const mintedNFT = (name: string, image: string, url: string) => {
 				  font-weight: 400;
 				"
 			  >
-			  © 2023 Mintstartgram
+			  © 2023 Mintstargram
 			  </p>
 			</div>
 		  </div>

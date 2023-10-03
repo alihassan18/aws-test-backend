@@ -52,7 +52,4 @@ export class RwFightLbResponse {
 
     @Field(() => Boolean)
     isVerified: boolean;
-
-    @Field(() => Boolean)
-    isKing: boolean;
 }

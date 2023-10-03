@@ -8,61 +8,61 @@ export const twoFACode = (name, code) => {
                 content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
             />
             <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-            <title>Mintstartgram | Two FA</title>
+            <title>Mintstargram | Two FA</title>
             <meta name="description" content="" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <style>
                 @font-face {
                     font-family: "proxima_novabold";
-                    src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
+                    src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2")
                             format("woff2"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff")
                             format("woff"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf")
                             format("truetype");
                     font-weight: normal;
                     font-style: normal;
                 }
                 @font-face {
                     font-family: "proxima_novaextrabold";
-                    src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
+                    src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2")
                             format("woff2"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff")
                             format("woff"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf")
                             format("truetype");
                     font-weight: normal;
                     font-style: normal;
                 }
                 @font-face {
                     font-family: "proxima_novaregular";
-                    src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
+                    src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2")
                             format("woff2"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff")
                             format("woff"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf")
                             format("truetype");
                     font-weight: normal;
                     font-style: normal;
                 }
                 @font-face {
                     font-family: "proxima_novalight";
-                    src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
+                    src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2")
                             format("woff2"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff")
                             format("woff"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf")
                             format("truetype");
                     font-weight: normal;
                     font-style: normal;
                 }
                 @font-face {
                     font-family: "proxima_novasemibold";
-                    src: url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
+                    src: url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2")
                             format("woff2"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff")
                             format("woff"),
-                        url("https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
+                        url("https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf")
                             format("truetype");
                     font-weight: normal;
                     font-style: normal;
@@ -113,7 +113,7 @@ export const twoFACode = (name, code) => {
                         <strong style="float: left; width: 95px; height: 39px">
                             <a href="javascript:void(0);" style="display: block">
                                 <img
-                                    src="https://socket.mintstartgram.com/emails/images/logo.png"
+                                    src="https://socket.mintstargram.com/emails/images/logo.png"
                                     alt=""
                                     style="
                                         width: 100%;
@@ -184,7 +184,7 @@ export const twoFACode = (name, code) => {
                                     color: #fff;
                                 "
                             >
-                                Thanks, Mintstartgram Team
+                                Thanks, Mintstargram Team
                             </p>
                         </div>
                         <div
@@ -238,11 +238,11 @@ export const twoFACode = (name, code) => {
                                     "
                                 >
                                     <a
-                                        href="https://discord.com/invite/Mintstartgram"
+                                        href="https://discord.com/invite/Mintstargram"
                                         style="display: block"
                                     >
                                         <img
-                                            src="https://socket.mintstartgram.com/emails/images/social-icons/discord.png"
+                                            src="https://socket.mintstargram.com/emails/images/social-icons/discord.png"
                                             alt=""
                                             style="
                                                 width: 100%;
@@ -260,11 +260,11 @@ export const twoFACode = (name, code) => {
                                     "
                                 >
                                     <a
-                                        href="https://twitter.com/mintstartgram_com"
+                                        href="https://twitter.com/mintstargram_com"
                                         style="display: block"
                                     >
                                         <img
-                                            src="https://socket.mintstartgram.com/emails/images/social-icons/twitter.png"
+                                            src="https://socket.mintstargram.com/emails/images/social-icons/twitter.png"
                                             alt=""
                                             style="
                                                 width: 100%;
@@ -282,11 +282,11 @@ export const twoFACode = (name, code) => {
                                     "
                                 >
                                     <a
-                                        href="https://telegram.com/mintstartgram_com"
+                                        href="https://telegram.com/mintstargram_com"
                                         style="display: block"
                                     >
                                         <img
-                                            src="https://socket.mintstartgram.com/emails/images/social-icons/telegram.png"
+                                            src="https://socket.mintstargram.com/emails/images/social-icons/telegram.png"
                                             alt=""
                                             style="
                                                 width: 100%;
@@ -308,7 +308,7 @@ export const twoFACode = (name, code) => {
                                     font-weight: 400;
                                 "
                             >
-                                2023 © Mintstartgram. All rights reserved.
+                                2023 © Mintstargram. All rights reserved.
                             </p>
                         </div>
                     </div>

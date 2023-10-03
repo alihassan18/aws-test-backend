@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+// import * as nodemailer from 'nodemailer';
 import { env } from 'process';
-import { bidNotification } from 'src/modules/templates/bid-notification';
-// import { commentNotification } from 'src/modules/templates/comment-notification';
-import { deleteAccountRequest } from 'src/modules/templates/delete-account-request';
-// import { confirmationEmail } from 'src/modules/templates/email-verification';
-// import { forgotPassword } from 'src/modules/templates/forgot-password';
-import { invitation_mintstartgram } from 'src/modules/templates/invitation-mintstartgram';
-import { mintedNFT } from 'src/modules/templates/minted-nft';
-import { offerAccepted } from 'src/modules/templates/offer-accepted';
-import { offerReceived } from 'src/modules/templates/offer-received';
-import { offerRejected } from 'src/modules/templates/offer-rejected';
-import { offerSent } from 'src/modules/templates/offer-sent';
-import {
-    onBidPlaced,
-    onBidRecieved,
-    onBoughtNFT,
-    onSoldNFT
-} from 'src/modules/templates/on-bid-revieved';
-import { rwConfirmationEmail } from 'src/modules/templates/rw-email-verification';
+// import { bidNotification } from 'src/modules/templates/bid-notification';
+// // import { commentNotification } from 'src/modules/templates/comment-notification';
+// import { deleteAccountRequest } from 'src/modules/templates/delete-account-request';
+// // import { confirmationEmail } from 'src/modules/templates/email-verification';
+// // import { forgotPassword } from 'src/modules/templates/forgot-password';
+// import { invitation_mintstargram } from 'src/modules/templates/invitation-mintstargram';
+// import { mintedNFT } from 'src/modules/templates/minted-nft';
+// import { offerAccepted } from 'src/modules/templates/offer-accepted';
+// import { offerReceived } from 'src/modules/templates/offer-received';
+// import { offerRejected } from 'src/modules/templates/offer-rejected';
+// import { offerSent } from 'src/modules/templates/offer-sent';
+// import {
+//     onBidPlaced,
+//     onBidRecieved,
+//     onBoughtNFT,
+//     onSoldNFT
+// } from 'src/modules/templates/on-bid-revieved';
+// import { rwConfirmationEmail } from 'src/modules/templates/rw-email-verification';
 // import { stageInvite } from 'src/modules/templates/stage-invite';
 // import { twoFACode } from 'src/modules/templates/two-fa-code';
 import axios from 'axios';
@@ -28,14 +28,14 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { Model } from 'mongoose';
 import { convertHashesMentionsToSimpleText } from 'src/helpers/common.helpers';
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.mailgun.org',
-    port: 587,
-    auth: {
-        user: env.FROM_EMAIL,
-        pass: env.FROM_EMAIL_PASSWORD
-    }
-});
+// const transporter = nodemailer.createTransport({
+//     host: 'smtp.mailgun.org',
+//     port: 587,
+//     auth: {
+//         user: env.FROM_EMAIL,
+//         pass: env.FROM_EMAIL_PASSWORD
+//     }
+// });
 
 @Injectable()
 export class EmailService {
@@ -52,19 +52,18 @@ export class EmailService {
     }
 
     private profile =
-        'https://www.mintstartgram.com/assets/images/avatars/userProfile.png';
+        'https://www.mintstargram.com/assets/images/avatars/userProfile.png';
 
     async MAIL_GUN(mailOptions) {
         try {
             const response = await axios?.post(
-                `https://api.mailgun.net/v3/mail.mintstartgram.com/messages`,
+                `https://api.mailgun.net/v3/mail.mintstargram.tech/messages`,
                 mailOptions,
                 {
                     auth: {
                         username: env.FROM_EMAIL,
                         // password: 'key-4677ac069546e92c036ee514b8172a19'
-                        password:
-                            '6baf6b7683d8a2910ad87893f4c0ff43-77316142-a7892306'
+                        password: env.FROM_EMAIL_PASSWORD
                     },
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -125,83 +124,91 @@ export class EmailService {
     }
 
     async sendRWVerifyEmail(email, userId, token, firstName) {
-        return new Promise((resolve, reject) => {
-            const domain = process.env.FRONT_BASE_URL;
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: email,
-                subject: 'Ruffy World Email Verification',
-                html: rwConfirmationEmail(userId, token, domain, firstName)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(email, userId, token, firstName);
+        
+        // return new Promise((resolve, reject) => {
+        //     const domain = process.env.FRONT_BASE_URL;
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: email,
+        //         subject: 'Ruffy World Email Verification',
+        //         html: rwConfirmationEmail(userId, token, domain, firstName)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendDeleteAccountMail(name, email) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: process.env.CUSTOMER_SUPPORT_EMAIL,
-                subject: 'Account Delete Request',
-                html: deleteAccountRequest(name, email)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(name, email);
+        
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: process.env.CUSTOMER_SUPPORT_EMAIL,
+        //         subject: 'Account Delete Request',
+        //         html: deleteAccountRequest(name, email)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendBidRecievedEmail(email, url, title, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: email,
-                subject: 'Bidding Notification',
-                html: onBidRecieved(title, image, url)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(email, url, title, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: email,
+        //         subject: 'Bidding Notification',
+        //         html: onBidRecieved(title, image, url)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendNewBidRecievedEmail(email, url, price, currency, name, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: email,
-                subject: 'Bidding Notification',
-                html: bidNotification(price, currency, image, name, url)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(email, url, price, currency, name, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: email,
+        //         subject: 'Bidding Notification',
+        //         html: bidNotification(price, currency, image, name, url)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
     async sendReferralEmail(email, name, url) {
         const mailOptions = {
@@ -232,165 +239,179 @@ export class EmailService {
     }
 
     async sendBidPlacedEmail(emails, url, title, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: emails,
-                subject: 'Bidding Notification',
-                html: onBidPlaced(title, image, url)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(emails, url, title, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: emails,
+        //         subject: 'Bidding Notification',
+        //         html: onBidPlaced(title, image, url)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendBoughtNftEmail(to, title, price, currency, image) {
-        console.log(image, price);
+        console.log(to, title, price, currency, image);
 
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'NFT Bought Successfully',
-                html: onBoughtNFT(title, price, currency, image)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'NFT Bought Successfully',
+        //         html: onBoughtNFT(title, price, currency, image)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendSoldtNftEmail(to, title, price, currency, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'NFT Sold Successfully',
-                html: onSoldNFT(title, price, currency, image)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(to, title, price, currency, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'NFT Sold Successfully',
+        //         html: onSoldNFT(title, price, currency, image)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendOfferSentEmail(to, title, price, currency, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'Offer Sent',
-                html: offerSent(title, price, currency, image)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(to, title, price, currency, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'Offer Sent',
+        //         html: offerSent(title, price, currency, image)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendOfferReceivedEmail(to, title, price, currency, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'Offer Received',
-                html: offerReceived(title, price, currency, image)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(to, title, price, currency, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'Offer Received',
+        //         html: offerReceived(title, price, currency, image)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendAcceptOfferEmail(to, title, price, currency, image, url) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'NFT Sold Successfully',
-                html: offerAccepted(title, price, currency, image, url)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(to, title, price, currency, image, url);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'NFT Sold Successfully',
+        //         html: offerAccepted(title, price, currency, image, url)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendOfferRejectEmail(to, title, price, currency, image) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: to,
-                subject: 'Offer Rejected',
-                html: offerRejected(title, price, currency, image)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(to, title, price, currency, image);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: to,
+        //         subject: 'Offer Rejected',
+        //         html: offerRejected(title, price, currency, image)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendMintingEmail(email, name, image, url) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: email,
-                subject: 'Minting Notification',
-                html: mintedNFT(name, image, url)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+        console.log(email, name, image, url);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: email,
+        //         subject: 'Minting Notification',
+        //         html: mintedNFT(name, image, url)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     // OLD METHOD
@@ -461,24 +482,26 @@ export class EmailService {
         return this.MAIL_GUN(mailOptions);
     }
 
-    async sendMintstartgramInvite(email, username, code) {
-        return new Promise((resolve, reject) => {
-            const mailOptions = {
-                from: env.FROM_EMAIL,
-                to: email,
-                subject: 'Mintstartgram Invitation',
-                html: invitation_mintstartgram(username, code)
-            };
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                } else {
-                    console.log(info);
-                    resolve(info);
-                }
-            });
-        });
+    async sendMintstargramInvite(email, username, code) {
+        console.log(email, username, code);
+
+        // return new Promise((resolve, reject) => {
+        //     const mailOptions = {
+        //         from: env.FROM_EMAIL,
+        //         to: email,
+        //         subject: 'Mintstargram Invitation',
+        //         html: invitation_mintstargram(username, code)
+        //     };
+        //     transporter.sendMail(mailOptions, function (error, info) {
+        //         if (error) {
+        //             console.log(error);
+        //             reject(error);
+        //         } else {
+        //             console.log(info);
+        //             resolve(info);
+        //         }
+        //     });
+        // });
     }
 
     async sendFollowEmail(to, name, profile, url) {
