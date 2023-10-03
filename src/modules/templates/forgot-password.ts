@@ -6,47 +6,47 @@ export const forgotPassword = (name, code) => {
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Mintstartgram | Reset Password</title>
+	<title>Mintstargram | Reset Password</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		@font-face {
             font-family: 'proxima_novabold';
-            src: url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2') format('woff2'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff') format('woff'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf') format('truetype');
+            src: url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff2') format('woff2'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.woff') format('woff'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_bold-webfont.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
         @font-face {
             font-family: 'proxima_novaextrabold';
-            src: url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2') format('woff2'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff') format('woff'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf') format('truetype');
+            src: url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff2') format('woff2'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.woff') format('woff'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_extrabold-webfont.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
         @font-face {
             font-family: 'proxima_novaregular';
-            src: url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2') format('woff2'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff') format('woff'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf') format('truetype');
+            src: url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff2') format('woff2'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.woff') format('woff'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_font-webfont.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
         @font-face {
             font-family: 'proxima_novalight';
-            src: url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2') format('woff2'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff') format('woff'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf') format('truetype');
+            src: url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff2') format('woff2'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.woff') format('woff'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_light-webfont.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
         @font-face {
             font-family: 'proxima_novasemibold';
-            src: url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2') format('woff2'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff') format('woff'),
-            url('https://socket.mintstartgram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf') format('truetype');
+            src: url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff2') format('woff2'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.woff') format('woff'),
+            url('https://socket.mintstargram.com/emails/fonts/proxima/proxima_nova_semibold-webfont.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -58,7 +58,7 @@ export const forgotPassword = (name, code) => {
 			<div style="width: 100%; max-width: 545px; float: left; padding: 40px 0; margin: 0 48px; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; border-bottom: 1px solid #EFC74D;">
 				<strong style="float: left; width: 95px; height: 39px">
 					<a href="javascript:void(0);" style="display: block;">
-						<img src="https://socket.mintstartgram.com/emails/images/logo.png" alt="" style="width: 100%; height: 100%; display: block;">
+						<img src="https://socket.mintstargram.com/emails/images/logo.png" alt="" style="width: 100%; height: 100%; display: block;">
 					</a>
 				</strong>
 			</div>
@@ -70,7 +70,7 @@ export const forgotPassword = (name, code) => {
 						A request to reset your password has been made. If you did not make
 						this request simply ignore this email. If you did make this request, please enter this verfication code to reset your password
 					</p>
-					<p style="margin: 18px 0 0; font-size: 16px; font-weight: 400; line-height: 24px; color: #fff;">Thanks, Mintstartgram Team</p>
+					<p style="margin: 18px 0 0; font-size: 16px; font-weight: 400; line-height: 24px; color: #fff;">Thanks, Mintstargram Team</p>
 				</div>
 				<div style="width: 100%; float: left; text-align: center; margin-top: 24px;">
 					<p style="margin: 5px 0 0; font-size: 24px; font-weight: 400; line-height: 33px; font-weight: 700; color: #fff;">Verification Code</p>
@@ -79,24 +79,24 @@ export const forgotPassword = (name, code) => {
 				<div style="width: 100%; float: left; margin: 56px 0 0;">
 					<ul style="display: inline-block; vertical-align: middle; list-style: none; padding: 0; margin: 0;">
 						<li style="display: inline-block; padding: 0 8px; list-style-type: none;">
-							<a href="https://discord.com/invite/Mintstartgram" style="display: block;">
-								<img src="https://socket.mintstartgram.com/emails/images/social-icons/discord.png" alt="" style="width: 100%; height: 100%; display: block;">				
+							<a href="https://discord.com/invite/Mintstargram" style="display: block;">
+								<img src="https://socket.mintstargram.com/emails/images/social-icons/discord.png" alt="" style="width: 100%; height: 100%; display: block;">				
 							</a>
 						</li>
 						<li style="display: inline-block; padding: 0 8px; list-style-type: none;">
-							<a href="https://twitter.com/mintstartgram_com" style="display: block;">
-								<img src="https://socket.mintstartgram.com/emails/images/social-icons/twitter.png" alt="" style="width: 100%; height: 100%; display: block;">					
+							<a href="https://twitter.com/mintstargram_com" style="display: block;">
+								<img src="https://socket.mintstargram.com/emails/images/social-icons/twitter.png" alt="" style="width: 100%; height: 100%; display: block;">					
 							</a>
 						</li>
 						<li style="display: inline-block; padding: 0 8px; list-style-type: none;">
-							<a href="https://telegram.com/mintstartgram_com" style="display: block;">
-								<img src="https://socket.mintstartgram.com/emails/images/social-icons/telegram.png" alt="" style="width: 100%; height: 100%; display: block;">						
+							<a href="https://telegram.com/mintstargram_com" style="display: block;">
+								<img src="https://socket.mintstargram.com/emails/images/social-icons/telegram.png" alt="" style="width: 100%; height: 100%; display: block;">						
 							</a>
 						</li>
 					</ul>
 				</div>
 				<div style="width: 100%; float: left; margin: 12px 0 0;">
-					<p style="margin: 0; font-size: 16px; line-height: 26px; color:#818182; font-weight: 400;">2023 © Mintstartgram. All rights reserved.</p>
+					<p style="margin: 0; font-size: 16px; line-height: 26px; color:#818182; font-weight: 400;">2023 © Mintstargram. All rights reserved.</p>
 				</div>
 			</div>
 		</div>

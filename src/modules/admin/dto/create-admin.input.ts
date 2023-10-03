@@ -99,12 +99,6 @@ export class SingleUsersDataOutput {
     isBanned: boolean;
 
     @Field(() => Boolean, { nullable: true })
-    isKing: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isDay1supporter: boolean;
-
-    @Field(() => Boolean, { nullable: true })
     isSCC: boolean;
 
     @Field(() => Number, { nullable: true })
@@ -190,12 +184,6 @@ export class AffiliateUsers {
 
     @Field(() => Boolean, { nullable: true })
     isBanned: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isKing: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isDay1supporter: boolean;
 
     @Field(() => Boolean, { nullable: true })
     isSCC: boolean;

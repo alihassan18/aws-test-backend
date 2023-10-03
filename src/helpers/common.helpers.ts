@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import {
     Hashtag,
-    MintstartgramScoreAction,
+    MintstargramScoreAction,
     Mention
 } from 'src/interfaces/common.interface';
 
@@ -60,7 +60,7 @@ export const differenceInSeconds = (date1: Date, date2: Date) => {
     return Math.floor(difference_ms / 1000);
 };
 
-export const mintstartgramScore = (action: MintstartgramScoreAction) => {
+export const mintstargramScore = (action: MintstargramScoreAction) => {
     let score = 0;
     switch (action) {
         case 'post':

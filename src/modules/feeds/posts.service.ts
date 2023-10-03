@@ -488,7 +488,7 @@ export class PostService {
                 );
             }
 
-            //Add mintstartgram score for comment
+            //Add mintstargram score for comment
             if (repliedOnPost) {
                 await this.scoresService.createScore(userId, 'comment');
             }
@@ -523,7 +523,7 @@ export class PostService {
                 });
             }
 
-            //Add mintstartgram score for repost with thoughts
+            //Add mintstargram score for repost with thoughts
             if (post) {
                 await this.scoresService.createScore(
                     userId,
@@ -548,7 +548,7 @@ export class PostService {
             });
         }
 
-        //Add mintstartgram score for creating post
+        //Add mintstargram score for creating post
         if (post) {
             await this.scoresService.createScore(userId, 'post');
             if (
@@ -774,7 +774,7 @@ export class PostService {
         const deletedPost = await this.postModel.findByIdAndDelete(postId);
         this.publicFeedsGateway.emitDeletePost(deletedPost);
 
-        /* Remove mintstartgram score for removing post */
+        /* Remove mintstargram score for removing post */
         if (post) {
             await this.scoresService.createScore(userId, 'removePost');
         }
@@ -1268,7 +1268,7 @@ export class PostService {
             }
         }
 
-        //Add mintstartgram score for repost
+        //Add mintstargram score for repost
         if (originalPost) {
             await this.scoresService.createScore(userId, 'repost');
             this.notificationService.alertFollowers4Repost(

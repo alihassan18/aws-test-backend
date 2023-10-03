@@ -332,8 +332,6 @@ type User {
   roles: [String!]!
   land_id: String
   isVerified: Boolean
-  isKing: Boolean
-  isDay1supporter: Boolean
   isSCC: Boolean
   scc_status: String
   verifyStatus: String
@@ -736,7 +734,7 @@ type Nft {
   market: Listing
   is_deleted: Boolean
   royalties: Royality
-  onMintstartgram: Boolean
+  onMintstargram: Boolean
 }
 
 type Notification {
@@ -1452,8 +1450,6 @@ type SingleUsersDataOutput {
   isVerified: Boolean
   isBlocked: Boolean
   isBanned: Boolean
-  isKing: Boolean
-  isDay1supporter: Boolean
   isSCC: Boolean
   postCount: Float
   repostCount: Float
@@ -1491,8 +1487,6 @@ type AffiliateUsers {
   isVerified: Boolean
   isBlocked: Boolean
   isBanned: Boolean
-  isKing: Boolean
-  isDay1supporter: Boolean
   isSCC: Boolean
   avatar: String
   referralCount: Int

@@ -2,8 +2,8 @@ import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Score, ScoreDocument } from './entities/score.entity';
 import { Model, Types } from 'mongoose';
-import { mintstartgramScore } from 'src/helpers/common.helpers';
-import { MintstartgramScoreAction } from 'src/interfaces/common.interface';
+import { mintstargramScore } from 'src/helpers/common.helpers';
+import { MintstargramScoreAction } from 'src/interfaces/common.interface';
 import { User, UserDocument } from '../users/entities/user.entity';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { HighScoreResult, ScoresResult } from './scores.dto';
@@ -20,10 +20,10 @@ export class ScoresService {
 
     async createScore(
         userId: Types.ObjectId,
-        action: MintstartgramScoreAction
+        action: MintstargramScoreAction
     ): Promise<void> {
         try {
-            let score = mintstartgramScore(action);
+            let score = mintstargramScore(action);
             const random = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
             score = Number(score + '.' + '0' + random);
 
