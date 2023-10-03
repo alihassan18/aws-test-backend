@@ -864,7 +864,7 @@ export class AuthService extends CommonServices {
                 })
                 .exec();
         }
-        if (!userToAttempt.roles.includes(ERole.ADMIN)) return undefined;
+        if (!userToAttempt?.roles?.includes(ERole.ADMIN)) return undefined;
         // If the user is not enabled, disable log in - the token wouldn't work anyways
         if (userToAttempt && userToAttempt.isActive === false)
             userToAttempt = undefined;
