@@ -593,21 +593,21 @@ export class UsersService {
                 query != '' ? -1 : 3,
                 query
             ),
-            !query
-                ? this.collectionModel.aggregate([
-                      {
-                          $match: {
-                              name: { $regex: `^${query}`, $options: 'i' },
-                              collectionViewsTimestamps: {
-                                  $gte: previousDay
-                              }
-                          }
-                      },
-                      {
-                          $limit: query == '' ? 3 : 100000
-                      }
-                  ])
-                : this.collectionsService.search(query)
+            this.collectionModel.aggregate([
+                {
+                    $match: {
+                        ...(query && {
+                            name: { $regex: `^${query}`, $options: 'i' }
+                        })
+                        //   collectionViewsTimestamps: {
+                        //       $gte: previousDay
+                        //   }
+                    }
+                },
+                {
+                    $limit: 3
+                }
+            ])
         ]);
 
         const collectionPayload = collections.map((c) => {
