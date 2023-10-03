@@ -11,7 +11,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-.env
+# .env
 .env.development
 .package-lock.json
 .env.development
@@ -43,4 +43,4 @@ lerna-debug.log*
 yarn.lock
 
 
-package-lock.json
+# package-lock.json
