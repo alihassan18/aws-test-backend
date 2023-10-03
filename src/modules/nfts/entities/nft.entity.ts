@@ -357,7 +357,7 @@ export class Nft {
 
     @Field(() => Boolean, { nullable: true })
     @Prop({ type: Boolean })
-    onMintstartgram: boolean;
+    onMintstargram: boolean;
 }
 
 export const NftSchema = SchemaFactory.createForClass(Nft);

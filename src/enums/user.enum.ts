@@ -1,3 +1,3 @@
 export enum ESource {
-    Mintstartgram = 'Mintstartgram'
+    Mintstargram = 'Mintstargram'
 }

@@ -24,7 +24,7 @@ export class InvitationCodesService {
             user,
             invitedUser: createInvitationCodeInput.email
         });
-        await this.emailService.sendMintstartgramInvite(
+        await this.emailService.sendMintstargramInvite(
             createInvitationCodeInput.email,
             userName,
             createInvitationCodeInput.code

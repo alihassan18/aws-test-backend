@@ -115,20 +115,6 @@ export class User extends Document {
         type: Boolean,
         default: false
     })
-    isKing?: boolean; /* (owning most lands in a Kingdom) */
-
-    @Field(() => Boolean, { nullable: true })
-    @Prop({
-        type: Boolean,
-        default: false
-    })
-    isDay1supporter?: boolean; /* owns one of BNB chain (0xc84725650aacc53fb88a8c618d3d9f6481af1e88) NFT */
-
-    @Field(() => Boolean, { nullable: true })
-    @Prop({
-        type: Boolean,
-        default: false
-    })
     isSCC?: boolean; /* Selected Content Creator (user can apply from user dropdown menu "apply for SCC Badge" and we apply from */
 
     @Field(() => String, { nullable: true })
@@ -247,8 +233,8 @@ export class User extends Document {
 
     @Prop({
         type: String,
-        enum: [ESource.Mintstartgram],
-        default: ESource.Mintstartgram
+        enum: [ESource.Mintstargram],
+        default: ESource.Mintstargram
     })
     source: string;
 

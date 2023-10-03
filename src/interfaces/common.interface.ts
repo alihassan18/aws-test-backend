@@ -36,7 +36,7 @@ export type Hashtag = {
     id?: string;
 };
 
-export type MintstartgramScoreAction =
+export type MintstargramScoreAction =
     | 'post'
     | 'removePost'
     | 'like'

@@ -340,8 +340,6 @@ export class AuthService extends CommonServices {
             isBlocked: u.isBlocked,
             isBanned: u.isBanned,
             settings: u.settings,
-            isDay1supporter: u.isDay1supporter,
-            isKing: u.isKing,
             isSCC: u.isSCC,
             verifyStatus: u.verifyStatus,
             key: u.key,

@@ -298,7 +298,7 @@ export class ReactionService {
             }
         }
 
-        // Add mintstartgram score for like
+        // Add mintstargram score for like
         if (reaction) {
             await this.scoresService.createScore(userId, 'like');
         }
@@ -351,7 +351,7 @@ export class ReactionService {
             reactions: post.reactions
         });
 
-        // Add mintstartgram score for unlike
+        // Add mintstargram score for unlike
         if (reaction) {
             await this.scoresService.createScore(userId, 'unlike');
         }
