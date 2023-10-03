@@ -49,7 +49,6 @@ import { RwRaceLbModule } from './modules/rw_race-lb/rw_race-lb.module';
 import { IpAddressModule } from './modules/ip-address/ip-address.module';
 import { RwBillboardModule } from './modules/rw_billboard/rw_billboard.module';
 import { RwGameFlowerModule } from './modules/rw_game_flower/rw_game_flower.module';
-import { BullModule } from '@nestjs/bull';
 import { InvitationCodesModule } from './modules/invitation_codes/invitation_codes.module';
 import { RecentSearchesModule } from './modules/recent_searches/recent_searches.module';
 
@@ -61,13 +60,6 @@ import { RecentSearchesModule } from './modules/recent_searches/recent_searches.
             isGlobal: true,
             envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
             cache: true
-        }),
-        BullModule.forRoot({
-            redis: {
-                host: process.env.REDIS_HOST || '127.0.0.1',
-                port: parseInt(process.env.REDIS_PORT, 10) || 6379,
-                password: process.env.REDIS_PASSWORD
-            }
         }),
         CommonModule,
         UsersModule,
