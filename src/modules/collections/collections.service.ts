@@ -13,8 +13,8 @@ import { UpdateCollectionInput } from './dto/update-collection.input';
 import { InjectModel } from '@nestjs/mongoose';
 import {
     Collection,
-    CollectionDocument,
-    CollectionToken
+    CollectionDocument
+    // CollectionToken
 } from './entities/collection.entity';
 import { FilterQuery, Model, Types } from 'mongoose';
 import { env } from 'process';
@@ -901,10 +901,7 @@ export class CollectionsService {
         return { link_preview: preview || '' };
     }
 
-    async createToken(
-        data: CollectionToken,
-        contract: string
-    ): Promise<CollectionDocument> {
+    async createToken(data, contract: string): Promise<CollectionDocument> {
         const collection = await this.collectionModel
             .findOne({
                 contract: contract
@@ -913,7 +910,7 @@ export class CollectionsService {
         if (!collection) {
             throw NotFoundException;
         }
-        collection.tokens.push(data);
+        // collection.tokens.push(data);
         await collection.save();
         return collection;
     }
