@@ -217,10 +217,21 @@ export class CollectionsService {
             const skip = (page - 1) * pageSize;
 
             const updatedQuery = {
-                ...(query?.chain && {
-                    chain: {
-                        $in: query.chain
-                    }
+                ...(query?.keyword && {
+                    $or: [
+                        {
+                            name: {
+                                $regex: new RegExp(`^${query?.keyword}`),
+                                $options: 'i'
+                            }
+                        },
+                        {
+                            contract: {
+                                $regex: new RegExp(`^${query?.keyword}`),
+                                $options: 'i'
+                            }
+                        }
+                    ]
                 }),
                 ...(query?.chain && {
                     chain: {

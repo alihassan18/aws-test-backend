@@ -148,6 +148,9 @@ export class CollectionFilterInput {
     chain?: string[];
 
     @Field(() => String, { nullable: true })
+    keyword?: string;
+
+    @Field(() => String, { nullable: true })
     creator?: string;
 
     @Field(() => [String], { nullable: true })
