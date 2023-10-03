@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import { SocketIOAdapter } from './socket.gateway';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+// import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 // import { ErrorMiddleware } from './middlewares/error.middleware';
 //ignore-typescript
 
@@ -14,17 +14,17 @@ config();
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
-    // Create and run the microservice
-    app.connectMicroservice<MicroserviceOptions>({
-        transport: Transport.REDIS,
-        options: {
-            host: process.env.REDIS_HOST || '127.0.0.1',
-            port: parseInt(process.env.REDIS_PORT, 10) || 6379,
-            password: process.env.REDIS_PASSWORD
-        }
-    });
+    // // Create and run the microservice
+    // app.connectMicroservice<MicroserviceOptions>({
+    //     transport: Transport.REDIS,
+    //     options: {
+    //         host: process.env.REDIS_HOST || '127.0.0.1',
+    //         port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+    //         password: process.env.REDIS_PASSWORD
+    //     }
+    // });
 
-    await app.startAllMicroservices();
+    // await app.startAllMicroservices();
 
     // Register the error middleware
     // app.use(ErrorMiddleware);
