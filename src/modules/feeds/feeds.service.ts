@@ -271,10 +271,10 @@ export class FeedsService {
                         select: ' _id name floor_price volume_total contract image contract_name description banner chain followers token_count supply owners_total',
                         model: this.collectionModel
                     },
-                    {
-                        path: 'mrland',
-                        select: ' _id name  landID network description owner isPlot logo'
-                    },
+                    // {
+                    //     path: 'mrland',
+                    //     select: ' _id name  landID network description owner isPlot logo'
+                    // },
                     {
                         path: 'originalPost',
                         populate: [
@@ -291,11 +291,11 @@ export class FeedsService {
                                 path: '_collection',
                                 select: ' _id name floor_price volume_total contract image contract_name description banner chain followers token_count supply owners_total',
                                 model: this.collectionModel
-                            },
-                            {
-                                path: 'mrland',
-                                select: ' _id name  landID network description owner isPlot logo'
                             }
+                            // {
+                            //     path: 'mrland',
+                            //     select: ' _id name  landID network description owner isPlot logo'
+                            // }
                         ]
                     },
                     {
@@ -314,11 +314,11 @@ export class FeedsService {
                                 path: '_collection',
                                 select: ' _id name floor_price volume_total contract image contract_name description banner chain followers token_count supply owners_total',
                                 model: this.collectionModel
-                            },
-                            {
-                                path: 'mrland',
-                                select: ' _id name  landID network description owner isPlot logo'
                             }
+                            // {
+                            //     path: 'mrland',
+                            //     select: ' _id name  landID network description owner isPlot logo'
+                            // }
                         ]
                     }
                 ]

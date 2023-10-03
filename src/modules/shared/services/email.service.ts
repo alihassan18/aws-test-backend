@@ -62,7 +62,9 @@ export class EmailService {
                 {
                     auth: {
                         username: env.FROM_EMAIL,
-                        password: 'key-4677ac069546e92c036ee514b8172a19'
+                        // password: 'key-4677ac069546e92c036ee514b8172a19'
+                        password:
+                            '6baf6b7683d8a2910ad87893f4c0ff43-77316142-a7892306'
                     },
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -485,7 +487,7 @@ export class EmailService {
                 from: env.FROM_EMAIL,
                 to: to,
                 subject: 'New Follower',
-                template: 'follow  me',
+                template: 'follow me',
                 'h:X-Mailgun-Variables': JSON.stringify({
                     name,
                     profile: profile ?? this.profile,
