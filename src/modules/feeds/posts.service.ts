@@ -182,12 +182,18 @@ export class PostService {
             })
             .exec();
         if (!post) {
+            const collection =
+                await this.collectionServivce.findByAddressAndChain(
+                    contract,
+                    chain
+                );
             post = await this.postModel.create({
                 collectionData: {
                     chain: chain,
                     contract: contract,
-                    name,
-                    image
+                    name: collection?.name,
+                    image: collection?.image,
+                    banner: collection?.banner
                 }
             });
         }
@@ -1059,7 +1065,7 @@ export class PostService {
             originalPost = post;
             await post.save();
         } else if (collection) {
-            const { name, chain, contract, image } = collection;
+            const { name, chain, contract, image, banner } = collection;
             const post = await this.postModel.findOne({
                 'collectionData.chain': collection.chain,
                 'collectionData.contract': collection.contract
@@ -1070,7 +1076,8 @@ export class PostService {
                         name: name,
                         chain: chain,
                         contract: contract,
-                        image
+                        image,
+                        banner
                     }
                 });
 
@@ -1081,7 +1088,8 @@ export class PostService {
                         name: name,
                         chain: chain,
                         contract: contract,
-                        image
+                        image,
+                        banner
                     }
                 });
                 post.save();
@@ -1161,6 +1169,7 @@ export class PostService {
         const requiredIndex = originalPost?.repostedAtByUsers?.findIndex(
             (item) => String(item.user) === String(userId)
         );
+        console.log(originalPost, 'originalPost');
 
         if (requiredIndex !== -1) {
             // Checking if 24 hours completed or not.

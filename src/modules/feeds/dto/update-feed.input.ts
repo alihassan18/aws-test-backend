@@ -105,6 +105,10 @@ export class CollectionInput {
     @Field(() => String, { nullable: true })
     @Prop()
     image?: string;
+
+    @Field(() => String, { nullable: true })
+    @Prop()
+    banner?: string;
 }
 
 @InputType()

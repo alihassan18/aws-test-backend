@@ -830,49 +830,49 @@ export class CollectionsService {
                 contract: { $regex: new RegExp(`^${address}$`, 'i') }
             })
             .exec();
-
-        if (!collection) {
-            return this.saveOrUpdateCollection(chain, address, true);
-        } else {
-            if (!collection?.is_all_tokens_fetched) {
-                this.redisPubSubService.publish('collection.create.tokens', {
-                    contract: address,
-                    chain
-                });
-            }
-            if (!collection?.is_all_listings_fetched) {
-                this.redisPubSubService.publish('collection.create.listings', {
-                    contract: address,
-                    chain
-                });
-            }
-            this.redisPubSubService.publish('collection.create.trades', {
-                contract: address,
-                chain
-            });
-            this.redisPubSubService.publish('collection.create.amount', {
-                contract: address,
-                chain
-            });
-            this.redisPubSubService.publish('collection.create.bids', {
-                contract: address,
-                chain
-            });
-            this.redisPubSubService.publish('collection.create.history', {
-                contract: address,
-                chain
-            });
-            // this.startCollectionEvents(address, chain);
-            if (!collection?.is_fetched) {
-                const c = await this.saveOrUpdateCollection(chain, address);
-                if (c) {
-                    return c;
-                } else {
-                    return collection;
-                }
-            }
-            return collection;
-        }
+        return collection;
+        // if (!collection) {
+        //     return this.saveOrUpdateCollection(chain, address, true);
+        // } else {
+        //     if (!collection?.is_all_tokens_fetched) {
+        //         this.redisPubSubService.publish('collection.create.tokens', {
+        //             contract: address,
+        //             chain
+        //         });
+        //     }
+        //     if (!collection?.is_all_listings_fetched) {
+        //         this.redisPubSubService.publish('collection.create.listings', {
+        //             contract: address,
+        //             chain
+        //         });
+        //     }
+        //     this.redisPubSubService.publish('collection.create.trades', {
+        //         contract: address,
+        //         chain
+        //     });
+        //     this.redisPubSubService.publish('collection.create.amount', {
+        //         contract: address,
+        //         chain
+        //     });
+        //     this.redisPubSubService.publish('collection.create.bids', {
+        //         contract: address,
+        //         chain
+        //     });
+        //     this.redisPubSubService.publish('collection.create.history', {
+        //         contract: address,
+        //         chain
+        //     });
+        //     // this.startCollectionEvents(address, chain);
+        //     if (!collection?.is_fetched) {
+        //         const c = await this.saveOrUpdateCollection(chain, address);
+        //         if (c) {
+        //             return c;
+        //         } else {
+        //             return collection;
+        //         }
+        //     }
+        //     return collection;
+        // }
     }
 
     async getLinkPreview(
