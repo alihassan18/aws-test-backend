@@ -172,8 +172,8 @@ export class PostService {
     async findCollectionPost(
         contract: string,
         chain,
-        // name?: string,
-        // image?: string
+        name?: string,
+        image?: string
     ) {
         let post = await this.postModel
             .findOne({
