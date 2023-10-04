@@ -125,7 +125,7 @@ export class EmailService {
 
     async sendRWVerifyEmail(email, userId, token, firstName) {
         console.log(email, userId, token, firstName);
-        
+
         // return new Promise((resolve, reject) => {
         //     const domain = process.env.FRONT_BASE_URL;
         //     const mailOptions = {
@@ -147,7 +147,7 @@ export class EmailService {
 
     async sendDeleteAccountMail(name, email) {
         console.log(name, email);
-        
+
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
         //         from: env.FROM_EMAIL,

@@ -121,7 +121,6 @@ export class SingleUsersDataOutput {
 
     @Field(() => Date, { nullable: true })
     createdAt: Date;
-
 }
 
 @ObjectType()
