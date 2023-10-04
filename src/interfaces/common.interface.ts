@@ -56,4 +56,5 @@ export type MintstargramScoreAction =
     | 'buyNft'
     | 'sellNft'
     | 'profile'
-    | 'kyc';
+    | 'kyc'
+    | 'affiliate';

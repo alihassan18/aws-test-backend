@@ -18,5 +18,6 @@ export enum ActionType {
     buyNft = 'buyNft',
     sellNft = 'sellNft',
     profile = 'profile',
-    kyc = 'kyc'
+    kyc = 'kyc',
+    affiliate = 'affiliate'
 }

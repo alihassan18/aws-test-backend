@@ -123,6 +123,9 @@ export const mintstargramScore = (action: MintstargramScoreAction) => {
         case 'kyc':
             score = 1000;
             break;
+        case 'affiliate':
+            score = 1000;
+            break;
     }
     return score;
 };

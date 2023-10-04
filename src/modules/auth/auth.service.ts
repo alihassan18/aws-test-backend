@@ -41,6 +41,7 @@ import {
     ENotificationFromType,
     NotificationType
 } from '../notifications/notifications.enum';
+import { ScoresService } from '../scores/scores.service';
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -54,6 +55,7 @@ export class AuthService extends CommonServices {
         private referralService: ReferralService,
         private ipAddressService: IpAddressService,
         private readonly twitterStrategy: TwitterStrategy,
+        private scoresService: ScoresService,
         @InjectModel(Referral.name)
         readonly referralModel: Model<ReferralDocument>,
         @InjectModel(Notification.name)
@@ -981,14 +983,8 @@ export class AuthService extends CommonServices {
             );
 
             // 1,000 points per affiliate
-            let score = 1000;
-            const random = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
-            score = Number(score + '.' + '0' + random);
 
-            await this.userService.findOneAndUpdate(
-                { _id: referral._id },
-                { $inc: { points: score } }
-            );
+            await this.scoresService.createScore(referral._id, 'affiliate');
 
             if (referral) {
                 await this.referralService.add(referral?._id, createUser?._id);
