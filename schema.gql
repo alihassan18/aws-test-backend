@@ -856,6 +856,21 @@ enum ReactionType {
   sad
 }
 
+type CollectionReportType {
+  contract: String
+  chain: String
+  image: String
+  isBlocked: Boolean
+}
+
+type NFTReportType {
+  contract: String
+  chain: String
+  image: String
+  tokenId: String
+  isBlocked: Boolean
+}
+
 type Report {
   _id: String!
   text: String
@@ -863,11 +878,11 @@ type Report {
   listing: Listing
   reportedBy: User!
   user: User
-  nft: Nft
+  nft: NFTReportType
   type: ReportStatus!
   post: Post
   group: Group
-  _collection: Collection
+  _collection: CollectionReportType
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1705,6 +1720,8 @@ type Query {
   getNftsReports: [Report!]!
   getCollectionsReports: [Report!]!
   getlandsReports: [Report!]!
+  isNFTBlocked(contract: String!, chain: String!, tokenId: String!): SuccessPayload!
+  isCollectionBlocked(contract: String!, chain: String!): SuccessPayload!
   getTotalTimeSpentOnPost(postId: String!): Float!
   stakingCollections(query: StakingFilterInput): [StakingCollection!]!
   stakingCollection(id: String!): StakingCollection!
@@ -2475,9 +2492,22 @@ input CreateReportDto {
   group: String
   user: String
   listing: String
-  nft: String
+  nft: NFTReport
   land: String
-  _collection: String
+  _collection: CollectionReport
+}
+
+input NFTReport {
+  contract: String
+  chain: String
+  image: String
+  tokenId: String
+}
+
+input CollectionReport {
+  contract: String
+  chain: String
+  image: String
 }
 
 input CreateStakingCollectionInput {
