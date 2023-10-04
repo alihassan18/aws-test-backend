@@ -103,6 +103,7 @@ type CollectionField {
   contract: String!
   chain: String!
   image: String
+  banner: String
 }
 
 type TokenField {
@@ -2400,6 +2401,7 @@ input CollectionInput {
   contract: String!
   chain: String!
   image: String
+  banner: String
 }
 
 input TokenInput {
