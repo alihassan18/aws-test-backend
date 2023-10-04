@@ -18,5 +18,5 @@ export class Last24HrsHashtagCount {
     count: number;
 
     @Field()
-    _id: number;
+    _id: string;
 }

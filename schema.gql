@@ -1360,7 +1360,7 @@ type HashtagCount {
 type Last24HrsHashtagCount {
   name: String!
   count: Float!
-  _id: Float!
+  _id: String!
 }
 
 type LoginResult {
