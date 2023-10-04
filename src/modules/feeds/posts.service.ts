@@ -172,8 +172,8 @@ export class PostService {
     async findCollectionPost(
         contract: string,
         chain,
-        name?: string,
-        image?: string
+        // name?: string,
+        // image?: string
     ) {
         let post = await this.postModel
             .findOne({
@@ -188,6 +188,7 @@ export class PostService {
                     chain
                 );
             post = await this.postModel.create({
+                author: collection.creator,
                 collectionData: {
                     chain: chain,
                     contract: contract,
@@ -209,7 +210,13 @@ export class PostService {
         });
 
         if (!post) {
+            const collection =
+                await this.collectionServivce.findByAddressAndChain(
+                    contract,
+                    chain
+                );
             post = await this.postModel.create({
+                author: collection?.creator,
                 tokenData: {
                     chain: chain,
                     contract: contract,
