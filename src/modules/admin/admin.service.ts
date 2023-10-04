@@ -69,10 +69,6 @@ export class AdminService {
                 $project: {
                     usersCount: { $arrayElemAt: ['$usersCount.count', 0] },
                     kycCount: { $arrayElemAt: ['$kycCount.count', 0] },
-                    kingsCount: { $arrayElemAt: ['$kingsCount.count', 0] },
-                    day1SupportersCount: {
-                        $arrayElemAt: ['$day1SupportersCount.count', 0]
-                    },
                     contentCreators: {
                         $arrayElemAt: ['$contentCreators.count', 0]
                     },
@@ -168,8 +164,6 @@ export class AdminService {
                 $project: {
                     usersCount: 1,
                     kycCount: 1,
-                    kingsCount: 1,
-                    day1SupportersCount: 1,
                     contentCreators: 1,
                     blockedUsersCount: 1,
                     bannedUsersCount: 1,
@@ -356,10 +350,6 @@ export class AdminService {
                 $project: {
                     usersCount: { $arrayElemAt: ['$usersCount.count', 0] },
                     kycCount: { $arrayElemAt: ['$kycCount.count', 0] },
-                    kingsCount: { $arrayElemAt: ['$kingsCount.count', 0] },
-                    day1SupportersCount: {
-                        $arrayElemAt: ['$day1SupportersCount.count', 0]
-                    },
                     contentCreators: {
                         $arrayElemAt: ['$contentCreators.count', 0]
                     },
@@ -504,8 +494,6 @@ export class AdminService {
                 $project: {
                     usersCount: 1,
                     kycCount: 1,
-                    kingsCount: 1,
-                    day1SupportersCount: 1,
                     contentCreators: 1,
                     blockedUsersCount: 1,
                     bannedUsersCount: 1,
@@ -708,7 +696,7 @@ export class AdminService {
             },
             { $skip: skipCount },
             { $limit: pageSize },
-            { $sort: filter ? { [filter]: -1 } : { _id: 1 } }
+            { $sort: filter ? { [filter]: -1 } : { createdAt: -1 } }
         ]);
         return {
             pageSize,

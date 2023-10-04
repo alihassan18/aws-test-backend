@@ -1420,12 +1420,10 @@ type ContentCreatorStats {
 type UsersDataOverview {
   usersCount: Float
   kycCount: Float
-  kingsCount: Float
   postsCount: Float
   contentCreators: Float
   blockedUsersCount: Float
   bannedUsersCount: Float
-  day1SupportersCount: Float
   hashtagCount: Float
   groupsCount: Float
   sharedPosts: Float
@@ -1459,6 +1457,7 @@ type SingleUsersDataOutput {
   soldNFTs: Float
   boughtNFTs: Float
   mintedNFTs: Float
+  createdAt: DateTime
 }
 
 type UsersDataOutput {

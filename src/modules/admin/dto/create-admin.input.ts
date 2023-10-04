@@ -15,9 +15,6 @@ export class UsersDataOverview {
     kycCount?: number;
 
     @Field(() => Number, { nullable: true })
-    kingsCount?: number;
-
-    @Field(() => Number, { nullable: true })
     postsCount?: number;
 
     @Field(() => Number, { nullable: true })
@@ -28,9 +25,6 @@ export class UsersDataOverview {
 
     @Field(() => Number, { nullable: true })
     bannedUsersCount?: number;
-
-    @Field(() => Number, { nullable: true })
-    day1SupportersCount?: number;
 
     @Field(() => Number, { nullable: true })
     hashtagCount?: number;
@@ -124,6 +118,10 @@ export class SingleUsersDataOutput {
 
     @Field(() => Number, { nullable: true })
     mintedNFTs: number;
+
+    @Field(() => Date, { nullable: true })
+    createdAt: Date;
+
 }
 
 @ObjectType()
