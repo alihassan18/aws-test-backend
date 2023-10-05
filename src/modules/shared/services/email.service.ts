@@ -52,7 +52,7 @@ export class EmailService {
     }
 
     private profile =
-        'https://www.mintstargram.com/assets/images/avatars/userProfile.png';
+        'https://www.mintstargram.tech/assets/images/avatars/userProfile.png';
 
     async MAIL_GUN(mailOptions) {
         try {

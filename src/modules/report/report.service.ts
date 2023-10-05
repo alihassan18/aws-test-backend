@@ -8,6 +8,7 @@ import {
     ENotificationFromType,
     NotificationType
 } from '../notifications/notifications.enum';
+import { CreateReportDto } from './report.dto';
 
 @Injectable()
 export class ReportService {
@@ -17,11 +18,17 @@ export class ReportService {
     ) {}
 
     async create(
-        data: Partial<ReportDocument>,
+        data: CreateReportDto,
         reportBy: Types.ObjectId
     ): Promise<ReportDocument> {
         // try {
-        if (!data?.user && !data?.post && !data?.nft && !data?._collection) {
+        if (
+            !data?.user &&
+            !data?.post &&
+            !data?.nft &&
+            !data?.land &&
+            !data?._collection
+        ) {
             throw new Error(
                 'You should need to pass post/user/nft/land/collection'
             );
@@ -50,7 +57,8 @@ export class ReportService {
 
         if (data?.nft) {
             const alreadyReported = await this.reportModal.findOne({
-                nft: new Types.ObjectId(data?.nft),
+                // nft: new Types.ObjectId(data?.nft),
+                nft: data?.nft,
                 reportedBy: reportBy
             });
 
@@ -59,11 +67,28 @@ export class ReportService {
             }
         }
 
-        if (data?._collection) {
+        if (data?.land) {
             const alreadyReported = await this.reportModal.findOne({
-                _collection: new Types.ObjectId(data?._collection),
+                land: new Types.ObjectId(data?.land),
                 reportedBy: reportBy
             });
+
+            if (alreadyReported) {
+                throw new Error('You have already reported this land');
+            }
+        }
+
+        if (data?._collection) {
+            // const alreadyReported = await this.reportModal.findOne({
+            //     _collection: new Types.ObjectId(data?._collection),
+            //     reportedBy: reportBy
+            // });
+            const alreadyReported = await this.reportModal.findOne({
+                _collection: data?._collection,
+                reportedBy: reportBy
+            });
+
+            console.log({ alreadyReported }, data?._collection?.contract);
 
             if (alreadyReported) {
                 throw new Error('You have already reported this collection');
@@ -74,9 +99,14 @@ export class ReportService {
             ...data,
             ...(data.post && { post: new Types.ObjectId(data.post) }),
             ...(data.user && { user: new Types.ObjectId(data.user) }),
-            ...(data.nft && { nft: new Types.ObjectId(data.nft) }),
+            // ...(data.nft && { nft: new Types.ObjectId(data.nft) }),
+            ...(data.nft && { nft: data.nft }),
+            ...(data.land && { land: new Types.ObjectId(data.land) }),
+            // ...(data._collection && {
+            //     _collection: new Types.ObjectId(data._collection)
+            // }),
             ...(data._collection && {
-                _collection: new Types.ObjectId(data._collection)
+                _collection: data._collection
             }),
             reportedBy: reportBy
         });
@@ -151,6 +181,57 @@ export class ReportService {
         });
 
         return { success: true };
+    }
+
+    async blockReportedCollection(id: Types.ObjectId) {
+        await this.reportModal.findByIdAndUpdate(id, {
+            type: ReportStatus.COMPLETED,
+            '_collection.isBlocked': true
+        });
+
+        return { success: true };
+    }
+
+    async blockReportedNft(id: Types.ObjectId) {
+        await this.reportModal.findByIdAndUpdate(id, {
+            type: ReportStatus.COMPLETED,
+            'nft.isBlocked': true
+        });
+
+        return { success: true };
+    }
+
+    async isNFTBlocked(contract: string, chain: string, tokenId: string) {
+        const isAvailable = await this.reportModal.findOne({
+            type: ReportStatus.COMPLETED,
+            $and: [
+                { 'nft.contract': contract },
+                { 'nft.chain': chain },
+                { 'nft.tokenId': tokenId },
+                { 'nft.isBlocked': true }
+            ]
+        });
+        if (isAvailable) {
+            return { success: true };
+        } else {
+            return { success: false };
+        }
+    }
+
+    async isCollectionBlocked(contract: string, chain: string) {
+        const isAvailable = await this.reportModal.findOne({
+            type: ReportStatus.COMPLETED,
+            $and: [
+                { '_collection.contract': contract },
+                { '_collection.chain': chain },
+                { '_collection.isBlocked': true }
+            ]
+        });
+        if (isAvailable) {
+            return { success: true };
+        } else {
+            return { success: false };
+        }
     }
 
     // async getAllReportedListing(

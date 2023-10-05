@@ -21,12 +21,7 @@ import { Post, PostDocument } from '../feeds/entities/post.entity';
 import { Types } from 'mongoose';
 import { PostService } from '../feeds/posts.service';
 import { SuccessPayload } from '../admin/dto/create-admin.input';
-import { Nft, NftDocument } from '../nfts/entities/nft.entity';
 import { NftsService } from '../nfts/nfts.service';
-import {
-    Collection,
-    CollectionDocument
-} from '../collections/entities/collection.entity';
 import { CollectionsService } from '../collections/collections.service';
 @Resolver(() => Report)
 export class ReportResolver {
@@ -68,17 +63,17 @@ export class ReportResolver {
         return this.postService.findById(new Types.ObjectId(report?.post));
     }
 
-    @ResolveField(() => Nft)
-    async nft(@Parent() report: Report): Promise<NftDocument> {
-        return this.nftService.findById(new Types.ObjectId(report?.nft));
-    }
+    // @ResolveField(() => Nft)
+    // async nft(@Parent() report: Report): Promise<NftDocument> {
+    //     return this.nftService.findById(new Types.ObjectId(report?.nft));
+    // }
 
-    @ResolveField(() => Collection)
-    async _collection(@Parent() report: Report): Promise<CollectionDocument> {
-        return this.collectionService.findById(
-            new Types.ObjectId(report?._collection)
-        );
-    }
+    // @ResolveField(() => Collection)
+    // async _collection(@Parent() report: Report): Promise<CollectionDocument> {
+    //     return this.collectionService.findById(
+    //         new Types.ObjectId(report?._collection)
+    //     );
+    // }
 
     @UseGuards(AuthGuard)
     @Mutation(() => Report)
@@ -140,7 +135,8 @@ export class ReportResolver {
     async removeCollection(
         @Args('id', { type: () => String }) id: Types.ObjectId
     ): Promise<SuccessPayload> {
-        return this.collectionService.removeCollection(id);
+        return this.reportService.blockReportedCollection(id);
+        //  this.collectionService.removeCollection(id);
     }
 
     @UseGuards(AdminGuard)
@@ -149,6 +145,25 @@ export class ReportResolver {
     async removeNFT(
         @Args('id', { type: () => String }) id: Types.ObjectId
     ): Promise<SuccessPayload> {
-        return this.nftService.removeNFT(id);
+        return this.reportService.blockReportedNft(id);
+    }
+
+    @UseGuards(AuthGuard)
+    @Query(() => SuccessPayload)
+    async isNFTBlocked(
+        @Args('contract', { type: () => String }) contract: string,
+        @Args('chain', { type: () => String }) chain: string,
+        @Args('tokenId', { type: () => String }) tokenId: string
+    ): Promise<SuccessPayload> {
+        return this.reportService.isNFTBlocked(contract, chain, tokenId);
+    }
+
+    @UseGuards(AuthGuard)
+    @Query(() => SuccessPayload)
+    async isCollectionBlocked(
+        @Args('contract', { type: () => String }) contract: string,
+        @Args('chain', { type: () => String }) chain: string
+    ): Promise<SuccessPayload> {
+        return this.reportService.isCollectionBlocked(contract, chain);
     }
 }

@@ -5,15 +5,57 @@ import { Listing } from '../listings/entities/listing.entity';
 import { User } from '../users/entities/user.entity';
 import { ReportStatus } from './report.enums';
 import { Post } from '../feeds/entities/post.entity';
-import { Collection } from '../collections/entities/collection.entity';
-import { COLLECTIONS, USERS } from 'src/constants/db.collections';
+import { USERS } from 'src/constants/db.collections';
 import { Group } from '../chat/entities/group.entity';
-import { Nft } from '../nfts/entities/nft.entity';
 
 // Register the enum for GraphQL
 registerEnumType(ReportStatus, {
     name: 'ReportStatus'
 });
+
+@ObjectType()
+@Schema()
+class CollectionReportType {
+    @Field(() => String, { nullable: true })
+    @Prop({ type: String })
+    contract?: string;
+
+    @Field(() => String, { nullable: true })
+    @Prop(String)
+    chain: string;
+
+    @Field(() => String, { nullable: true })
+    @Prop(String)
+    image?: string;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({ type: Boolean })
+    isBlocked?: boolean;
+}
+
+@ObjectType()
+@Schema()
+class NFTReportType {
+    @Field(() => String, { nullable: true })
+    @Prop({ type: String })
+    contract?: string;
+
+    @Field(() => String, { nullable: true })
+    @Prop(String)
+    chain: string;
+
+    @Field(() => String, { nullable: true })
+    @Prop(String)
+    image?: string;
+
+    @Field({ nullable: true })
+    @Prop(String)
+    tokenId: string;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({ type: Boolean })
+    isBlocked?: boolean;
+}
 
 @Schema({ timestamps: true })
 @ObjectType()
@@ -46,9 +88,13 @@ export class Report extends Document {
     @Prop({ type: Types.ObjectId, ref: USERS, default: null, index: true })
     user?: Types.ObjectId;
 
-    @Field(() => Nft, { nullable: true })
-    @Prop({ type: Types.ObjectId, ref: Nft.name, default: null, index: true })
-    nft?: Types.ObjectId;
+    // @Field(() => Nft, { nullable: true })
+    // @Prop({ type: Types.ObjectId, ref: Nft.name, default: null, index: true })
+    // nft?: Types.ObjectId;
+
+    @Field(() => NFTReportType, { nullable: true })
+    @Prop(NFTReportType)
+    nft?: NFTReportType;
 
     @Field(() => ReportStatus)
     @Prop({ type: String, enum: ReportStatus, default: ReportStatus.REPORTED })
@@ -62,14 +108,18 @@ export class Report extends Document {
     @Prop({ type: Types.ObjectId, ref: Group.name, default: null, index: true })
     group?: Types.ObjectId;
 
-    @Field(() => Collection, { nullable: true })
-    @Prop({
-        type: Types.ObjectId,
-        ref: COLLECTIONS,
-        default: null,
-        index: true
-    })
-    _collection?: Types.ObjectId;
+    // @Field(() => Collection, { nullable: true })
+    // @Prop({
+    //     type: Types.ObjectId,
+    //     ref: COLLECTIONS,
+    //     default: null,
+    //     index: true
+    // })
+    // _collection?: Types.ObjectId;
+
+    @Field(() => CollectionReportType, { nullable: true })
+    @Prop(CollectionReportType)
+    _collection?: CollectionReportType;
 
     @Field(() => Date)
     createdAt: Date;
@@ -80,7 +130,3 @@ export class Report extends Document {
 
 export type ReportDocument = Report & Document;
 export const ReportSchema = SchemaFactory.createForClass(Report);
-// ReportSchema.index({ reportedBy: 1, post: 1 }, { unique: true });
-// ReportSchema.index({ reportedBy: 1, user: 1 }, { unique: true });
-// ReportSchema.index({ reportedBy: 1, listing: 1 }, { unique: true });
-// ReportSchema.index({ reportedBy: 1, _collection: 1 }, { unique: true });
