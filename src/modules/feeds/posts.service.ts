@@ -1356,7 +1356,7 @@ export class PostService {
                     ? Number(following?.followers?.length || 0) - 1
                     : Number(following?.followers?.length || 0) + 1;
 
-                let arr = await this.collectionServivce.updateOne(
+                const arr = await this.collectionServivce.updateOne(
                     {
                         contract: {
                             $regex: new RegExp(

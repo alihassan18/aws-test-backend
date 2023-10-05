@@ -1064,18 +1064,17 @@ export class CollectionsService {
         },
         updateCollectionInput
     ): Promise<CollectionDocument> {
-       try {
-        let a = await this.collectionModel.findOneAndUpdate(
-            clause,
-            updateCollectionInput,
-            { new: true }
-        );
-        console.log(clause, updateCollectionInput, 'clause');
-        return a;
-       } catch (error) {
-            console.log(error,'error');
-            
-       }
+        try {
+            const a = await this.collectionModel.findOneAndUpdate(
+                clause,
+                updateCollectionInput,
+                { new: true }
+            );
+            console.log(clause, updateCollectionInput, 'clause');
+            return a;
+        } catch (error) {
+            console.log(error, 'error');
+        }
     }
 
     findOne(clause: { [key: string]: unknown }): Promise<CollectionDocument> {
