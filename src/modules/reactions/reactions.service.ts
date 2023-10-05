@@ -186,7 +186,7 @@ export class ReactionService {
                     tokenData: {
                         name,
                         chain,
-                        contract,
+                        contract:contract?.toLowerCase(),
                         tokenId,
                         image,
                         collectionName,
