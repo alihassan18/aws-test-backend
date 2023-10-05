@@ -632,7 +632,7 @@ export class UsersService {
         signature: string
     ): Promise<WalletDocument> {
         const message =
-            'I acknowledge and agree to the terms, conditions, and privacy policy of MintStargram, a product created by MetaRuffy International FZCO, Dubai Silicon Oasis, DDP, Building A2, Dubai, United Arab Emirates.';
+            'I acknowledge and agree to the terms & conditions and privacy policy of MintStargram.tech.';
         const recoveredAddress = await recoverMessageAddress({
             message,
             signature: signature as `0x${string}`
