@@ -360,8 +360,8 @@ export class FeedsService {
             isFollower ? 'unfollowers' : 'followers'
         );
         const newFollowersCount = isFollower
-            ? Number(following.followersCount || 0) - 1
-            : Number(following.followersCount || 0) + 1;
+            ? Number(following?.followers?.length || 0) - 1
+            : Number(following?.followers?.length || 0) + 1;
 
         const followersTimestamps = {
             by: userId,

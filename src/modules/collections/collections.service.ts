@@ -1058,6 +1058,29 @@ export class CollectionsService {
         );
     }
 
+    async updateOne(
+        clause: {
+            [key: string]: unknown;
+        },
+        updateCollectionInput
+    ): Promise<CollectionDocument> {
+        try {
+            const a = await this.collectionModel.findOneAndUpdate(
+                clause,
+                updateCollectionInput,
+                { new: true }
+            );
+            console.log(clause, updateCollectionInput, 'clause');
+            return a;
+        } catch (error) {
+            console.log(error, 'error');
+        }
+    }
+
+    findOne(clause: { [key: string]: unknown }): Promise<CollectionDocument> {
+        return this.collectionModel.findOne(clause).lean().exec();
+    }
+
     updateTokenCount(
         id: string
         // token_count: number

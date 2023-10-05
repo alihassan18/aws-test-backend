@@ -191,7 +191,7 @@ export class PostService {
                 author: collection.creator,
                 collectionData: {
                     chain: chain,
-                    contract: contract,
+                    contract: contract?.toLowerCase(),
                     name: collection?.name,
                     image: collection?.image,
                     banner: collection?.banner
@@ -1083,7 +1083,7 @@ export class PostService {
                     collectionData: {
                         name: name,
                         chain: chain,
-                        contract: contract,
+                        contract: contract?.toLowerCase(),
                         image,
                         banner
                     }
@@ -1095,7 +1095,7 @@ export class PostService {
                     collectionData: {
                         name: name,
                         chain: chain,
-                        contract: contract,
+                        contract: contract?.toLowerCase(),
                         image,
                         banner
                     }
@@ -1136,7 +1136,7 @@ export class PostService {
                     tokenData: {
                         name,
                         chain,
-                        contract,
+                        contract: contract?.toLowerCase(),
                         tokenId,
                         image,
                         collectionName,
@@ -1255,47 +1255,51 @@ export class PostService {
 
             if (!originalPostt.originalPost && !originalPostt.inReplyToPost) {
                 // console.log('for simple repost of a post')
-                this.emailService.sendRepostEmail(
-                    receiver.email,
-                    `${owner.userName}`,
-                    originalPost.text,
-                    `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
-                );
+                receiver?.email &&
+                    this.emailService.sendRepostEmail(
+                        receiver.email,
+                        `${owner.userName}`,
+                        originalPost.text,
+                        `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
+                    );
             } else if (
                 !originalPostt.originalPost &&
                 originalPostt.inReplyToPost
             ) {
-                this.emailService.sendRepostCommentEmail(
-                    receiver.email,
-                    `${owner.userName}`,
-                    originalPost.text,
-                    `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
-                );
+                receiver?.email &&
+                    this.emailService.sendRepostCommentEmail(
+                        receiver.email,
+                        `${owner.userName}`,
+                        originalPost.text,
+                        `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
+                    );
             } else if (
                 originalPostt.originalPost &&
                 originalPostt.inReplyToPost
             ) {
                 // console.log("for comment's reply");
-                this.emailService.sendRepostCommentEmail(
-                    receiver.email,
-                    `${owner.userName}`,
-                    originalPost.text,
-                    `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
-                );
+                receiver?.email &&
+                    this.emailService.sendRepostCommentEmail(
+                        receiver.email,
+                        `${owner.userName}`,
+                        originalPost.text,
+                        `${process.env.FRONT_BASE_URL}/feeds/${originalPost._id}`
+                    );
             }
         }
 
         //Add mintstargram score for repost
         if (originalPost) {
             await this.scoresService.createScore(userId, 'repost');
-            this.notificationService.alertFollowers4Repost(
-                userId,
-                owner.userName,
-                originalPost._id,
-                originalPost.text,
-                [receiver.email],
-                [receiver._id]
-            );
+            receiver?.email &&
+                this.notificationService.alertFollowers4Repost(
+                    userId,
+                    owner.userName,
+                    originalPost._id,
+                    originalPost.text,
+                    [receiver.email],
+                    [receiver._id]
+                );
         }
 
         return originalPost;
@@ -1332,6 +1336,47 @@ export class PostService {
             }
 
             await user.save();
+
+            if (post.collectionData?.contract) {
+                const following = await this.collectionServivce.findOne({
+                    contract: {
+                        $regex: new RegExp(
+                            `^${post.collectionData.contract}$`,
+                            'i'
+                        )
+                    },
+                    chain: post.collectionData.chain
+                });
+                const isFollower =
+                    following?.followers?.filter(
+                        (el) => el?.toString() == userId?.toString()
+                    ).length > 0;
+
+                const newFollowersCount = isFollower
+                    ? Number(following?.followers?.length || 0) - 1
+                    : Number(following?.followers?.length || 0) + 1;
+
+                const arr = await this.collectionServivce.updateOne(
+                    {
+                        contract: {
+                            $regex: new RegExp(
+                                `^${post.collectionData.contract}$`,
+                                'i'
+                            )
+                        },
+                        chain: post.collectionData.chain
+                    },
+                    {
+                        [isFollower ? '$pull' : '$addToSet']: {
+                            followers: userId
+                        },
+                        followersCount: newFollowersCount
+                    }
+                );
+
+                console.log(isFollower, 'post.collectionData', arr);
+            }
+
             return this.postModel
                 .findOneAndUpdate(
                     { _id: postId },
