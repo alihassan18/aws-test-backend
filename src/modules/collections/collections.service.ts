@@ -377,7 +377,7 @@ export class CollectionsService {
     async createListings(address: string, chain: string) {
         try {
             sdk.auth(process.env.RESERVOIR_API_KEY);
-            sdk.server(chains[chain || 'ethereum'].reservoirBaseUrl);
+            sdk.server(chains[chain || 'arbitreum'].reservoirBaseUrl);
             const listings = await this.reservoirService
                 .getListings(address)
                 .then()
@@ -392,7 +392,7 @@ export class CollectionsService {
     async createBids(address: string, chain: string) {
         try {
             sdk.auth(process.env.RESERVOIR_API_KEY);
-            sdk.server(chains[chain || 'ethereum'].reservoirBaseUrl);
+            sdk.server(chains[chain || 'arbitreum'].reservoirBaseUrl);
             const bids = await this.reservoirService
                 .getBids(address)
                 .then()
@@ -405,7 +405,7 @@ export class CollectionsService {
     async createActivities(address: string, chain: string) {
         try {
             sdk.auth(process.env.RESERVOIR_API_KEY);
-            sdk.server(chains[chain || 'ethereum'].reservoirBaseUrl);
+            sdk.server(chains[chain || 'arbitreum'].reservoirBaseUrl);
             const history = await this.reservoirService
                 .getHistory(address)
                 .then()
@@ -554,7 +554,7 @@ export class CollectionsService {
     //                             collection?.image ||
     //                             nftscanCollection?.image,
     //                         chain: chain,
-    //                         chainId: chains[chain || 'ethereum'].id,
+    //                         chainId: chains[chain || 'arbitreum'].id,
     //                         contract: collection?.id || address,
     //                         contract_name:
     //                             collection?.name || nftscanCollection?.name,
@@ -665,7 +665,7 @@ export class CollectionsService {
             if (collection) {
                 collectionData.image = collection.image;
                 collectionData.chain = chain;
-                collectionData.chainId = chains[chain || 'ethereum'].id;
+                collectionData.chainId = chains[chain || 'arbitreum'].id;
                 collectionData.contract = collection?.id;
                 collectionData.contract_name = collection?.name;
                 collectionData.banner = collection?.banner;
@@ -802,7 +802,7 @@ export class CollectionsService {
                     {
                         ...collectionData,
                         chain: chain,
-                        chainId: chains[chain || 'ethereum'].id,
+                        chainId: chains[chain || 'arbitreum'].id,
                         is_fetched: true
                         // ... (add other properties accordingly)
                     },
@@ -1544,7 +1544,7 @@ export class CollectionsService {
     //                 try {
     //                     sdk.auth(process.env.RESERVOIR_API_KEY);
     //                     sdk.server(
-    //                         chains[chain || 'ethereum'].reservoirBaseUrl
+    //                         chains[chain || 'arbitreum'].reservoirBaseUrl
     //                     );
 
     //                     const data = await sdk.getOrdersAsksV5({
@@ -1622,7 +1622,7 @@ export class CollectionsService {
                     try {
                         sdk.auth(process.env.RESERVOIR_API_KEY);
                         sdk.server(
-                            chains[chain || 'ethereum'].reservoirBaseUrl
+                            chains[chain || 'arbitreum'].reservoirBaseUrl
                         );
                         const data = await sdk.getOrdersAsksV5({
                             contracts: contract,

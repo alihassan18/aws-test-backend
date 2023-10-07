@@ -1662,11 +1662,11 @@ type Query {
   listing(id: Int!): Listing!
   tokens(query: TokenFilterInput, limit: Int = 10, cursor: String): TokensResponse
   token(contract: String!, chain: String!, tokenId: String!): Nft!
-  getToken(contract: String!, chain: String! = "ethereum", tokenId: String!): Nft
+  getToken(contract: String!, chain: String! = "arbitreum", tokenId: String!): Nft
   hiddenTokens(userId: String!): [HiddenTokens!]!
   getUserTokens(userId: String!): [Nft!]
   getMostViewedNfts: [Post!]
-  tokenCountsByStatus(contract: String!, chain: String! = "ethereum"): TokensCountsByStatus!
+  tokenCountsByStatus(contract: String!, chain: String! = "arbitreum"): TokensCountsByStatus!
   userStats(userId: String!): UserStats!
   nftLinkPreview(contract: String!, chain: String!, tokenId: String!): LinkPreview
   bids(query: FindBidsQuery!): BidsResponse!

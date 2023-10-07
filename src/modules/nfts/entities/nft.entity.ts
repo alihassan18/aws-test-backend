@@ -137,8 +137,8 @@ export class Nft {
     @Prop()
     contract: string;
 
-    @Field({ defaultValue: 'ethereum' })
-    @Prop({ default: 'ethereum' })
+    @Field({ defaultValue: 'arbitreum' })
+    @Prop({ default: 'arbitreum' })
     chain: string;
 
     @Field({ nullable: true })

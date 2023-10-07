@@ -1505,9 +1505,9 @@ type Query {
   listing(id: Int!): Listing!
   tokens(query: TokenFilterInput, limit: Int = 10, cursor: String): TokensResponse
   token(contract: String!, chain: String!, tokenId: String!): Nft!
-  getToken(contract: String!, chain: String! = "ethereum", tokenId: String!): Nft
+  getToken(contract: String!, chain: String! = "arbitreum", tokenId: String!): Nft
   getUserTokens(userId: String!): [Nft!]
-  tokenCountsByStatus(contract: String!, chain: String! = "ethereum"): TokensCountsByStatus!
+  tokenCountsByStatus(contract: String!, chain: String! = "arbitreum"): TokensCountsByStatus!
   bids(query: FindBidsQuery!): [Bid!]!
   bid(id: Int!): Bid!
   posts(query: PostFilterInput, limit: Int! = 10, cursor: String): PostConnection!

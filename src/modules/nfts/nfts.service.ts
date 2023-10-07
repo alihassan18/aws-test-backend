@@ -1038,7 +1038,7 @@ export class NftsService {
                                     collection: {
                                         chain:
                                             b.chain == EvmChain.ETH
-                                                ? 'ethereum'
+                                                ? 'arbitreum'
                                                 : b.chain,
                                         name: c.contract_name,
                                         contract: c.contract_address,
@@ -1091,7 +1091,7 @@ export class NftsService {
                                     rarityRank: rarity_rank,
                                     chain:
                                         b?.chain == EvmChain.ETH
-                                            ? 'ethereum'
+                                            ? 'arbitreum'
                                             : b?.chain
                                 };
                             }

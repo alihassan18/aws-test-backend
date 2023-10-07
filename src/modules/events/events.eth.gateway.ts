@@ -13,7 +13,7 @@ import { CollectionDocument } from '../collections/entities/collection.entity';
 import { COLLECTIONS } from 'src/constants/db.collections';
 import { Nft, NftDocument } from '../nfts/entities/nft.entity';
 
-const chain = 'ethereum';
+const chain = 'arbitreum';
 
 @WebSocketGateway()
 export class EventsEthGateway

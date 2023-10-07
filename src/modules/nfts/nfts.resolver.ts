@@ -75,7 +75,7 @@ export class NftsResolver {
     @Query(() => Nft, { name: 'getToken', nullable: true })
     getToken(
         @Args('contract', { type: () => String }) contract: string,
-        @Args('chain', { type: () => String, defaultValue: 'ethereum' })
+        @Args('chain', { type: () => String, defaultValue: 'arbitreum' })
         chain: string,
         @Args('tokenId', { type: () => String }) tokenId: string
     ) {
@@ -119,7 +119,7 @@ export class NftsResolver {
     })
     async countByStatus(
         @Args('contract', { type: () => String }) contract: string,
-        @Args('chain', { type: () => String, defaultValue: 'ethereum' })
+        @Args('chain', { type: () => String, defaultValue: 'arbitreum' })
         chain: string
     ): Promise<TokensCountsByStatus> {
         return this.nftsService.countByStatus(contract, chain);

@@ -41,15 +41,15 @@ export type SearchCollection = NonNullable<
 // type CollectionQuery = paths['/collections/v5']['get']['parameters']['query'];
 
 export const chains = {
-    ethereum: {
+    arbitreum: {
         name: 'Ethereum',
         lightIconUrl: '/icons/eth-icon-dark.svg',
         darkIconUrl: '/icons/eth-icon-light.svg',
         reservoirBaseUrl: 'https://api.reservoir.tools',
-        proxyApi: '/api/reservoir/ethereum',
-        routePrefix: 'ethereum',
+        proxyApi: '/api/reservoir/arbitreum',
+        routePrefix: 'arbitreum',
         apiKey: process.env.POLYGON_RESERVOIR_API_KEY,
-        coingeckoId: 'ethereum-network',
+        coingeckoId: 'arbitreum-network',
         collectionSetId: process.env.NEXT_PUBLIC_POLYGON_COLLECTION_SET_ID,
         community: process.env.NEXT_PUBLIC_POLYGON_COMMUNITY,
         id: 1
@@ -256,7 +256,7 @@ export class NFTScanService {
     ): Promise<CollectionsResults> {
         try {
             sdk.auth(process.env.RESERVOIR_API_KEY);
-            sdk.server(chains[query.chain || 'ethereum'].reservoirBaseUrl);
+            sdk.server(chains[query.chain || 'arbitreum'].reservoirBaseUrl);
             const { data } = await sdk.getCollectionsV5(query);
             const response = data as CollectionsResults;
             const collection = response.collections[0];
@@ -269,7 +269,7 @@ export class NFTScanService {
                             description: collection?.description,
                             image: collection?.image,
                             chain: query.chain,
-                            chainId: chains[query.chain || 'ethereum'].id,
+                            chainId: chains[query.chain || 'arbitreum'].id,
                             // currency: string;
 
                             // chain: string,
@@ -448,7 +448,7 @@ export class NFTScanService {
     ): Promise<CollectionsResults> {
         try {
             sdk.auth(process.env.RESERVOIR_API_KEY);
-            sdk.server(chains[query.chain || 'ethereum'].reservoirBaseUrl);
+            sdk.server(chains[query.chain || 'arbitreum'].reservoirBaseUrl);
             const { data } = await sdk.getCollectionsV5(query);
             const response = data as CollectionsResults;
             // const collection = response.collections[0];
@@ -461,7 +461,7 @@ export class NFTScanService {
             //                 description: collection?.description,
             //                 image: collection?.image,
             //                 chain: query.chain,
-            //                 chainId: chains[query.chain || 'ethereum'].id,
+            //                 chainId: chains[query.chain || 'arbitreum'].id,
             //                 // currency: string;
 
             //                 // chain: string,
