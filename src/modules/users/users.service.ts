@@ -1100,4 +1100,63 @@ export class UsersService {
         );
         return !!isSettingEnabled;
     }
+
+    async getLeaders() {
+        try {
+            const leaders = await this.postModel
+                .aggregate([
+                    {
+                        $match: {
+                            $and: [
+                                { tokenData: { $exists: true } },
+                                {
+                                    $or: [
+                                        { token: null },
+                                        { token: { $exists: false } }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$author',
+                            tokenContractCount: {
+                                $sum: 1
+                            }
+                        }
+                    },
+                    {
+                        $sort: {
+                            tokenContractCount: -1
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: '_id',
+                            foreignField: '_id',
+                            as: 'user'
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 1,
+                            tokenContractCount: 1,
+                            user: {
+                                $arrayElemAt: ['$user', 0]
+                            }
+                        }
+                    },
+                    {
+                        $limit: 5
+                    }
+                ])
+                .exec();
+
+            return leaders;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
+import { InputType, Field, ObjectType, Int } from '@nestjs/graphql';
 import mongoose from 'mongoose';
 import { User } from '../entities/user.entity';
 import { MinLength, MaxLength, Matches } from 'class-validator';
@@ -413,4 +413,13 @@ export class ContentCreatorStats {
 
     @Field(() => [CCSNfts7Day], { nullable: true })
     nftsLast7Days?: [CCSNfts7Day];
+}
+
+@ObjectType()
+export class Leader {
+    @Field(() => User, { nullable: true })
+    user?: User;
+
+    @Field(() => Int, { nullable: true })
+    tokenContractCount?: number;
 }

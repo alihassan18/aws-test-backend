@@ -1,0 +1,5 @@
+export enum ActivityTypes {
+    POST_CREATED = 'POST_CREATED',
+    COLLECTION_CREATED = 'COLLECTION_CREATED',
+    NFT_MINTED = 'NFT_MINTED'
+}
