@@ -130,6 +130,10 @@ import {
     RecentSearch,
     RecentSearchSchema
 } from '../recent_searches/entities/recent_search.entity';
+import {
+    Activity,
+    ActivitySchema
+} from '../activities/entities/activities.entity';
 
 const models = [
     { name: USERS, schema: UsersSchema },
@@ -163,6 +167,7 @@ const models = [
     { name: IPAddress.name, schema: IPAddressSchema },
     { name: HiddenTokens.name, schema: HiddenTokensSchema },
     { name: InvitationCode.name, schema: InvitationCodeSchema },
+    { name: Activity.name, schema: ActivitySchema },
 
     //  --------------------------------------
     //          RUFFY WORLD COLLECTIONS

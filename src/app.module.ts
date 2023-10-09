@@ -51,6 +51,7 @@ import { RwBillboardModule } from './modules/rw_billboard/rw_billboard.module';
 import { RwGameFlowerModule } from './modules/rw_game_flower/rw_game_flower.module';
 import { InvitationCodesModule } from './modules/invitation_codes/invitation_codes.module';
 import { RecentSearchesModule } from './modules/recent_searches/recent_searches.module';
+import { ActivityModule } from './modules/activities/activities.module';
 
 @Module({
     imports: [
@@ -100,7 +101,8 @@ import { RecentSearchesModule } from './modules/recent_searches/recent_searches.
         RwBillboardModule,
         RwGameFlowerModule,
         InvitationCodesModule,
-        RecentSearchesModule
+        RecentSearchesModule,
+        ActivityModule
     ],
     controllers: [AppController],
     providers: [

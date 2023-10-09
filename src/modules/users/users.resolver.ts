@@ -23,6 +23,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { ContextProps } from 'src/interfaces/common.interface';
 import {
     ContentCreatorStats,
+    Leader,
     ProfileInput,
     SearchResult,
     SettingsInput,
@@ -379,5 +380,8 @@ export class UsersResolver {
         return this.usersService.getLinkPreview(userName);
     }
 
-    // ------------ ------------
+    @Query(() => [Leader], { name: 'leaders', nullable: true })
+    getLeaders() {
+        return this.usersService.getLeaders();
+    }
 }

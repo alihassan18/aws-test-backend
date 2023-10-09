@@ -1302,6 +1302,28 @@ type RecentSearch {
   hashtag: Hashtag
 }
 
+type Activity {
+  _id: String!
+
+  """Name field (placeholder)"""
+  type: ActivityTypes!
+
+  """Name field (placeholder)"""
+  user: User!
+
+  """Name field (placeholder)"""
+  nftCollection: Collection
+
+  """Name field (placeholder)"""
+  post: Post
+}
+
+enum ActivityTypes {
+  POST_CREATED
+  COLLECTION_CREATED
+  NFT_MINTED
+}
+
 type PageInfo {
   hasNextPage: Boolean
   endCursor: String
@@ -1434,6 +1456,11 @@ type ContentCreatorStats {
   iscollection: Boolean
   isNFTs: Boolean
   nftsLast7Days: [CCSNfts7Day!]
+}
+
+type Leader {
+  user: User
+  tokenContractCount: Int
 }
 
 type UsersDataOverview {
@@ -1627,6 +1654,7 @@ type Query {
   contentCreatorStats: ContentCreatorStats!
   SCCAppliedUsers: [User!]!
   userLinkPreview(userName: String!): LinkPreview
+  leaders: [Leader!]
   collections(query: CollectionFilterInput, limit: Int = 10, page: Int = 1): CollectionResponse
   collection(address: String!, chain: String!): Collection
   collectionLinkPreview(address: String!, chain: String!): LinkPreview
@@ -1770,6 +1798,8 @@ type Query {
   invitationCodes: [InvitationCode!]!
   invitationCode(id: Int!): InvitationCode!
   recentSearches: [RecentSearch!]!
+  activities(query: ActivityFilterInput): [Activity!]!
+  activity(id: Int!): Activity!
 }
 
 input CollectionFilterInput {
@@ -1905,6 +1935,10 @@ input FindHistoryQuery {
   page: Int = 1
 }
 
+input ActivityFilterInput {
+  type: String
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   myFollowers: [User!]!
@@ -1944,7 +1978,7 @@ type Mutation {
   invitationCodeVerify(code: String!): LoginResult!
   createListing(createListingInput: CreateListingInput!): Listing!
   updateListing(updateListingInput: UpdateListingInput!): Listing!
-  removeListing(id: String!): Utility!
+  removeListing(id: String!): Activity!
   createNft(createNftInput: CreateNftInput!): Nft!
   updateNft(updateNftInput: UpdateNftInput!): Nft!
   removeNft(id: Int!): Nft!
@@ -2057,6 +2091,8 @@ type Mutation {
   createRecentSearch(createRecentSearchInput: CreateRecentSearchInput!): RecentSearch!
   removeRecentSearch(id: String!): RecentSearch!
   removeAllRecentSearch: RecentSearch!
+  createActivity(createActivityInput: CreateActivityInput!): Activity!
+  updateActivity(updateActivityInput: UpdateActivityInput!): Activity!
 }
 
 input CreateUserInput {
@@ -2859,4 +2895,15 @@ input CreateRecentSearchInput {
   _collection: String
   userToSearch: String
   hashtag: String
+}
+
+input CreateActivityInput {
+  """Name of the staking collection"""
+  type: String!
+}
+
+input UpdateActivityInput {
+  """Name of the staking collection"""
+  type: String
+  id: String!
 }
