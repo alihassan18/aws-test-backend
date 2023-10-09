@@ -52,6 +52,7 @@ type Hashtag {
   """Hashtag field"""
   name: String!
   followersCount: Int!
+  postCount: Int!
 }
 
 type StakingCollection {
@@ -380,6 +381,8 @@ type User {
   isRuffyWorldUser: Boolean!
   recentFollowersCount: Float
   invitation_code: String
+  login_attempts: Float
+  lockedAt: DateTime
   userId: User!
 }
 

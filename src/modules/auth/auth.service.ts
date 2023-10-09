@@ -235,6 +235,23 @@ export class AuthService extends CommonServices {
             throw new Error('You are banned from administrative');
         }
 
+        if (userToAttempt.lockedAt) {
+            const currentTime = new Date();
+            const lockedAtTime = new Date(userToAttempt.lockedAt);
+            if (currentTime < lockedAtTime) {
+                throw new Error(
+                    'Your account is currently locked for 1 hour. Please try again later.'
+                );
+            } else {
+                userToAttempt =
+                    await this.userService.userModel.findOneAndUpdate(
+                        { _id: userToAttempt._id },
+                        { login_attempts: 0, lockedAt: null },
+                        { new: true }
+                    );
+            }
+        }
+
         // if(!userToAttempt.isEmailVerified) throw new Error('You must varify your email address')
         // will do later when email verify api will work properly
         // Check the supplied password against the hash stored for this email address
@@ -246,6 +263,13 @@ export class AuthService extends CommonServices {
         }
 
         if (isMatch) {
+            if (userToAttempt.login_attempts !== 0) {
+                await this.userService.userModel.findOneAndUpdate(
+                    { _id: userToAttempt._id },
+                    { login_attempts: 0, lockedAt: null }
+                );
+            }
+
             if (userToAttempt.settings.twoFa) {
                 await this.userService.send2FaVerificationCode(
                     userToAttempt?._id,
@@ -288,6 +312,35 @@ export class AuthService extends CommonServices {
                     };
                 }
                 return { ...result, notAffiliated: false };
+            }
+        } else {
+            if (userToAttempt) {
+                if (userToAttempt.login_attempts < 4) {
+                    await this.userService.userModel.findOneAndUpdate(
+                        { _id: userToAttempt._id },
+                        {
+                            $set: {
+                                login_attempts: Number(
+                                    userToAttempt.login_attempts + 1
+                                )
+                            }
+                        }
+                    );
+                } else {
+                    await this.userService.userModel.findOneAndUpdate(
+                        { _id: userToAttempt._id },
+                        {
+                            $set: {
+                                lockedAt: new Date().setHours(
+                                    new Date().getHours() + 1
+                                )
+                            }
+                        }
+                    );
+                    throw new Error(
+                        'Your account has been temporarily locked due to login attempts'
+                    );
+                }
             }
         }
 

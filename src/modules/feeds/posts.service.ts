@@ -273,7 +273,8 @@ export class PostService {
         let hashtagss: HashtagDocument[] = [];
         if (hashtags?.length > 0) {
             const tags = await this.hashtagsService.findOrCreateMany(
-                hashtags.map((item) => item.tag)
+                hashtags.map((item) => item.tag),
+                !createPostInput.originalPost && !createPostInput.inReplyToPost ? true : false
             );
             hashtagss = tags;
         }

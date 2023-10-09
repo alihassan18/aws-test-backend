@@ -387,6 +387,19 @@ export class User extends Document {
         default: ''
     })
     invitation_code: string;
+
+    @Field(() => Number, { nullable: true })
+    @Prop({
+        type: Number,
+        default: 0
+    })
+    login_attempts: number;
+
+    @Field(() => Date, { nullable: true })
+    @Prop({
+        type: Date
+    })
+    lockedAt: Date;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(User);
