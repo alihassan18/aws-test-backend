@@ -29,15 +29,28 @@ export class HashtagsService {
         return this.hashtagModel.findOne({ name }).exec();
     }
 
-    async findOrCreateMany(hashtags: string[]): Promise<Hashtag[]> {
+    async findOrCreateMany(
+        hashtags: string[],
+        postCountAdd?: boolean
+    ): Promise<Hashtag[]> {
         const foundOrCreatePromises = hashtags.map(async (name) => {
             const existingHashtag = await this.hashtagModel
                 .findOne({ name })
                 .exec();
             if (existingHashtag) {
+                if (postCountAdd) {
+                    await this.hashtagModel.findOneAndUpdate(
+                        { _id: existingHashtag._id },
+                        { postCount: Number(existingHashtag.postCount + 1) }
+                    );
+                }
+
                 return existingHashtag;
             }
-            const newHashtag = new this.hashtagModel({ name });
+            const newHashtag = new this.hashtagModel({
+                name,
+                ...(postCountAdd && { postCount: 1 })
+            });
             return newHashtag.save();
         });
 
@@ -307,7 +320,7 @@ export class HashtagsService {
                 $sort: { count: -1 }
             },
             {
-                $limit: limit ? Number(limit) : 24 // Get the top 24 hashtags
+                $limit: limit ? Number(limit) : 5 // Get the top 24 hashtags
             },
             {
                 $lookup: {
@@ -324,7 +337,8 @@ export class HashtagsService {
                 $project: {
                     _id: '$hashtag._id',
                     name: '$hashtag.name',
-                    count: 1
+                    // count: 1
+                    count: '$hashtag.postCount'
                 }
             }
         ]);
