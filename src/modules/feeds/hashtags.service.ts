@@ -339,7 +339,6 @@ export class HashtagsService {
                     name: '$hashtag.name',
                     // count: 1
                     count: '$hashtag.postCount'
-
                 }
             }
         ]);
