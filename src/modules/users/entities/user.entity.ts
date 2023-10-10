@@ -26,12 +26,13 @@ export class User extends Document {
     _id: string;
 
     @Field(() => String, { nullable: true })
-    @Prop({ required: true })
+    @Prop({ required: true,validate: { validator: validateName } })
     firstName?: string;
 
     @Field(() => String, { nullable: true })
     @Prop({
         /* required: true  */
+        validate: { validator: validateName }
     })
     lastName: string;
 
@@ -408,6 +409,11 @@ function validateEmail(email: string) {
     const expression =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return expression.test(email);
+}
+
+function validateName(name: string) {
+    const expression = /^(?![^\s]*https?|www\.)(?=[^\d\s]{1,10}$)[A-Za-z\s]*$/;
+    return expression.test(name);
 }
 
 UsersSchema.statics.validateEmail = function (email: string): boolean {
