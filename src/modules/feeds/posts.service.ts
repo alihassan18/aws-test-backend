@@ -188,7 +188,7 @@ export class PostService {
                     chain
                 );
             post = await this.postModel.create({
-                author: collection.creator,
+                author: collection?.creator,
                 collectionData: {
                     chain: chain,
                     contract: contract?.toLowerCase(),

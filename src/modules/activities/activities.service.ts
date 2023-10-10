@@ -55,26 +55,40 @@ export class ActivityService implements OnModuleInit {
 
     async onPostCollection() {
         this.postModel.watch().on('change', (data) => {
-            if (data.operationType === 'insert') {
-                // MongoDB uses 'insert' for creation operations
-                const post: PostDocument = data.fullDocument;
-
-                this.activityModel
-                    .create({
+            // Remove async from here
+            (async () => {
+                // Create an async IIFE (Immediately Invoked Function Expression)
+                if (data.operationType === 'insert') {
+                    // MongoDB uses 'insert' for creation operations
+                    const post: PostDocument = data?.fullDocument;
+                    const values = {
                         user: post.author,
                         post: post?._id,
                         type:
                             post?.tokenData && !post?.token
                                 ? ActivityTypes.NFT_MINTED
                                 : ActivityTypes.POST_CREATED
-                    })
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            }
+                    };
+                    const activity = await this.activityModel
+                        .findOne(values)
+                        .exec();
+                    if (!activity) {
+                        this.activityModel
+                            .create(values)
+                            .then((activity) => {
+                                console.log('Activity created:', activity);
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    'Error creating activity:',
+                                    error
+                                );
+                            });
+                    } else {
+                        console.log('This activity already exists.');
+                    }
+                }
+            })(); // Immediately invoke the async function
         });
     }
 
