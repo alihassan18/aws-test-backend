@@ -92,7 +92,11 @@ export class ActivityService implements OnModuleInit {
             filters.type = { $regex: keywordRegex };
         }
 
-        return this.activityModel.find(filters).limit(5).exec();
+        return this.activityModel
+            .find(filters)
+            .sort({ _id: -1 })
+            .limit(5)
+            .exec();
     }
 
     async findOne(id: string): Promise<Activity> {
