@@ -8,7 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
             driver: ApolloDriver,
             autoSchemaFile: 'schema.gql',
             playground: false,
-            introspection:false
+            introspection: false
             // transformSchema: (schema:any) => upperDirectiveTransformer(schema, 'upper'),
             // installSubscriptionHandlers: true,
             // buildSchemaOptions: {
