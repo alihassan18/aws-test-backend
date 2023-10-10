@@ -26,7 +26,7 @@ export class User extends Document {
     _id: string;
 
     @Field(() => String, { nullable: true })
-    @Prop({ required: true,validate: { validator: validateName } })
+    @Prop({ required: true, validate: { validator: validateName } })
     firstName?: string;
 
     @Field(() => String, { nullable: true })

@@ -349,9 +349,9 @@ export class UsersService {
             const nameExp =
                 /^(?![^\s]*https?|www\.)(?=[^\d\s]{1,10}$)[A-Za-z\s]*$/;
 
-                if(!nameExp.test(data.firstName) || !nameExp.test(data.lastName)){
-                    throw new Error('Name must be valid ');
-                }
+            if (!nameExp.test(data.firstName) || !nameExp.test(data.lastName)) {
+                throw new Error('Name must be valid ');
+            }
         }
 
         if (
