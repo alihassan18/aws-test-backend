@@ -630,8 +630,8 @@ export class EmailService {
     async sendCreateNewPost_follower(to, name, text, url) {
         const convertedtext = convertHashesMentionsToSimpleText(text);
         const mailOptions = {
-            from:`Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>`,
-            to:to,
+            from: `Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>`,
+            to: "notifications@mail.mintstargram.tech",
             bcc: to,
             subject: 'Create a new post',
             template: 'create a new post',
@@ -648,8 +648,8 @@ export class EmailService {
         const convertedtext = convertHashesMentionsToSimpleText(text);
 
         const mailOptions = {
-            from: "Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>",
-            to:to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: "notifications@mail.mintstargram.tech",
             bcc: to,
             subject: 'Comment a post',
             template: 'comment somewhere',
@@ -666,8 +666,8 @@ export class EmailService {
         const convertedtext = convertHashesMentionsToSimpleText(text);
 
         const mailOptions = {
-            from: "Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>",
-            to:to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: "notifications@mail.mintstargram.tech",
             bcc: to,
             subject: 'Reposted',
             template: 'repost somewhere',
@@ -689,8 +689,8 @@ export class EmailService {
         picture
     ) {
         const mailOptions = {
-            from: "Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>",
-            to:to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: "notifications@mail.mintstargram.tech",
             bcc: to,
             subject: 'Minted Podt',
             template: 'mint post',
