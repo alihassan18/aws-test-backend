@@ -25,7 +25,10 @@ export class Activity extends Document {
     @Prop({ type: String, enum: ActivityTypes })
     type: ActivityTypes;
 
-    @Field(() => User, { description: 'Name field (placeholder)' })
+    @Field(() => User, {
+        description: 'Name field (placeholder)',
+        nullable: true
+    })
     @Prop({ type: Types.ObjectId, ref: User.name })
     user: Types.ObjectId;
 

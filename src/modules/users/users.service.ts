@@ -1117,15 +1117,7 @@ export class UsersService {
                 .aggregate([
                     {
                         $match: {
-                            $and: [
-                                { tokenData: { $exists: true } },
-                                {
-                                    $or: [
-                                        { token: null },
-                                        { token: { $exists: false } }
-                                    ]
-                                }
-                            ]
+                            'tokenData.isMinted': true
                         }
                     },
                     {

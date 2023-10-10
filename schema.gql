@@ -1309,7 +1309,7 @@ type Activity {
   type: ActivityTypes!
 
   """Name field (placeholder)"""
-  user: User!
+  user: User
 
   """Name field (placeholder)"""
   nftCollection: Collection
