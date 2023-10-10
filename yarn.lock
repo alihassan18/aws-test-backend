@@ -1472,7 +1472,7 @@
     webpack "5.82.1"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@^10.2.1", "@nestjs/common@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.8 || ^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/common@^9.0.0", "@nestjs/common@^9.3.8":
+"@nestjs/common@^10.2.1", "@nestjs/common@^7.0.0 || ^8.0.0 || ^9.0.0", "@nestjs/common@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/common@^7.0.8 || ^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0", "@nestjs/common@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/common@^9.0.0", "@nestjs/common@^9.3.8":
   version "9.4.3"
   resolved "https://registry.npmjs.org/@nestjs/common/-/common-9.4.3.tgz"
   integrity sha512-Gd6D4IaYj01o14Bwv81ukidn4w3bPHCblMUq+SmUmWLyosK+XQmInCS09SbDDZyL8jy86PngtBLTdhJ2bXSUig==
@@ -1501,6 +1501,18 @@
     lodash "4.17.21"
     uuid "9.0.0"
 
+"@nestjs/core@^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/core@^9.0.0", "@nestjs/core@^9.3.8":
+  version "9.4.3"
+  resolved "https://registry.npmjs.org/@nestjs/core/-/core-9.4.3.tgz"
+  integrity sha512-Qi63+wi55Jh4sDyaj5Hhx2jOpKqT386aeo+VOKsxnd+Ql9VvkO/FjmuwBGUyzkJt29ENYc+P0Sx/k5LtstNpPQ==
+  dependencies:
+    "@nuxtjs/opencollective" "0.3.2"
+    fast-safe-stringify "2.1.1"
+    iterare "1.2.1"
+    path-to-regexp "3.2.0"
+    tslib "2.5.3"
+    uid "2.0.2"
+
 "@nestjs/core@^7.0.0", "@nestjs/core@^7.4.4":
   version "7.6.18"
   resolved "https://registry.npmjs.org/@nestjs/core/-/core-7.6.18.tgz"
@@ -1513,18 +1525,6 @@
     path-to-regexp "3.2.0"
     tslib "2.2.0"
     uuid "8.3.2"
-
-"@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^8.0.0 || ^9.0.0 || ^10.0.0", "@nestjs/core@^9.0.0", "@nestjs/core@^9.3.8":
-  version "9.4.3"
-  resolved "https://registry.npmjs.org/@nestjs/core/-/core-9.4.3.tgz"
-  integrity sha512-Qi63+wi55Jh4sDyaj5Hhx2jOpKqT386aeo+VOKsxnd+Ql9VvkO/FjmuwBGUyzkJt29ENYc+P0Sx/k5LtstNpPQ==
-  dependencies:
-    "@nuxtjs/opencollective" "0.3.2"
-    fast-safe-stringify "2.1.1"
-    iterare "1.2.1"
-    path-to-regexp "3.2.0"
-    tslib "2.5.3"
-    uid "2.0.2"
 
 "@nestjs/event-emitter@^2.0.0":
   version "2.0.2"
@@ -1646,6 +1646,13 @@
   integrity sha512-LDT8Ai2eKnTzvnPaJwWOK03qTaFap5uHHsJCv6dL0uKWk6hyF9jms8DjyVaGsaujCaXDG8izl1mDEER0OmxaZA==
   dependencies:
     tslib "2.5.3"
+
+"@nestjs/throttler@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/@nestjs/throttler/-/throttler-5.0.0.tgz"
+  integrity sha512-TKf+bpjYpRnSOu8dqi0TmQAPxyvLoO6jFldTq3ToevYDfLtAxBXDTJs8qRRfmHv3wORaJhIbVDtW1dDQuP5wCQ==
+  dependencies:
+    md5 "^2.2.1"
 
 "@nestjs/websockets@^7.0.0":
   version "7.6.18"
@@ -3378,6 +3385,11 @@ chardet@^0.7.0:
   resolved "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
+charenc@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/charenc/-/charenc-0.0.2.tgz"
+  integrity sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==
+
 cheerio-select@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/cheerio-select/-/cheerio-select-2.1.0.tgz"
@@ -3825,6 +3837,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypt@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/crypt/-/crypt-0.0.2.tgz"
+  integrity sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==
 
 css-select@^5.1.0:
   version "5.1.0"
@@ -5479,6 +5496,11 @@ is-binary-path@~2.1.0:
   dependencies:
     binary-extensions "^2.0.0"
 
+is-buffer@~1.1.6:
+  version "1.1.6"
+  resolved "https://registry.npmjs.org/is-buffer/-/is-buffer-1.1.6.tgz"
+  integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
+
 is-core-module@^2.13.0:
   version "2.13.0"
   resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.13.0.tgz"
@@ -6492,6 +6514,15 @@ marked@^4.3.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/marked/-/marked-4.3.0.tgz"
   integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
+
+md5@^2.2.1:
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/md5/-/md5-2.3.0.tgz"
+  integrity sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==
+  dependencies:
+    charenc "0.0.2"
+    crypt "0.0.2"
+    is-buffer "~1.1.6"
 
 media-typer@0.3.0:
   version "0.3.0"

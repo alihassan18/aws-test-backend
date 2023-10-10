@@ -18,6 +18,10 @@ export class Hashtag extends Document {
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
     followers: Types.ObjectId[];
+
+    @Field(() => Int, { defaultValue: 0 })
+    @Prop({ type: Number, default: 0 })
+    postCount: number;
 }
 
 export type HashtagDocument = Hashtag & Document;
