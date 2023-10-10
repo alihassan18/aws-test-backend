@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+// import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
@@ -44,15 +44,15 @@ async function bootstrap() {
             saveUninitialized: false
         })
     );
-    const config = new DocumentBuilder()
-        .setTitle('Mintstargram V2 API')
-        .setDescription('The v2 API description')
-        .setVersion('2.0')
-        .addTag('Mintstargram-v2')
-        .build();
-    const document = SwaggerModule.createDocument(app, config);
+    // const config = new DocumentBuilder()
+    //     .setTitle('Mintstargram V2 API')
+    //     .setDescription('The v2 API description')
+    //     .setVersion('2.0')
+    //     .addTag('Mintstargram-v2')
+    //     .build();
+    // const document = SwaggerModule.createDocument(app, config);
     app.enableCors();
-    SwaggerModule.setup('api', app, document);
+    // SwaggerModule.setup('api', app, document);
 
     await app.listen(process.env.PORT || 3000);
 }
