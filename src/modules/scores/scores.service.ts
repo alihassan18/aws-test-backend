@@ -89,7 +89,8 @@ export class ScoresService {
                                 lastName: '$user.lastName',
                                 followersCount: '$user.followersCount',
                                 firstName: '$user.firstName',
-                                avatar: '$user.avatar'
+                                avatar: '$user.avatar',
+                                isVerified:'$user.isVerified'
                             }
                         }
                     }
