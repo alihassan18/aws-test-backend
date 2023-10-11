@@ -692,7 +692,7 @@ export class EmailService {
             from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: 'notifications@mail.mintstargram.tech',
             bcc: to,
-            subject: 'Minted Podt',
+            subject: 'Minted Post',
             template: 'mint post',
             'h:X-Mailgun-Variables': JSON.stringify({
                 name,
