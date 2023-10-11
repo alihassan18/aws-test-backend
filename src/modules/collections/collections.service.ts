@@ -1788,20 +1788,11 @@ export class CollectionsService {
                     _id: '$user._id',
                     user: { $first: '$user' }
                 }
-            },
-            {
-                $replaceRoot: {
-                    newRoot: '$user'
-                }
-            },
-            {
-                $limit: 5
             }
         ];
 
         if (creatorName) {
-            pipeline.unshift({
-                // use unshift to ensure this match stage is at the beginning of the pipeline
+            pipeline.push({
                 $match: {
                     'user.userName': {
                         $regex: `^${creatorName}`,
@@ -1810,6 +1801,16 @@ export class CollectionsService {
                 }
             });
         }
+        pipeline.push(
+            {
+                $replaceRoot: {
+                    newRoot: '$user'
+                }
+            },
+            {
+                $limit: 5
+            }
+        );
 
         const users = await this.collectionModel.aggregate(pipeline).exec();
 
