@@ -32,7 +32,7 @@ import { convertHashesMentionsToSimpleText } from 'src/helpers/common.helpers';
 //     host: 'smtp.mailgun.org',
 //     port: 587,
 //     auth: {
-//         user: env.FROM_EMAIL,
+//         user: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
 //         pass: env.FROM_EMAIL_PASSWORD
 //     }
 // });
@@ -84,7 +84,7 @@ export class EmailService {
 
     async sendForgotPasswordEmail(to, code, name) {
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: to,
             subject: 'Forgot Password Email!',
             template: 'forgot password',
@@ -95,7 +95,7 @@ export class EmailService {
 
     async sendVerificationCode(to, code, name) {
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: to,
             subject: 'Two Factor Authentication Code',
             template: '2fa',
@@ -109,7 +109,7 @@ export class EmailService {
 
     async sendVerifyEmail(email, userId, token) {
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: email,
             subject: 'Email Verification',
             template: 'confirmation email',
@@ -129,7 +129,7 @@ export class EmailService {
         // return new Promise((resolve, reject) => {
         //     const domain = process.env.FRONT_BASE_URL;
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Ruffy World Email Verification',
         //         html: rwConfirmationEmail(userId, token, domain, firstName)
@@ -150,7 +150,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: process.env.CUSTOMER_SUPPORT_EMAIL,
         //         subject: 'Account Delete Request',
         //         html: deleteAccountRequest(name, email)
@@ -172,7 +172,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Bidding Notification',
         //         html: onBidRecieved(title, image, url)
@@ -194,7 +194,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Bidding Notification',
         //         html: bidNotification(price, currency, image, name, url)
@@ -212,7 +212,7 @@ export class EmailService {
     }
     async sendReferralEmail(email, name, url) {
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: email,
             subject: 'Referral Notification',
             template: 'referral',
@@ -221,7 +221,7 @@ export class EmailService {
         return this.MAIL_GUN(mailOptions);
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Referral Notification',
         //         html: referral(name, url)
@@ -243,7 +243,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: emails,
         //         subject: 'Bidding Notification',
         //         html: onBidPlaced(title, image, url)
@@ -265,7 +265,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'NFT Bought Successfully',
         //         html: onBoughtNFT(title, price, currency, image)
@@ -287,7 +287,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'NFT Sold Successfully',
         //         html: onSoldNFT(title, price, currency, image)
@@ -309,7 +309,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'Offer Sent',
         //         html: offerSent(title, price, currency, image)
@@ -331,7 +331,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'Offer Received',
         //         html: offerReceived(title, price, currency, image)
@@ -353,7 +353,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'NFT Sold Successfully',
         //         html: offerAccepted(title, price, currency, image, url)
@@ -375,7 +375,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: to,
         //         subject: 'Offer Rejected',
         //         html: offerRejected(title, price, currency, image)
@@ -397,7 +397,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Minting Notification',
         //         html: mintedNFT(name, image, url)
@@ -425,7 +425,7 @@ export class EmailService {
     // ) {
     //     return new Promise((resolve, reject) => {
     //         const mailOptions = {
-    //             from: env.FROM_EMAIL,
+    //             from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
     //             to: email,
     //             subject: 'Comment Notification',
     //             html: commentNotification(
@@ -451,7 +451,7 @@ export class EmailService {
     async sendStageInvite(displayName, email, id, title, desc) {
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Stage Notification',
         //         html: stageInvite(displayName, id, title, desc)
@@ -468,7 +468,7 @@ export class EmailService {
         // });
 
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: email,
             subject: 'Stage Invitation',
             template: 'invite',
@@ -487,7 +487,7 @@ export class EmailService {
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {
-        //         from: env.FROM_EMAIL,
+        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
         //         to: email,
         //         subject: 'Mintstargram Invitation',
         //         html: invitation_mintstargram(username, code)
@@ -507,7 +507,7 @@ export class EmailService {
     async sendFollowEmail(to, name, profile, url) {
         if (await this.isUserEmailEnabled(to, 'email.follow')) {
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'New Follower',
                 template: 'follow me',
@@ -524,7 +524,7 @@ export class EmailService {
     async sendLikePostEmail(to, name, profile, url) {
         if (await this.isUserEmailEnabled(to, 'email.like')) {
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'Reacted your Post',
                 template: 'like post',
@@ -542,7 +542,7 @@ export class EmailService {
         const text = convertHashesMentionsToSimpleText(comment);
         if (await this.isUserEmailEnabled(to, 'email.like')) {
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'Reacted your Comment',
                 template: 'like react my comment',
@@ -560,7 +560,7 @@ export class EmailService {
         const text = convertHashesMentionsToSimpleText(comment);
         if (await this.isUserEmailEnabled(to, 'email.comment')) {
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'Comment',
                 template: 'comment',
@@ -577,7 +577,7 @@ export class EmailService {
     async sendCommentReplyEmail(to, name, profile, url) {
         if (await this.isUserEmailEnabled(to, 'email.comment')) {
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'Reply your comment',
                 template: 'comment my post',
@@ -594,7 +594,7 @@ export class EmailService {
     async sendRepostEmail(to, name, post, url) {
         const convertedtext = convertHashesMentionsToSimpleText(post);
         const mailOptions = {
-            from: env.FROM_EMAIL,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: to,
             subject: 'Repost your post',
             template: 'repost',
@@ -611,7 +611,7 @@ export class EmailService {
         if (await this.isUserEmailEnabled(to, 'email.comment')) {
             const convertedtext = convertHashesMentionsToSimpleText(post);
             const mailOptions = {
-                from: env.FROM_EMAIL,
+                from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
                 to: to,
                 subject: 'Repost your comment',
                 template: 'repost my reply',
