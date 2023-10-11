@@ -23,7 +23,7 @@ export class ActivityService implements OnModuleInit {
         private collectionModel: Model<CollectionDocument>
     ) {
         this.onCreateCollection();
-        this.onPostCollection();
+        this.onMintPost();
     }
 
     onModuleInit() {
@@ -69,7 +69,7 @@ export class ActivityService implements OnModuleInit {
         });
     }
 
-    async onPostCollection() {
+    async onMintPost() {
         this.postModel.watch().on('change', (data) => {
             // Remove async from here
             (async () => {
@@ -80,16 +80,18 @@ export class ActivityService implements OnModuleInit {
                     const values = {
                         user: post.author,
                         post: post?._id,
-                        type:
-                            post?.tokenData && !post?.token
-                                ? ActivityTypes.NFT_MINTED
-                                : ActivityTypes.POST_CREATED
+                        type: ActivityTypes.NFT_MINTED
                     };
 
                     const activity = await this.activityModel
                         .findOne(values)
                         .exec();
-                    if (!activity && post?.tokenData?.isMinted) {
+                    if (
+                        !activity &&
+                        post?.tokenData?.isMinted &&
+                        post?.tokenData?.collectionName &&
+                        post?.tokenData?.contract
+                    ) {
                         this.activityModel
                             .create(values)
                             .then((activity) => {
