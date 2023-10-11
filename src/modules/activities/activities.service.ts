@@ -86,7 +86,11 @@ export class ActivityService implements OnModuleInit {
                     const activity = await this.activityModel
                         .findOne(values)
                         .exec();
-                    if (!activity && post?.tokenData?.isMinted) {
+                    if (
+                        !activity &&
+                        post?.tokenData?.isMinted &&
+                        post?.tokenData?.collectionName
+                    ) {
                         this.activityModel
                             .create(values)
                             .then((activity) => {
