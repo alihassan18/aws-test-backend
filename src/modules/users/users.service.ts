@@ -344,6 +344,16 @@ export class UsersService {
 
     async editProfile(id: Types.ObjectId, data: ProfileInput) {
         const _user = await this.userModel.findById(id);
+
+        if (data.firstName || data.lastName) {
+            const nameExp =
+                /^(?![^\s]*https?|www\.)(?=[^\d\s]{1,10}$)[A-Za-z\s]*$/;
+
+            if (!nameExp.test(data.firstName) || !nameExp.test(data.lastName)) {
+                throw new Error('Name must be valid ');
+            }
+        }
+
         if (
             _user.userNameUpdateAt &&
             data.userName &&
@@ -1107,15 +1117,7 @@ export class UsersService {
                 .aggregate([
                     {
                         $match: {
-                            $and: [
-                                { tokenData: { $exists: true } },
-                                {
-                                    $or: [
-                                        { token: null },
-                                        { token: { $exists: false } }
-                                    ]
-                                }
-                            ]
+                            'tokenData.isMinted': true
                         }
                     },
                     {

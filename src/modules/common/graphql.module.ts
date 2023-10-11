@@ -6,7 +6,9 @@ import { GraphQLModule } from '@nestjs/graphql';
     imports: [
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            autoSchemaFile: 'schema.gql'
+            autoSchemaFile: 'schema.gql',
+            playground: false,
+            introspection: false
             // transformSchema: (schema:any) => upperDirectiveTransformer(schema, 'upper'),
             // installSubscriptionHandlers: true,
             // buildSchemaOptions: {

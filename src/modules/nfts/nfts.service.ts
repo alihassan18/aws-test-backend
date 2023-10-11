@@ -1128,9 +1128,11 @@ export class NftsService {
             })
             .exec();
         const address = wallets.map((item) => item?.address);
-        // const minterCount = this.tokenModel.countDocuments({
-        //     minter: { $in: address }
-        // });
+
+        const minterCount = this.postModel.countDocuments({
+            author: userId,
+            'tokenData.isMinted': true
+        });
         const ownerCount = this.tokenModel.countDocuments({
             owner: { $in: address }
         });
@@ -1146,7 +1148,7 @@ export class NftsService {
             status: 'filled'
         });
         const [minted, owned, sold, bought, listed] = await Promise.all([
-            0, //minterCount
+            minterCount,
             ownerCount,
             soldCount,
             boughtCount,

@@ -35,14 +35,17 @@ export class AuthGuard implements CanActivate {
                 secret: jwtConstants.secret
             });
 
+            const user = await this.userService.findById(payload?._id);
+
             if (
                 payload?.temp &&
-                request.body.operationName !== 'verify2faLogin'
+                (request.body.operationName?.toLowerCase() ==
+                    'verify2falogin' ||
+                    request.body.operationName?.toLowerCase() == 'send2facode')
             ) {
-                throw new UnauthorizedException();
+                request['user'] = user;
+                return true;
             }
-
-            const user = await this.userService.findById(payload?._id);
 
             if (user.settings.twoFa) {
                 if (!payload.twoFa) {
@@ -51,12 +54,16 @@ export class AuthGuard implements CanActivate {
                     );
                 }
             }
-            if (payload.key !== user.key) {
-                // throw new Error('You are blocked by admin kindly contact support');
-                throw new UnauthorizedException(
-                    'Session expired please login again.'
-                );
+
+            if (payload.key && user.key) {
+                if (payload.key !== user.key) {
+                    // throw new Error('You are blocked by admin kindly contact support');
+                    throw new UnauthorizedException(
+                        'Session expired please login again.'
+                    );
+                }
             }
+
             if (!user) {
                 throw new UnauthorizedException();
             }

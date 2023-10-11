@@ -630,8 +630,9 @@ export class EmailService {
     async sendCreateNewPost_follower(to, name, text, url) {
         const convertedtext = convertHashesMentionsToSimpleText(text);
         const mailOptions = {
-            from: env.FROM_EMAIL,
-            to: to,
+            from: `Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>`,
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
             subject: 'Create a new post',
             template: 'create a new post',
             'h:X-Mailgun-Variables': JSON.stringify({
@@ -647,8 +648,9 @@ export class EmailService {
         const convertedtext = convertHashesMentionsToSimpleText(text);
 
         const mailOptions = {
-            from: env.FROM_EMAIL,
-            to: to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
             subject: 'Comment a post',
             template: 'comment somewhere',
             'h:X-Mailgun-Variables': JSON.stringify({
@@ -664,8 +666,9 @@ export class EmailService {
         const convertedtext = convertHashesMentionsToSimpleText(text);
 
         const mailOptions = {
-            from: env.FROM_EMAIL,
-            to: to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
             subject: 'Reposted',
             template: 'repost somewhere',
             'h:X-Mailgun-Variables': JSON.stringify({
@@ -686,8 +689,9 @@ export class EmailService {
         picture
     ) {
         const mailOptions = {
-            from: env.FROM_EMAIL,
-            to: to,
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
             subject: 'Minted Podt',
             template: 'mint post',
             'h:X-Mailgun-Variables': JSON.stringify({

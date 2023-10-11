@@ -21,60 +21,91 @@ export class ActivityService implements OnModuleInit {
         private postModel: Model<PostDocument>,
         @InjectModel(COLLECTIONS)
         private collectionModel: Model<CollectionDocument>
-    ) {}
-
-    onModuleInit() {
+    ) {
         this.onCreateCollection();
         this.onPostCollection();
     }
 
+    onModuleInit() {
+        console.log('init');
+    }
+
     async onCreateCollection() {
         this.collectionModel.watch().on('change', (data) => {
-            if (data.operationType === 'insert') {
-                // MongoDB uses 'insert' for creation operations
-                const creator = data.fullDocument?.creator;
-                if (creator) {
-                    this.activityModel
-                        .create({
-                            user: creator,
-                            nftCollection: data.fullDocumen?._id,
+            (async () => {
+                if (data.operationType === 'insert') {
+                    // MongoDB uses 'insert' for creation operations
+                    const collection: CollectionDocument = data.fullDocument;
+                    if (collection?.creator) {
+                        const values = {
+                            user: collection?.creator,
+                            nftCollection: collection?._id,
                             type: ActivityTypes.COLLECTION_CREATED
-                        })
-                        .then((activity) => {
-                            console.log('Activity created:', activity);
-                        })
-                        .catch((error) => {
-                            console.error('Error creating activity:', error);
-                        });
-                } else {
-                    console.warn('Creator not found:', data);
+                        };
+
+                        const activity = await this.activityModel
+                            .findOne(values)
+                            .exec();
+                        if (!activity) {
+                            this.activityModel
+                                .create()
+                                .then((activity) => {
+                                    console.log('Activity created:', activity);
+                                })
+                                .catch((error) => {
+                                    console.error(
+                                        'Error creating activity:',
+                                        error
+                                    );
+                                });
+                        } else {
+                            console.log('This activity already exists.');
+                        }
+                    } else {
+                        console.warn('Creator not found:', data);
+                    }
                 }
-            }
+            })();
         });
     }
 
     async onPostCollection() {
         this.postModel.watch().on('change', (data) => {
-            if (data.operationType === 'insert') {
-                // MongoDB uses 'insert' for creation operations
-                const post: PostDocument = data.fullDocument;
-
-                this.activityModel
-                    .create({
+            // Remove async from here
+            (async () => {
+                // Create an async IIFE (Immediately Invoked Function Expression)
+                if (data.operationType === 'insert') {
+                    // MongoDB uses 'insert' for creation operations
+                    const post: PostDocument = data?.fullDocument;
+                    const values = {
                         user: post.author,
                         post: post?._id,
                         type:
                             post?.tokenData && !post?.token
                                 ? ActivityTypes.NFT_MINTED
                                 : ActivityTypes.POST_CREATED
-                    })
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            }
+                    };
+
+                    const activity = await this.activityModel
+                        .findOne(values)
+                        .exec();
+                    if (!activity && post?.tokenData?.isMinted) {
+                        this.activityModel
+                            .create(values)
+                            .then((activity) => {
+                                console.log('Activity created:', activity);
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    'Error creating activity:',
+                                    error
+                                );
+                            });
+                    } else {
+                        console.log('This activity already exists.');
+                    }
+                }
+            })(); // Immediately invoke the async function
         });
     }
 

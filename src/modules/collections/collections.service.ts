@@ -1712,6 +1712,56 @@ export class CollectionsService {
         }
     }
 
+    // async findCollectionsByCreatorName(creatorName?: string): Promise<User[]> {
+    //     const pipeline: PipelineStage[] = [
+    //         {
+    //             $match: {
+    //                 is_content_creator: true
+    //             }
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: 'users',
+    //                 localField: 'creator',
+    //                 foreignField: '_id',
+    //                 as: 'user'
+    //             }
+    //         },
+    //         {
+    //             $unwind: {
+    //                 path: '$user',
+    //                 preserveNullAndEmptyArrays: true
+    //             }
+    //         }
+    //     ];
+
+    //     if (creatorName) {
+    //         pipeline.push({
+    //             $match: {
+    //                 'user.userName': {
+    //                     $regex: `^${creatorName}`,
+    //                     $options: 'i'
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    //     pipeline.push(
+    //         {
+    //             $replaceRoot: {
+    //                 newRoot: '$user'
+    //             }
+    //         },
+    //         {
+    //             $limit: 5
+    //         }
+    //     );
+
+    //     const users = await this.collectionModel.aggregate(pipeline).exec();
+
+    //     return users;
+    // }
+
     async findCollectionsByCreatorName(creatorName?: string): Promise<User[]> {
         const pipeline: PipelineStage[] = [
             {
@@ -1732,32 +1782,13 @@ export class CollectionsService {
                     path: '$user',
                     preserveNullAndEmptyArrays: true
                 }
-            }
-        ];
-
-        if (creatorName) {
-            pipeline.push({
-                $match: {
-                    'user.userName': {
-                        $regex: `^${creatorName}`,
-                        $options: 'i'
-                    }
+            },
+            {
+                $group: {
+                    _id: '$user._id',
+                    user: { $first: '$user' }
                 }
-            });
-        }
-
-        pipeline.push(
-            // {
-            //     $replaceRoot: {
-            //         newRoot: '$user'
-            //     }
-            // },
-            // {
-            //     $group: {
-            //         _id: '$_id',
-            //         user: { $first: '$user' } // Keep the first user document encountered
-            //     }
-            // },
+            },
             {
                 $replaceRoot: {
                     newRoot: '$user'
@@ -1766,7 +1797,19 @@ export class CollectionsService {
             {
                 $limit: 5
             }
-        );
+        ];
+
+        if (creatorName) {
+            pipeline.unshift({
+                // use unshift to ensure this match stage is at the beginning of the pipeline
+                $match: {
+                    'user.userName': {
+                        $regex: `^${creatorName}`,
+                        $options: 'i'
+                    }
+                }
+            });
+        }
 
         const users = await this.collectionModel.aggregate(pipeline).exec();
 
