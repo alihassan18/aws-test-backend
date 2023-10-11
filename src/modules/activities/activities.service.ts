@@ -80,10 +80,7 @@ export class ActivityService implements OnModuleInit {
                     const values = {
                         user: post.author,
                         post: post?._id,
-                        type:
-                            post?.tokenData && !post?.token
-                                ? ActivityTypes.NFT_MINTED
-                                : ActivityTypes.POST_CREATED
+                        type: ActivityTypes.NFT_MINTED
                     };
 
                     const activity = await this.activityModel
