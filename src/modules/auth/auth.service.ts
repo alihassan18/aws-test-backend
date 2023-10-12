@@ -605,6 +605,12 @@ export class AuthService extends CommonServices {
                 isVerified: true,
                 code
             });
+            if (verification?.attempts > 2 && !verification?.isVerified) {
+                throw new Error(
+                    'You have already made 3 attempts please retry after 24 hours'
+                );
+            }
+
             if (isVerified) {
                 const pwd = bcrypt.hashSync(password, jwtConstants.salt);
                 const key = user._id + code + user._id;
@@ -622,7 +628,11 @@ export class AuthService extends CommonServices {
 
                 return { success: true };
             } else {
-                throw new Error('Please verify your code first');
+                if (verification) {
+                    verification.attempts = verification.attempts + 1;
+                    await verification.save();
+                }
+                throw new Error('Incorrect pin entered');
             }
         } else {
             throw new Error('No user found on that email');
@@ -852,7 +862,7 @@ export class AuthService extends CommonServices {
         userId: Types.ObjectId,
         currentPassword: string,
         newPassword: string
-    ): Promise<boolean> {
+    ): Promise<string> {
         const user = await this.userService.findById(userId);
 
         if (!user) {
@@ -869,14 +879,19 @@ export class AuthService extends CommonServices {
         }
 
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-        await this.userService.userModel
-            .updateOne(
+        const random = Math.random().toString(36).substring(2, 17);
+        const key = user._id + random + user._id;
+        const updatedUser = await this.userService.userModel
+            .findByIdAndUpdate(
                 { _id: userId },
-                { $set: { password: hashedNewPassword } }
+                { $set: { password: hashedNewPassword, key: key } },
+                { new: true }
             )
-            .exec();
+            .lean();
 
-        return true;
+        const loggedIn = await this.createJwt(updatedUser);
+
+        return loggedIn.access_token;
     }
 
     async isUsernameAvailable(userName: string) {
