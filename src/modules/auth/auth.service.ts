@@ -889,8 +889,7 @@ export class AuthService extends CommonServices {
             )
             .lean();
 
-            const loggedIn = await this.createJwt(updatedUser);
-
+        const loggedIn = await this.createJwt(updatedUser);
 
         return loggedIn.access_token;
     }
