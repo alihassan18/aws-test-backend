@@ -862,7 +862,7 @@ export class AuthService extends CommonServices {
         userId: Types.ObjectId,
         currentPassword: string,
         newPassword: string
-    ): Promise<boolean> {
+    ): Promise<string> {
         const user = await this.userService.findById(userId);
 
         if (!user) {
@@ -879,14 +879,20 @@ export class AuthService extends CommonServices {
         }
 
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-        await this.userService.userModel
-            .updateOne(
+        const random = Math.random().toString(36).substring(2, 17);
+        const key = user._id + random + user._id;
+        const updatedUser = await this.userService.userModel
+            .findByIdAndUpdate(
                 { _id: userId },
-                { $set: { password: hashedNewPassword } }
+                { $set: { password: hashedNewPassword, key: key } },
+                { new: true }
             )
-            .exec();
+            .lean();
 
-        return true;
+            const loggedIn = await this.createJwt(updatedUser);
+
+
+        return loggedIn.access_token;
     }
 
     async isUsernameAvailable(userName: string) {

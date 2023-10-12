@@ -184,12 +184,12 @@ export class AuthResolver extends CommonServices {
     }
 
     @UseGuards(AuthGuard)
-    @Mutation(() => Boolean)
+    @Mutation(() => String)
     async updatePassword(
         @Args('currentPassword') currentPassword: string,
         @Args('newPassword') newPassword: string,
         @Context() ctx: ContextProps
-    ): Promise<boolean> {
+    ): Promise<string> {
         return this.authService.changePassword(
             ctx.req.user._id,
             currentPassword,
