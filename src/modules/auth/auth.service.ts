@@ -605,6 +605,12 @@ export class AuthService extends CommonServices {
                 isVerified: true,
                 code
             });
+            if (verification?.attempts > 2 && !verification?.isVerified) {
+                throw new Error(
+                    'You have already made 3 attempts please retry after 24 hours'
+                );
+            }
+
             if (isVerified) {
                 const pwd = bcrypt.hashSync(password, jwtConstants.salt);
                 const key = user._id + code + user._id;
@@ -622,7 +628,11 @@ export class AuthService extends CommonServices {
 
                 return { success: true };
             } else {
-                throw new Error('Please verify your code first');
+                if (verification) {
+                    verification.attempts = verification.attempts + 1;
+                    await verification.save();
+                }
+                throw new Error('Incorrect pin entered');
             }
         } else {
             throw new Error('No user found on that email');
