@@ -25,6 +25,8 @@ import {
     HiddenTokens,
     HiddenTokensDocument
 } from './entities/nft.hidden.entity';
+import { CollectionDocument } from '../collections/entities/collection.entity';
+import { COLLECTIONS } from 'src/constants/db.collections';
 
 @Injectable()
 export class NftsService {
@@ -41,6 +43,8 @@ export class NftsService {
         private userModel: Model<UserDocument>,
         @InjectModel(Post.name)
         private postModel: Model<PostDocument>,
+        @InjectModel(COLLECTIONS)
+        private collectionModel: Model<CollectionDocument>,
         @InjectModel(HiddenTokens.name)
         private hideTokenModel: Model<HiddenTokensDocument>,
         private reservoirService: ReservoirService
@@ -1159,6 +1163,16 @@ export class NftsService {
 
     async hideToken(data: HiddenTokensInput): Promise<boolean> {
         try {
+            const collection = await this.collectionModel
+                .findOne({
+                    chain: data?.chain,
+                    contract: { $regex: new RegExp(`^${data?.contract}$`, 'i') }
+                })
+                .exec();
+
+            if (!collection) {
+                throw new Error('This token is not supported.');
+            }
             const token = await this.hideTokenModel.findOne(data);
 
             if (token) {
