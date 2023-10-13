@@ -399,8 +399,8 @@ export class NotificationService {
         emailFollowers: Array<string>;
     }> {
         const settingsFields = [
-            { field: 'alerts.comment', resultField: '$followers._id' },
-            { field: 'email.comment', resultField: '$followers.email' }
+            { field: 'alerts.follow', resultField: '$followers._id' },
+            { field: 'email.follow', resultField: '$followers.email' }
         ];
 
         const aggregatedResults = await Promise.all(
