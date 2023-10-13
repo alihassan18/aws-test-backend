@@ -36,15 +36,21 @@ export class AuthGuard implements CanActivate {
             });
 
             const user = await this.userService.findById(payload?._id);
-
+            
             if (
                 payload?.temp &&
                 (request.body.operationName?.toLowerCase() ==
-                    'verify2falogin' ||
-                    request.body.operationName?.toLowerCase() == 'send2facode')
+                    'verify2falogin'
+                     ||
+                    request.body.operationName?.toLowerCase() == 'send2facode'
+                    )
             ) {
                 request['user'] = user;
                 return true;
+            }else if(payload?.temp){
+                throw new UnauthorizedException(
+                    'Session expired please login again.'
+                );
             }
 
             if (user.settings.twoFa) {
