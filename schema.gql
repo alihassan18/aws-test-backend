@@ -132,7 +132,6 @@ type StageObject {
   id: String!
   title: String!
   description: String!
-  date: DateTime!
 }
 
 type Post {
@@ -2474,7 +2473,6 @@ input StageInput {
   id: String!
   title: String!
   description: String!
-  date: DateTime!
 }
 
 input CreateTwitterPostInput {
