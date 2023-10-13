@@ -1150,7 +1150,7 @@ export class PostService {
                 originalPost = post;
             }
         } else if (stage) {
-            const { id, title, description, date } = stage;
+            const { id, title, description } = stage;
             const post = await this.postModel.findOne({
                 'stage.id': stage.id
             });
@@ -1162,8 +1162,7 @@ export class PostService {
                     stage: {
                         id,
                         title,
-                        description,
-                        date
+                        description
                     }
                 });
                 post.save();
