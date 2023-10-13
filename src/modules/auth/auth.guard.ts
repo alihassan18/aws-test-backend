@@ -45,6 +45,10 @@ export class AuthGuard implements CanActivate {
             ) {
                 request['user'] = user;
                 return true;
+            } else if (payload?.temp) {
+                throw new UnauthorizedException(
+                    'Session expired please login again.'
+                );
             }
 
             if (user.settings.twoFa) {
