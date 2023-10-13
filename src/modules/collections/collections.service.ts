@@ -283,7 +283,7 @@ export class CollectionsService {
                           //   _id: -1,
                           [query?.sort?.type]: query?.sort?.value
                       }
-                    : { createdAt: 1 })
+                    : { createdAt: -1 })
             };
 
             const collections = await this.collectionModel
