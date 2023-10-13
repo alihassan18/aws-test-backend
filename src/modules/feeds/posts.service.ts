@@ -1162,7 +1162,7 @@ export class PostService {
                     stage: {
                         id,
                         title,
-                        description,
+                        description
                     }
                 });
                 post.save();

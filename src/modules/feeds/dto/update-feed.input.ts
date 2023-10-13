@@ -158,5 +158,4 @@ export class StageInput {
     @Field(() => String)
     @Prop()
     description: string;
-
 }
