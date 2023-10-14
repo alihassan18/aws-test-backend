@@ -311,7 +311,7 @@ export class UsersService {
         loggedUserId?: Types.ObjectId,
         groupId?: string
     ): Promise<User[]> {
-        const filter = { userName: { $regex: `^${query}`, $options: 'i' } };
+        const filter = { userName: { $regex: `${query}`, $options: 'i' } };
         if (loggedUserId) {
             const user = await this.userModel.findById(loggedUserId).exec();
 
@@ -533,19 +533,19 @@ export class UsersService {
                     $or: [
                         {
                             firstName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         },
                         {
                             lastName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         },
                         {
                             userName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         }
