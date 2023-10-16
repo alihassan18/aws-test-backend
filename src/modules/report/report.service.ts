@@ -15,7 +15,7 @@ export class ReportService {
     constructor(
         @InjectModel(Report.name) private reportModal: Model<ReportDocument>,
         private readonly notificationService: NotificationService
-    ) { }
+    ) {}
 
     async create(
         data: CreateReportDto,
@@ -222,9 +222,11 @@ export class ReportService {
         const isAvailable = await this.reportModal.findOne({
             type: ReportStatus.COMPLETED,
             $and: [
-                { '_collection.contract': {
-                    $regex: new RegExp(`${contract}`, 'i')
-                } },
+                {
+                    '_collection.contract': {
+                        $regex: new RegExp(`${contract}`, 'i')
+                    }
+                },
                 { '_collection.chain': chain },
                 { '_collection.isBlocked': true }
             ]
