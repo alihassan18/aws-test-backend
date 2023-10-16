@@ -30,7 +30,7 @@ export class NotificationResolver {
         private readonly notificationService: NotificationService,
         private readonly userService: UsersService,
         private readonly postSerivce: PostService
-    ) { }
+    ) {}
 
     @ResolveField(() => User)
     async receiver(

@@ -12,7 +12,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 
 @Resolver(() => Referral)
 export class ReferralResolver {
-    constructor(private readonly referralService: ReferralService) { }
+    constructor(private readonly referralService: ReferralService) {}
 
     @Mutation(() => CreateReferralOutput)
     @UseGuards(AuthGuard)
@@ -35,9 +35,7 @@ export class ReferralResolver {
 
     @Query(() => [User])
     @UseGuards(AuthGuard)
-    userReferrals(
-        @Context() ctx: ContextProps
-    ): Promise<UserDocument[]> {
+    userReferrals(@Context() ctx: ContextProps): Promise<UserDocument[]> {
         const { _id: userId } = ctx.req.user;
         return this.referralService.userReferrals(userId);
     }
