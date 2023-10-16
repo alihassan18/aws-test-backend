@@ -1332,6 +1332,7 @@ enum ActivityTypes {
   NFT_MINTED
   NFT_LISTED
   BID_CREATED
+  NFY_BUY
 }
 
 type PageInfo {
