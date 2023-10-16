@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Referral, ReferralDocument } from './entities/referral.entity';
 import { UsersService } from '../users/users.service';
 
@@ -232,5 +232,9 @@ export class ReferralService {
             status: true,
             message: 'Your request for affiliation is submited'
         };
+    }
+
+    userReferrals(id: Types.ObjectId) {
+        return this.userService.userModel.find({ referral: id });
     }
 }

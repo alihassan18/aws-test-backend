@@ -1732,6 +1732,7 @@ type Query {
   usersUseHashtag(hashtag: String!): [Post!]
   hashtagFollowersUsers(hashtag: String!): [User!]!
   affiliatedData(duration: String!): ReferralsOutput!
+  userReferrals: [User!]!
   notifications(query: NotificationFilterInput, limit: Int! = 10, cursor: String, currentPage: Int): NotificationResults!
   notification(id: String!): Notification
   getUnSeenCounts: Float!
