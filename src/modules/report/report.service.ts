@@ -222,7 +222,11 @@ export class ReportService {
         const isAvailable = await this.reportModal.findOne({
             type: ReportStatus.COMPLETED,
             $and: [
-                { '_collection.contract': contract },
+                {
+                    '_collection.contract': {
+                        $regex: new RegExp(`${contract}`, 'i')
+                    }
+                },
                 { '_collection.chain': chain },
                 { '_collection.isBlocked': true }
             ]

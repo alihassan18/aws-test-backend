@@ -1301,6 +1301,12 @@ type RecentSearch {
   hashtag: Hashtag
 }
 
+type ActTokenData {
+  tokenId: String
+  image: String
+  name: String
+}
+
 type Activity {
   _id: String!
 
@@ -1315,12 +1321,17 @@ type Activity {
 
   """Name field (placeholder)"""
   post: Post
+
+  """Name field (placeholder)"""
+  token: ActTokenData
 }
 
 enum ActivityTypes {
   POST_CREATED
   COLLECTION_CREATED
   NFT_MINTED
+  NFT_LISTED
+  BID_CREATED
 }
 
 type PageInfo {
