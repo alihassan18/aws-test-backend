@@ -15,7 +15,7 @@ export class ReportService {
     constructor(
         @InjectModel(Report.name) private reportModal: Model<ReportDocument>,
         private readonly notificationService: NotificationService
-    ) { }
+    ) {}
 
     async create(
         data: CreateReportDto,
@@ -58,7 +58,10 @@ export class ReportService {
         if (data?.nft) {
             const alreadyReported = await this.reportModal.findOne({
                 // nft: new Types.ObjectId(data?.nft),
-                nft: { ...data.nft, contract: data.nft.contract?.toLowerCase() },
+                nft: {
+                    ...data.nft,
+                    contract: data.nft.contract?.toLowerCase()
+                },
                 reportedBy: reportBy
             });
 
@@ -84,7 +87,10 @@ export class ReportService {
             //     reportedBy: reportBy
             // });
             const alreadyReported = await this.reportModal.findOne({
-                _collection: { ...data._collection, contract: data._collection.contract?.toLowerCase() },
+                _collection: {
+                    ...data._collection,
+                    contract: data._collection.contract?.toLowerCase()
+                },
                 reportedBy: reportBy
             });
 
@@ -100,13 +106,18 @@ export class ReportService {
             ...(data.post && { post: new Types.ObjectId(data.post) }),
             ...(data.user && { user: new Types.ObjectId(data.user) }),
             // ...(data.nft && { nft: new Types.ObjectId(data.nft) }),
-            ...(data.nft && { nft: { ...data.nft, contract: data.nft.contract?.toLowerCase() } }),
+            ...(data.nft && {
+                nft: { ...data.nft, contract: data.nft.contract?.toLowerCase() }
+            }),
             ...(data.land && { land: new Types.ObjectId(data.land) }),
             // ...(data._collection && {
             //     _collection: new Types.ObjectId(data._collection)
             // }),
             ...(data._collection && {
-                _collection: { ...data._collection, contract: data._collection.contract?.toLowerCase() }
+                _collection: {
+                    ...data._collection,
+                    contract: data._collection.contract?.toLowerCase()
+                }
             }),
             reportedBy: reportBy
         });
