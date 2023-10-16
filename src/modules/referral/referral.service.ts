@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Referral, ReferralDocument } from './entities/referral.entity';
 import { UsersService } from '../users/users.service';
 
@@ -11,7 +11,7 @@ export class ReferralService {
         @InjectModel(Referral.name)
         readonly referralModel: Model<ReferralDocument>,
         readonly userService: UsersService
-    ) {}
+    ) { }
 
     async calculate(userCount: number) {
         if (userCount < 4) {
@@ -199,10 +199,10 @@ export class ReferralService {
                 duration == '1_MONTH'
                     ? oneMonthData
                     : duration == '3_MONTH'
-                    ? threeMonthsData
-                    : duration == '12_MONTH'
-                    ? oneYearData
-                    : Object.values(groupedArray);
+                        ? threeMonthsData
+                        : duration == '12_MONTH'
+                            ? oneYearData
+                            : Object.values(groupedArray);
 
             return { affiliatedData: refferalUser, graphData: graphData };
             // return refferalUser;
@@ -232,5 +232,10 @@ export class ReferralService {
             status: true,
             message: 'Your request for affiliation is submited'
         };
+    }
+
+
+    userReferrals(id: Types.ObjectId) {
+        return this.userService.userModel.find({ referral: id })
     }
 }

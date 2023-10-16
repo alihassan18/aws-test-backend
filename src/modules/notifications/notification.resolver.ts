@@ -30,18 +30,18 @@ export class NotificationResolver {
         private readonly notificationService: NotificationService,
         private readonly userService: UsersService,
         private readonly postSerivce: PostService
-    ) {}
+    ) { }
 
     @ResolveField(() => User)
     async receiver(
         @Parent() notification: Notification
     ): Promise<UserDocument> {
-        return this.userService.findById(notification?.receiver);
+        return this.userService.findById(notification?.receiver, true);
     }
 
     @ResolveField(() => User)
     async from(@Parent() notification: Notification): Promise<UserDocument> {
-        return this.userService.findById(notification?.from);
+        return this.userService.findById(notification?.from, true);
     }
 
     @ResolveField(() => Post)

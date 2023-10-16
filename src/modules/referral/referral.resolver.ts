@@ -8,10 +8,11 @@ import {
     CreateReferralOutput,
     ReferralsOutput
 } from './dto/create-referral.input';
+import { User, UserDocument } from '../users/entities/user.entity';
 
 @Resolver(() => Referral)
 export class ReferralResolver {
-    constructor(private readonly referralService: ReferralService) {}
+    constructor(private readonly referralService: ReferralService) { }
 
     @Mutation(() => CreateReferralOutput)
     @UseGuards(AuthGuard)
@@ -30,5 +31,14 @@ export class ReferralResolver {
     ): Promise<ReferralsOutput> {
         const { _id: userId } = ctx.req.user;
         return this.referralService.get(userId, duration);
+    }
+
+    @Query(() => [User])
+    @UseGuards(AuthGuard)
+    userReferrals(
+        @Context() ctx: ContextProps
+    ): Promise<UserDocument[]> {
+        const { _id: userId } = ctx.req.user;
+        return this.referralService.userReferrals(userId);
     }
 }
