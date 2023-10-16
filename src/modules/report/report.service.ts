@@ -240,7 +240,6 @@ export class ReportService {
                 { '_collection.isBlocked': true }
             ]
         });
-        console.log(isAvailable, 'isAvailable');
 
         if (isAvailable) {
             return { success: true };
