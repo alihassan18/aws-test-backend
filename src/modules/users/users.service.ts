@@ -311,7 +311,7 @@ export class UsersService {
         loggedUserId?: Types.ObjectId,
         groupId?: string
     ): Promise<User[]> {
-        const filter = { userName: { $regex: `^${query}`, $options: 'i' } };
+        const filter = { userName: { $regex: `${query}`, $options: 'i' } };
         if (loggedUserId) {
             const user = await this.userModel.findById(loggedUserId).exec();
 
@@ -352,6 +352,21 @@ export class UsersService {
             if (!nameExp.test(data.firstName) || !nameExp.test(data.lastName)) {
                 throw new Error('Name must be valid ');
             }
+        }
+        if (data?.bio?.length >= 300) {
+            throw new Error('Bio must be at least 300 characters');
+        }
+        if (
+            data?.facebook?.length >= 30 ||
+            data?.instagram?.length >= 30 ||
+            data?.reddit?.length >= 30 ||
+            data?.twitter?.length >= 30 ||
+            data?.discord?.length >= 30 ||
+            data?.youtube?.length >= 30 ||
+            data?.tiktok?.length >= 30 ||
+            data?.web?.length >= 30
+        ) {
+            throw new Error('Social Media link at least 30 characters');
         }
 
         if (
@@ -518,19 +533,19 @@ export class UsersService {
                     $or: [
                         {
                             firstName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         },
                         {
                             lastName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         },
                         {
                             userName: {
-                                $regex: `^${query}`,
+                                $regex: `${query}`,
                                 $options: 'i'
                             }
                         }

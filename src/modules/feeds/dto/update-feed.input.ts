@@ -158,8 +158,4 @@ export class StageInput {
     @Field(() => String)
     @Prop()
     description: string;
-
-    @Field(() => Date)
-    @Prop()
-    date: Date;
 }

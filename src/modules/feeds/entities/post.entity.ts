@@ -132,10 +132,6 @@ export class StageObject {
     @Field(() => String)
     @Prop()
     description: string;
-
-    @Field(() => Date)
-    @Prop()
-    date: Date;
 }
 @Schema()
 @ObjectType()
