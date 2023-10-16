@@ -40,7 +40,7 @@ import { RwCharacterModule } from './modules/rw_character/rw_character.module';
 import { RwBuildingsModule } from './modules/rw_buildings/rw_buildings.module';
 import { RwLandModule } from './modules/rw_land/rw_land.module';
 import { RwSettingsModule } from './modules/rw_settings/rw_settings.module';
-// import { EventsModule } from './modules/events/events.module';
+import { EventsModule } from './modules/events/events.module';
 import { RwUsersMediaModule } from './modules/rw_users_media/rw_users_media.module';
 // import { ContractEventsModule } from './modules/contract-events/contract-events.module';
 import { RwReportModule } from './modules/rw_report/rw_report.module';
@@ -91,7 +91,7 @@ import { ActivityModule } from './modules/activities/activities.module';
         RwBuildingsModule,
         RwLandModule,
         RwSettingsModule,
-        // EventsModule,
+        EventsModule,
         // ContractEventsModule
         RwUsersMediaModule,
         RwReportModule,

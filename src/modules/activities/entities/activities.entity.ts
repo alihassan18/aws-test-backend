@@ -9,6 +9,21 @@ import { Types } from 'mongoose';
 
 export type ActivityDocument = Activity & Document;
 
+@ObjectType()
+class ActTokenData {
+    @Field({ nullable: true })
+    @Prop()
+    tokenId: string;
+
+    @Field({ nullable: true })
+    @Prop()
+    image: string;
+
+    @Field({ nullable: true })
+    @Prop()
+    name: string;
+}
+
 registerEnumType(ActivityTypes, {
     name: 'ActivityTypes'
 });
@@ -48,6 +63,13 @@ export class Activity extends Document {
     })
     @Prop({ type: Types.ObjectId, ref: Post.name })
     post: Types.ObjectId;
+
+    @Field(() => ActTokenData, {
+        description: 'Name field (placeholder)',
+        nullable: true
+    })
+    @Prop({ type: ActTokenData })
+    token: ActTokenData;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
