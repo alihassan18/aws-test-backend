@@ -21,15 +21,18 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { ContextProps } from 'src/interfaces/common.interface';
 import { Types } from 'mongoose';
-import { Post, PostDocument } from '../feeds/entities/post.entity';
+import { Collections, Post, PostDocument } from '../feeds/entities/post.entity';
 import { SuccessPayload } from '../admin/dto/create-admin.input';
+import { CollectionsService } from '../collections/collections.service';
+import { CollectionDocument } from '../collections/entities/collection.entity';
 
 @Resolver(() => Notification)
 export class NotificationResolver {
     constructor(
         private readonly notificationService: NotificationService,
         private readonly userService: UsersService,
-        private readonly postSerivce: PostService
+        private readonly postSerivce: PostService,
+        private readonly collectionService: CollectionsService,
     ) {}
 
     @ResolveField(() => User)
@@ -48,6 +51,12 @@ export class NotificationResolver {
     async post(@Parent() notification: Notification): Promise<PostDocument> {
         return this.postSerivce.findById(notification?.post);
     }
+
+    @ResolveField(() => Collections)
+    async _collection(@Parent() notification: Notification): Promise<CollectionDocument> {
+        return this.collectionService.findById(notification?._collection);
+    }
+
 
     @UseGuards(AuthGuard)
     @Query(() => NotificationResults, {

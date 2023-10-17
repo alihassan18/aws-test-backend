@@ -748,7 +748,7 @@ type Notification {
   seen: Boolean
   receiver: User
   from: User
-  _collection: Collection!
+  _collection: Collection
   nft: Nft
   post: Post
   stage: String
