@@ -32,7 +32,7 @@ export class NotificationResolver {
         private readonly notificationService: NotificationService,
         private readonly userService: UsersService,
         private readonly postSerivce: PostService,
-        private readonly collectionService: CollectionsService,
+        private readonly collectionService: CollectionsService
     ) {}
 
     @ResolveField(() => User)
@@ -53,10 +53,11 @@ export class NotificationResolver {
     }
 
     @ResolveField(() => Collections)
-    async _collection(@Parent() notification: Notification): Promise<CollectionDocument> {
+    async _collection(
+        @Parent() notification: Notification
+    ): Promise<CollectionDocument> {
         return this.collectionService.findById(notification?._collection);
     }
-
 
     @UseGuards(AuthGuard)
     @Query(() => NotificationResults, {

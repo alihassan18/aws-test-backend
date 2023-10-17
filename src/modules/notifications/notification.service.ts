@@ -164,7 +164,7 @@ export class NotificationService {
                                 NotificationType.BOUGHT,
                                 NotificationType.REMOVE_BID,
                                 NotificationType.SYSTEM,
-                                NotificationType.FOLLOWER_CREATE_COLLECTION,
+                                NotificationType.FOLLOWER_CREATE_COLLECTION
                             ]
                         }
                     }
@@ -228,7 +228,7 @@ export class NotificationService {
                             NotificationType.BOUGHT,
                             NotificationType.REMOVE_BID,
                             NotificationType.SYSTEM,
-                            NotificationType.FOLLOWER_CREATE_COLLECTION,
+                            NotificationType.FOLLOWER_CREATE_COLLECTION
                         ]
                     }
                 }
