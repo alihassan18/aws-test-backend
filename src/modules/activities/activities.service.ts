@@ -106,6 +106,20 @@ export class ActivityService implements OnModuleInit {
                     } else {
                         console.log('This activity already exists.');
                     }
+                } else if (data.operationType === 'delete') {
+                    const deletedPostId = data.documentKey._id; // Get the ID of the deleted post
+
+                    // Find and remove the related activity
+                    this.activityModel
+                        .deleteMany({ post: deletedPostId })
+                        .then((result) => {
+                            console.log(
+                                `Removed ${result.deletedCount} activities related to post ${deletedPostId}`
+                            );
+                        })
+                        .catch((error) => {
+                            console.error('Error removing activities:', error);
+                        });
                 }
             })(); // Immediately invoke the async function
         });

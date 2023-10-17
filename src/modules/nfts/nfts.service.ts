@@ -1171,7 +1171,7 @@ export class NftsService {
                 .exec();
 
             if (!collection) {
-                throw new Error('This token is not supported.');
+                throw new Error("You can only star KEY NFT's.");
             }
             const token = await this.hideTokenModel.findOne(data);
 
