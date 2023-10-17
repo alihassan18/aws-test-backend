@@ -44,7 +44,7 @@ import { Distributions } from './entities/collection.distributions';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../users/entities/user.entity';
-// import { NotificationService } from '../notifications/notification.service';
+import { NotificationService } from '../notifications/notification.service';
 @Resolver(() => Collection)
 export class CollectionsResolver {
     // eslint-disable-next-line no-unused-vars
@@ -53,7 +53,8 @@ export class CollectionsResolver {
         private readonly userService: UsersService,
         private readonly reservoirService: ReservoirService,
         @InjectModel(Post.name)
-        public postModel: Model<PostDocument> // private readonly notifcationService:NotificationService
+        public postModel: Model<PostDocument>,
+        private readonly notifcationService: NotificationService
     ) {}
 
     @ResolveField(() => Post)
@@ -63,14 +64,34 @@ export class CollectionsResolver {
 
     @UseGuards(AuthGuard)
     @Mutation(() => Collection)
-    createCollection(
+    async createCollection(
         @Args('createCollectionInput')
         createCollectionInput: CreateCollectionInput,
         @Context()
         context: ContextProps
     ) {
-        const user = context.req.user;
-        return this.collectionsService.create(createCollectionInput, user?._id);
+        try {
+            const user = context.req.user;
+            const response = await this.collectionsService.create(
+                createCollectionInput,
+                user?._id
+            );
+            if (response) {
+                this.notifcationService.alertFollowers4CCollection(
+                    user._id,
+                    user.userName,
+                    response.chain,
+                    response.contract,
+                    response.image,
+                    String(response.supply || ''),
+                    response?._id?.toString()
+                );
+            }
+
+            return response;
+        } catch (error) {
+            return error;
+        }
     }
 
     @UseGuards(AuthGuard)

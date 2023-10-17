@@ -39,7 +39,7 @@ export class Notification extends Document {
     @Prop({ type: Types.ObjectId, ref: USERS })
     from: Types.ObjectId;
 
-    @Field(() => Collection)
+    @Field(() => Collection, { nullable: true })
     @Prop({ type: Types.ObjectId, ref: COLLECTIONS })
     _collection: Types.ObjectId;
 

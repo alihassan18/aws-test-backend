@@ -704,4 +704,29 @@ export class EmailService {
         };
         return this.MAIL_GUN(mailOptions);
     }
+
+    async sendCreateNewCCollection_follower(
+        to,
+        displayName,
+        chain,
+        contract,
+        image,
+        supply
+    ) {
+        const mailOptions = {
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
+            subject: 'New Collection',
+            template: 'create a new content creator collection',
+            'h:X-Mailgun-Variables': JSON.stringify({
+                displayName,
+                chain,
+                contract,
+                image,
+                supply
+            })
+        };
+        return this.MAIL_GUN(mailOptions);
+    }
 }

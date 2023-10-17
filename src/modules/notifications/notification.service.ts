@@ -163,7 +163,8 @@ export class NotificationService {
                                 NotificationType.SOLD,
                                 NotificationType.BOUGHT,
                                 NotificationType.REMOVE_BID,
-                                NotificationType.SYSTEM
+                                NotificationType.SYSTEM,
+                                NotificationType.FOLLOWER_CREATE_COLLECTION
                             ]
                         }
                     }
@@ -179,7 +180,8 @@ export class NotificationService {
                                 NotificationType.LISTING,
                                 NotificationType.SOLD,
                                 NotificationType.BOUGHT,
-                                NotificationType.REMOVE_BID
+                                NotificationType.REMOVE_BID,
+                                NotificationType.FOLLOWER_CREATE_COLLECTION
                             ]
                         }
                     }
@@ -225,7 +227,8 @@ export class NotificationService {
                             NotificationType.SOLD,
                             NotificationType.BOUGHT,
                             NotificationType.REMOVE_BID,
-                            NotificationType.SYSTEM
+                            NotificationType.SYSTEM,
+                            NotificationType.FOLLOWER_CREATE_COLLECTION
                         ]
                     }
                 }
@@ -249,7 +252,8 @@ export class NotificationService {
                         NotificationType.LISTING,
                         NotificationType.SOLD,
                         NotificationType.BOUGHT,
-                        NotificationType.REMOVE_BID
+                        NotificationType.REMOVE_BID,
+                        NotificationType.FOLLOWER_CREATE_COLLECTION
                     ]
                 }
             });
@@ -588,6 +592,45 @@ export class NotificationService {
                     from: userId,
                     receiver: new Types.ObjectId(u),
                     post: postId
+                },
+                true
+            );
+        }
+        return;
+    }
+
+    async alertFollowers4CCollection(
+        userId: Types.ObjectId,
+        username: string,
+        chain: string,
+        contract: string,
+        image: string,
+        supply: string,
+        collectionId: string
+    ) {
+        const { alertsFollowers, emailFollowers } = await this.alertsUsers(
+            userId
+        );
+
+        if (emailFollowers?.length > 0) {
+            await this.emailService.sendCreateNewCCollection_follower(
+                emailFollowers,
+                username,
+                chain,
+                contract,
+                image,
+                supply
+            );
+        }
+
+        for (const u of alertsFollowers) {
+            await this.create(
+                {
+                    type: NotificationType.FOLLOWER_CREATE_COLLECTION,
+                    sender: ENotificationFromType.USER,
+                    from: userId,
+                    receiver: new Types.ObjectId(u),
+                    _collection: new Types.ObjectId(collectionId)
                 },
                 true
             );
