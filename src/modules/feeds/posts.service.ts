@@ -996,7 +996,6 @@ export class PostService {
             }
         } else if (nftTokenData) {
             const { chain, contract, tokenId, collectionId } = nftTokenData;
-
             if (postId) {
                 const post = await this.postModel.findOne({
                     _id: new Types.ObjectId(postId)
@@ -1116,6 +1115,7 @@ export class PostService {
                 collectionName,
                 collectionImage
             } = token;
+            console.log(token, 'token');
             const post = await this.postModel.findOne({
                 'tokenData.chain': token.chain,
                 'tokenData.contract': token.contract,

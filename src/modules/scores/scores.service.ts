@@ -92,7 +92,6 @@ export class ScoresService {
                                 avatar: '$user.avatar',
                                 isVerified: '$user.isVerified',
                                 isSCC: '$user.isSCC'
-
                             }
                         }
                     }
