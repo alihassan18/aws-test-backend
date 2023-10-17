@@ -144,9 +144,11 @@ export function convertHashesMentionsToSimpleText(text) {
     const linkRegex = /\$\[([^\]]+)\]\(([^)]+)\)/g;
 
     const convertedText = text
-        .replace(hashtagRegex, '#$1')
-        .replace(userMentionRegex, '@$1')
-        .replace(linkRegex, '$1');
+        ? text
+              .replace(hashtagRegex, '#$1')
+              .replace(userMentionRegex, '@$1')
+              .replace(linkRegex, '$1')
+        : text;
 
     return convertedText;
 }
