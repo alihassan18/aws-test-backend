@@ -30,7 +30,7 @@ import {
     SearchCollectionResults,
     chains
 } from '../shared/services/reservoir.service';
-import * as ethers from 'ethers';
+// import * as ethers from 'ethers';
 import { /* ErcType, */ EvmChain, NftscanEvm, RangeType } from 'nftscan-api';
 import {
     TradeDistribution,
@@ -1098,143 +1098,191 @@ export class CollectionsService {
         return `This action removes a #${id} collection`;
     }
 
+    // ALL COLLECTIONS FROM DB AND RESERVIOR
+    // async search(keyword: string) {
+    //     let responses = [];
+    //     const isAddress = ethers.utils.isAddress(keyword as string);
+    //     if (isAddress) {
+    //         const reservoirCollections =
+    //             await this.reservoirService.findByConctractAddress(keyword);
+
+    //         const collections = await this.collectionModel
+    //             .find({
+    //                 contract: {
+    //                     $regex: new RegExp(`${keyword}`, 'i')
+    //                 }
+    //             })
+    //             .exec();
+
+    //         // Merge both arrays
+    //         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //         // @ts-ignore
+    //         const mergedCollections:
+    //             | CollectionDocument[]
+    //             | SearchCollectionResults[] = [
+    //             ...collections,
+    //             ...reservoirCollections
+    //         ];
+
+    //         // Use a Map to remove duplicates
+    //         const collectionMap = new Map();
+    //         mergedCollections.forEach((collection) => {
+    //             // For reservoirCollections array items
+    //             if (collection.collectionId) {
+    //                 if (!collectionMap.has(collection.collectionId)) {
+    //                     collectionMap.set(collection.collectionId, {
+    //                         collectionId: collection.collectionId,
+    //                         name: collection.name,
+    //                         slug: collection.slug,
+    //                         contract: collection.contract,
+    //                         allTimeVolume: collection.allTimeVolume,
+    //                         openseaVerificationStatus:
+    //                             collection.openseaVerificationStatus,
+    //                         chainName: collection.chainName,
+    //                         chainId: collection.chainId,
+    //                         lightChainIcon: collection.lightChainIcon,
+    //                         darkChainIcon: collection.darkChainIcon
+    //                     });
+    //                 }
+    //             }
+    //             // For collections array items
+    //             else {
+    //                 if (!collectionMap.has(collection.contract)) {
+    //                     collectionMap.set(collection.contract, {
+    //                         collectionId: collection.contract,
+    //                         name: collection.name,
+    //                         slug: collection.contract_name,
+    //                         contract: collection.contract,
+    //                         allTimeVolume: collection.volume_total,
+    //                         openseaVerificationStatus:
+    //                             collection.opensea_verified,
+    //                         chainName: collection.chain,
+    //                         chainId: collection.chainId,
+    //                         lightChainIcon: null, // I don't see a corresponding property in this array
+    //                         darkChainIcon: null // I don't see a corresponding property in this array
+    //                     });
+    //                 }
+    //             }
+    //         });
+
+    //         // Convert back to an array
+    //         responses = Array.from(collectionMap.values());
+    //     } else {
+    //         const reservoirCollections =
+    //             await this.reservoirService.getSearchCollections({
+    //                 name: keyword
+    //             });
+    //         const collections = await this.collectionModel
+    //             .find({
+    //                 name: { $regex: keyword, $options: 'i' }
+    //             })
+    //             .limit(5)
+    //             .exec();
+
+    //         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //         // @ts-ignore
+    //         const mergedCollections:
+    //             | CollectionDocument[]
+    //             | SearchCollectionResults[] = [
+    //             ...collections,
+    //             ...reservoirCollections
+    //         ];
+
+    //         // Use a Map to remove duplicates
+    //         const collectionMap = new Map();
+    //         mergedCollections.forEach((collection) => {
+    //             // For reservoirCollections array items
+    //             if (collection.collectionId) {
+    //                 if (!collectionMap.has(collection.collectionId)) {
+    //                     collectionMap.set(collection.collectionId, {
+    //                         collectionId: collection.collectionId,
+    //                         image: collection.image,
+    //                         name: collection.name,
+    //                         slug: collection.slug,
+    //                         contract: collection.contract,
+    //                         allTimeVolume: collection.allTimeVolume,
+    //                         openseaVerificationStatus:
+    //                             collection.openseaVerificationStatus,
+    //                         chainName: collection.chainName,
+    //                         chainId: collection.chainId,
+    //                         lightChainIcon: collection.lightChainIcon,
+    //                         darkChainIcon: collection.darkChainIcon
+    //                     });
+    //                 }
+    //             }
+    //             // For collections array items
+    //             else {
+    //                 if (!collectionMap.has(collection.contract)) {
+    //                     collectionMap.set(collection.contract, {
+    //                         collectionId: collection.contract,
+    //                         tokenCount: collection.token_count,
+    //                         name: collection.name,
+    //                         image: collection.image,
+    //                         slug: collection.contract_name,
+    //                         contract: collection.contract,
+    //                         allTimeVolume: collection.volume_total,
+    //                         openseaVerificationStatus:
+    //                             collection.opensea_verified,
+    //                         chainName: collection.chain,
+    //                         chainId: collection.chainId,
+    //                         lightChainIcon: null, // I don't see a corresponding property in this array
+    //                         darkChainIcon: null // I don't see a corresponding property in this array
+    //                     });
+    //                 }
+    //             }
+    //         });
+
+    //         // Convert back to an array
+    //         responses = Array.from(collectionMap.values());
+    //         // console.log(responses);
+    //     }
+    //     return responses;
+    //     // this.getSearchCollections({ name: keyword });
+    // }
+
+    // JUST FROM DB
     async search(keyword: string) {
         let responses = [];
-        const isAddress = ethers.utils.isAddress(keyword as string);
-        if (isAddress) {
-            const reservoirCollections =
-                await this.reservoirService.findByConctractAddress(keyword);
-
-            const collections = await this.collectionModel
-                .find({
-                    contract: {
-                        $regex: new RegExp(`${keyword}`, 'i')
-                    }
-                })
-                .exec();
-
-            // Merge both arrays
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const mergedCollections:
-                | CollectionDocument[]
-                | SearchCollectionResults[] = [
-                ...collections,
-                ...reservoirCollections
-            ];
-
-            // Use a Map to remove duplicates
-            const collectionMap = new Map();
-            mergedCollections.forEach((collection) => {
-                // For reservoirCollections array items
-                if (collection.collectionId) {
-                    if (!collectionMap.has(collection.collectionId)) {
-                        collectionMap.set(collection.collectionId, {
-                            collectionId: collection.collectionId,
-                            name: collection.name,
-                            slug: collection.slug,
-                            contract: collection.contract,
-                            allTimeVolume: collection.allTimeVolume,
-                            openseaVerificationStatus:
-                                collection.openseaVerificationStatus,
-                            chainName: collection.chainName,
-                            chainId: collection.chainId,
-                            lightChainIcon: collection.lightChainIcon,
-                            darkChainIcon: collection.darkChainIcon
-                        });
-                    }
+        const collections = await this.collectionModel
+            .find({
+                contract: {
+                    $regex: new RegExp(`${keyword}`, 'i')
                 }
-                // For collections array items
-                else {
-                    if (!collectionMap.has(collection.contract)) {
-                        collectionMap.set(collection.contract, {
-                            collectionId: collection.contract,
-                            name: collection.name,
-                            slug: collection.contract_name,
-                            contract: collection.contract,
-                            allTimeVolume: collection.volume_total,
-                            openseaVerificationStatus:
-                                collection.opensea_verified,
-                            chainName: collection.chain,
-                            chainId: collection.chainId,
-                            lightChainIcon: null, // I don't see a corresponding property in this array
-                            darkChainIcon: null // I don't see a corresponding property in this array
-                        });
-                    }
-                }
-            });
+            })
+            .exec();
 
-            // Convert back to an array
-            responses = Array.from(collectionMap.values());
-        } else {
-            const reservoirCollections =
-                await this.reservoirService.getSearchCollections({
-                    name: keyword
+        // Merge both arrays
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const mergedCollections:
+            | CollectionDocument[]
+            | SearchCollectionResults[] = [...collections];
+
+        // Use a Map to remove duplicates
+        const collectionMap = new Map();
+        mergedCollections.forEach((collection) => {
+            // For reservoirCollections array items
+
+            // For collections array items
+            if (!collectionMap.has(collection.contract)) {
+                collectionMap.set(collection.contract, {
+                    collectionId: collection.contract,
+                    name: collection.name,
+                    slug: collection.contract_name,
+                    contract: collection.contract,
+                    allTimeVolume: collection.volume_total,
+                    openseaVerificationStatus: collection.opensea_verified,
+                    chainName: collection.chain,
+                    chainId: collection.chainId,
+                    image: collection.image,
+                    lightChainIcon: null, // I don't see a corresponding property in this array
+                    darkChainIcon: null // I don't see a corresponding property in this array
                 });
-            const collections = await this.collectionModel
-                .find({
-                    name: { $regex: keyword, $options: 'i' }
-                })
-                .limit(5)
-                .exec();
+            }
+        });
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const mergedCollections:
-                | CollectionDocument[]
-                | SearchCollectionResults[] = [
-                ...collections,
-                ...reservoirCollections
-            ];
-
-            // Use a Map to remove duplicates
-            const collectionMap = new Map();
-            mergedCollections.forEach((collection) => {
-                // For reservoirCollections array items
-                if (collection.collectionId) {
-                    if (!collectionMap.has(collection.collectionId)) {
-                        collectionMap.set(collection.collectionId, {
-                            collectionId: collection.collectionId,
-                            image: collection.image,
-                            name: collection.name,
-                            slug: collection.slug,
-                            contract: collection.contract,
-                            allTimeVolume: collection.allTimeVolume,
-                            openseaVerificationStatus:
-                                collection.openseaVerificationStatus,
-                            chainName: collection.chainName,
-                            chainId: collection.chainId,
-                            lightChainIcon: collection.lightChainIcon,
-                            darkChainIcon: collection.darkChainIcon
-                        });
-                    }
-                }
-                // For collections array items
-                else {
-                    if (!collectionMap.has(collection.contract)) {
-                        collectionMap.set(collection.contract, {
-                            collectionId: collection.contract,
-                            tokenCount: collection.token_count,
-                            name: collection.name,
-                            image: collection.image,
-                            slug: collection.contract_name,
-                            contract: collection.contract,
-                            allTimeVolume: collection.volume_total,
-                            openseaVerificationStatus:
-                                collection.opensea_verified,
-                            chainName: collection.chain,
-                            chainId: collection.chainId,
-                            lightChainIcon: null, // I don't see a corresponding property in this array
-                            darkChainIcon: null // I don't see a corresponding property in this array
-                        });
-                    }
-                }
-            });
-
-            // Convert back to an array
-            responses = Array.from(collectionMap.values());
-            // console.log(responses);
-        }
+        // Convert back to an array
+        responses = Array.from(collectionMap.values());
         return responses;
         // this.getSearchCollections({ name: keyword });
     }
