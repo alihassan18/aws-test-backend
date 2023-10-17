@@ -329,19 +329,34 @@ export class FeedsService {
 
     async linkPreview(link: string): Promise<LinkPreviewResult> {
         const checkUrl = link.includes('https://') ? link : 'https://' + link;
-        const response = await axios.get(checkUrl, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true
-            }
-        });
-        const $ = cheerio.load(response.data);
+        console.log(checkUrl, 'url');
+        let title = '';
+        let description = '';
+        let imageUrl = '';
+        if (checkUrl == 'https://mintstargram.tech/') {
+            title =
+                'MintStargram.tech - Revolutionizing Social Media with NFTs';
+            description =
+                'MintStargram.tech, uniting social media & NFTs. Engage, create & monetize digital content revolutionarily Join the evolution of online interaction & ownership';
+            imageUrl =
+                'https://res.cloudinary.com/dq3jqnrem/image/upload/v1697012322/sfenegsjdk3vn2uc8o4d.png';
+            return { url: checkUrl, title, description, imageUrl };
+        } else {
+            const response = await axios.get(checkUrl, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Credentials': true
+                }
+            });
+            const $ = cheerio.load(response.data);
 
-        // Extract the relevant information from the HTML
-        const title = $('head title').text();
-        const description = $('head meta[name="description"]').attr('content');
-        const imageUrl = $('head meta[property="og:image"]').attr('content');
-        return { url: checkUrl, title, description, imageUrl };
+            // Extract the relevant information from the HTML
+
+            title = $('head title').text();
+            description = $('head meta[name="description"]').attr('content');
+            imageUrl = $('head meta[property="og:image"]').attr('content');
+            return { url: checkUrl, title, description, imageUrl };
+        }
     }
 
     // ---------- USER FOLLOW HERE DUE TO PRIVATE GATEWAY ISSUE
