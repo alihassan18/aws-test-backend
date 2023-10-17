@@ -1956,6 +1956,7 @@ type Mutation {
   removeUser(id: Int!): User!
   changeSettings(data: SettingsInput!): VerifyEmailOutput!
   addWallet(signature: String!): Wallet!
+  setPrimaryWallet(walletId: String!): Wallet!
   deleteWallet(walletId: String!): Wallet!
   editProfile(data: ProfileInput!): User!
   refetchUser: UserRefetchResult!

@@ -675,10 +675,18 @@ export class UsersService {
             return existingWallet;
         }
 
+        // Check if the user already has a primary wallet
+        const userPrimaryWallet = await this.walletModel
+            .findOne({ userId, isPrimary: true })
+            .exec();
+
+        const isPrimary = !userPrimaryWallet; // if user has no primary wallet, set the new one as primary
+
         // If the wallet doesn't exist, create a new one
         const newWallet = await this.walletModel.create({
             userId,
-            address: recoveredAddress
+            address: recoveredAddress,
+            isPrimary
         });
 
         return newWallet;
@@ -696,6 +704,26 @@ export class UsersService {
             throw new Error('You are not the owner of this address.');
         }
         return this.walletModel.findByIdAndDelete(walletId);
+    }
+
+    async setPrimaryWallet(
+        userId: Types.ObjectId,
+        walletId: Types.ObjectId
+    ): Promise<Wallet> {
+        // Set all wallets of the user to non-primary
+        await this.walletModel.updateMany(
+            { userId: userId },
+            { isPrimary: false }
+        );
+
+        // Set the selected wallet as primary
+        const updatedWallet = await this.walletModel.findByIdAndUpdate(
+            walletId,
+            { isPrimary: true },
+            { new: true }
+        );
+
+        return updatedWallet;
     }
 
     async getUserByWalletAddress(address: string): Promise<WalletDocument> {

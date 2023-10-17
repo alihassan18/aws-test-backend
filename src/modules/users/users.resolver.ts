@@ -176,6 +176,18 @@ export class UsersResolver {
 
     @Mutation(() => Wallet)
     @UseGuards(AuthGuard)
+    async setPrimaryWallet(
+        @Context() ctx: ContextProps,
+        @Args('walletId') walletId: string
+    ) {
+        return this.usersService.setPrimaryWallet(
+            ctx.req.user._id,
+            new Types.ObjectId(walletId)
+        );
+    }
+
+    @Mutation(() => Wallet)
+    @UseGuards(AuthGuard)
     async deleteWallet(
         @Context() ctx: ContextProps,
         @Args('walletId') walletId: string
