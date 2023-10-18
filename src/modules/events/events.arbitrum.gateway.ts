@@ -17,6 +17,7 @@ import {
 } from '../activities/entities/activities.entity';
 import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { ActivityTypes } from '../activities/activities.enums';
+import { NotificationService } from '../notifications/notification.service';
 
 const chain = 'arbitrum';
 
@@ -34,7 +35,8 @@ export class EventsArbitrumGateway
         @InjectModel(Activity.name)
         private activityModel: Model<ActivityDocument>,
         @InjectModel(Wallet.name)
-        private walletModel: Model<WalletDocument>
+        private walletModel: Model<WalletDocument>,
+        private readonly notifificationService: NotificationService
     ) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
@@ -194,7 +196,10 @@ export class EventsArbitrumGateway
                 user: wallet?.userId,
                 nftCollection: collection?._id,
                 type: ActivityTypes.NFT_LISTED,
-                token: data?.criteria?.data?.token
+                token: {
+                    ...data?.criteria?.data?.token,
+                    contract: collection?.contract?.toLowerCase()
+                }
             };
             const activity = await this.activityModel.findOne(values).exec();
             if (!activity) {
@@ -209,23 +214,30 @@ export class EventsArbitrumGateway
             } else {
                 console.log('This activity already exists.');
             }
+
+            if (wallet?.userId) {
+                this.notifificationService.alertFollowers4List(wallet?.userId, {
+                    ...data?.criteria?.data?.token,
+                    contract: collection?.contract?.toLowerCase()
+                });
+            }
         } catch (error) {
             console.log(error);
         }
     }
     async createSale(data) {
         try {
-            const [collection, to /* from */] = await Promise.all([
+            const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
                     contract: { $regex: new RegExp(`^${data?.contract}$`, 'i') }
                 }),
                 this.walletModel.findOne({
                     address: { $regex: new RegExp(`^${data?.to}$`, 'i') }
+                }),
+                this.walletModel.findOne({
+                    address: { $regex: new RegExp(`^${data?.from}$`, 'i') }
                 })
-                // this.walletModel.findOne({
-                //     address: { $regex: new RegExp(`^${data?.from}$`, 'i') }
-                // })
             ]);
             if (!collection) {
                 return null;
@@ -235,7 +247,10 @@ export class EventsArbitrumGateway
                 user: to?.userId,
                 nftCollection: collection?._id,
                 type: ActivityTypes.NFY_BUY,
-                token: data?.token
+                token: {
+                    ...data?.token,
+                    contract: collection?.contract?.toLowerCase()
+                }
             };
             const activity = await this.activityModel.findOne(values).exec();
             if (!activity) {
@@ -250,6 +265,19 @@ export class EventsArbitrumGateway
             } else {
                 console.log('This activity already exists.');
             }
+
+            // NOTIFY
+
+            if (to?.userId && from?.userId && data?.token) {
+                this.notifificationService.sendBoughtNftNotification(
+                    to?.userId,
+                    from?.userId,
+                    {
+                        ...data?.token,
+                        contract: collection?.contract?.toLowerCase()
+                    }
+                );
+            }
         } catch (error) {
             console.log(error);
         }
@@ -257,13 +285,16 @@ export class EventsArbitrumGateway
 
     async createBid(data) {
         try {
-            const [collection, wallet] = await Promise.all([
+            const [collection, wallet, taker] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
                     contract: { $regex: new RegExp(`^${data?.contract}$`, 'i') }
                 }),
                 this.walletModel.findOne({
                     address: { $regex: new RegExp(`^${data?.maker}$`, 'i') }
+                }),
+                this.walletModel.findOne({
+                    address: { $regex: new RegExp(`^${data?.taker}$`, 'i') }
                 })
             ]);
             if (!collection) {
@@ -274,7 +305,10 @@ export class EventsArbitrumGateway
                 user: wallet?.userId,
                 nftCollection: collection?._id,
                 type: ActivityTypes.BID_CREATED,
-                token: data?.criteria?.data?.token
+                token: {
+                    ...data?.criteria?.data?.token,
+                    contract: collection?.contract?.toLowerCase()
+                }
             };
             const activity = await this.activityModel.findOne(values).exec();
             if (!activity) {
@@ -288,6 +322,22 @@ export class EventsArbitrumGateway
                     });
             } else {
                 console.log('This activity already exists.');
+            }
+
+            // NOTIFY
+            if (
+                wallet?.userId &&
+                taker?.userId &&
+                data?.criteria?.data?.token
+            ) {
+                this.notifificationService.sendOfferNotification(
+                    wallet?.userId,
+                    taker?.userId,
+                    {
+                        ...data?.criteria?.data?.token,
+                        contract: collection?.contract?.toLowerCase()
+                    }
+                );
             }
         } catch (error) {
             console.log(error);
