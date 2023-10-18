@@ -417,6 +417,159 @@ type Referral {
   requested: Boolean!
 }
 
+type ActTokenData {
+  tokenId: String
+  image: String
+  name: String
+  contract: String
+}
+
+type Activity {
+  _id: String!
+
+  """Name field (placeholder)"""
+  type: ActivityTypes!
+
+  """Name field (placeholder)"""
+  user: User
+
+  """Name field (placeholder)"""
+  nftCollection: Collection
+
+  """Name field (placeholder)"""
+  post: Post
+
+  """Name field (placeholder)"""
+  token: ActTokenData
+}
+
+enum ActivityTypes {
+  POST_CREATED
+  COLLECTION_CREATED
+  NFT_MINTED
+  NFT_LISTED
+  BID_CREATED
+  NFY_BUY
+}
+
+type Notification {
+  _id: String!
+  type: String!
+  sender: String!
+  message: String
+  seen: Boolean
+  receiver: User
+  from: User
+  _collection: Collection
+  nft: ActTokenData
+  post: Post
+  stage: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type MemberEntry {
+  member: User!
+  addedBy: User!
+}
+
+type GroupSetting {
+  image: Boolean!
+  video: Boolean!
+  voice: Boolean!
+  files: Boolean!
+  gif: Boolean!
+  link: Boolean!
+  poll: Boolean!
+  mute: Boolean!
+}
+
+type GroupPrivacy {
+  invite: Float!
+  post: Float!
+  call: Float!
+}
+
+type Group {
+  _id: String!
+  name: String!
+  description: String
+  avatar: String
+  createdBy: User!
+  admins: [User!]!
+  unseenMsgCount: Float
+  lastMessage: Message
+  members: [MemberEntry!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  setting: GroupSetting!
+  privacy: GroupPrivacy!
+  isLiveSupport: Boolean!
+  sender: User!
+}
+
+type Chat {
+  _id: String!
+  user1: User!
+  user2: User
+  unseenMsgCount: Float
+  lastMessage: Message
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Message {
+  _id: String!
+  content: String!
+  sender: User!
+  receiverUser: User
+  hiddenUsers: [User!]!
+  seenUsers: [String!]!
+  receiverGroup: Group
+  chatId: Chat
+
+  """Example field (placeholder)"""
+  type: String!
+
+  """Attachment field (placeholder)"""
+  attachment: [String!]
+  inReplyToMessage: Message
+  sent: Boolean!
+  edited: Boolean!
+  pinned: Boolean!
+  delivered: Boolean!
+  read: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  reactions: [Reactions!]!
+  emotions: [Emotion!]!
+  members: User!
+}
+
+type Emotion {
+  user: User
+  emoji: String
+  messageId: String
+}
+
+type Reaction {
+  _id: String!
+  user: User!
+  emoji: ReactionType!
+  post: String
+  message: String
+}
+
+enum ReactionType {
+  satisfaction
+  love
+  like
+  happy
+  smile
+  angry
+  sad
+}
+
 type Currency {
   contract: String
   name: String
@@ -636,226 +789,6 @@ type Listing {
 
   """Example field (placeholder)"""
   expiration: Float
-}
-
-type Metadata {
-  imageOriginal: String
-}
-
-type Breakdown {
-  bps: Float
-  recipient: String
-}
-
-type Royality {
-  recipient: String
-  breakdown: [Breakdown!]
-  bps: Float
-}
-
-type AAttribute {
-  imageOriginal: String
-  key: String
-  kind: String
-  value: String
-  tokenCount: Int
-  onSaleCount: Int
-  floorAskPrice: Float
-  topBidValue: Float
-  createdAt: String
-}
-
-type TokenCollection {
-  id: String
-  name: String
-  image: String
-  slug: String
-  chain: String
-  contract: String
-  contract_name: String
-  owns_total: Float
-  items_total: Int
-  symbol: String
-  description: String
-  floor_price: Float
-  verified: Boolean
-  opensea_verified: Boolean
-}
-
-type Nft {
-  _id: String!
-  contract: String
-  chain: String!
-  tokenId: String
-  name: String
-  description: String
-  image: String
-  imageSmall: String
-  imageLarge: String
-  metadata: Metadata
-  media: String
-  kind: String
-  isFlagged: Boolean
-  lastFlagUpdate: DateTime
-  lastFlagChange: String
-  supply: String
-  remainingSupply: String
-  rarity: Float
-  rarityRank: Float
-  _collection: TokenCollection
-  collection: TokenCollection
-  owner: String
-  contractAddress: String
-  contractName: String
-  contractTokenId: String
-  ercType: String
-  amount: String
-  minter: String
-  views: Float!
-  ownTimestamp: Float
-  mintTimestamp: Float
-  mintTransactionHash: String
-  mintPrice: Float
-  tokenUri: String
-  metadataJson: String
-  contentType: String
-  contentUri: String
-  imageUri: String
-  externalLink: String
-  latestTradePrice: Float
-  latestTradeSymbol: String
-  latestTradeToken: String
-  latestTradeTimestamp: Float
-  nftscanId: String
-  nftscanUri: String
-  smallNftscanUri: String
-  attributes: [AAttribute!]
-  rarityScore: Float
-
-  """Related post for a collection"""
-  post: Post
-  market: Listing
-  is_deleted: Boolean
-  royalties: Royality
-  onMintstargram: Boolean
-}
-
-type Notification {
-  _id: String!
-  type: String!
-  sender: String!
-  message: String
-  seen: Boolean
-  receiver: User
-  from: User
-  _collection: Collection
-  nft: Nft
-  post: Post
-  stage: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type MemberEntry {
-  member: User!
-  addedBy: User!
-}
-
-type GroupSetting {
-  image: Boolean!
-  video: Boolean!
-  voice: Boolean!
-  files: Boolean!
-  gif: Boolean!
-  link: Boolean!
-  poll: Boolean!
-  mute: Boolean!
-}
-
-type GroupPrivacy {
-  invite: Float!
-  post: Float!
-  call: Float!
-}
-
-type Group {
-  _id: String!
-  name: String!
-  description: String
-  avatar: String
-  createdBy: User!
-  admins: [User!]!
-  unseenMsgCount: Float
-  lastMessage: Message
-  members: [MemberEntry!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  setting: GroupSetting!
-  privacy: GroupPrivacy!
-  isLiveSupport: Boolean!
-  sender: User!
-}
-
-type Chat {
-  _id: String!
-  user1: User!
-  user2: User
-  unseenMsgCount: Float
-  lastMessage: Message
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Message {
-  _id: String!
-  content: String!
-  sender: User!
-  receiverUser: User
-  hiddenUsers: [User!]!
-  seenUsers: [String!]!
-  receiverGroup: Group
-  chatId: Chat
-
-  """Example field (placeholder)"""
-  type: String!
-
-  """Attachment field (placeholder)"""
-  attachment: [String!]
-  inReplyToMessage: Message
-  sent: Boolean!
-  edited: Boolean!
-  pinned: Boolean!
-  delivered: Boolean!
-  read: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  reactions: [Reactions!]!
-  emotions: [Emotion!]!
-  members: User!
-}
-
-type Emotion {
-  user: User
-  emoji: String
-  messageId: String
-}
-
-type Reaction {
-  _id: String!
-  user: User!
-  emoji: ReactionType!
-  post: String
-  message: String
-}
-
-enum ReactionType {
-  satisfaction
-  love
-  like
-  happy
-  smile
-  angry
-  sad
 }
 
 type CollectionReportType {
@@ -1121,6 +1054,108 @@ type History {
   order: HistoryOrder
 }
 
+type Metadata {
+  imageOriginal: String
+}
+
+type Breakdown {
+  bps: Float
+  recipient: String
+}
+
+type Royality {
+  recipient: String
+  breakdown: [Breakdown!]
+  bps: Float
+}
+
+type AAttribute {
+  imageOriginal: String
+  key: String
+  kind: String
+  value: String
+  tokenCount: Int
+  onSaleCount: Int
+  floorAskPrice: Float
+  topBidValue: Float
+  createdAt: String
+}
+
+type TokenCollection {
+  id: String
+  name: String
+  image: String
+  slug: String
+  chain: String
+  contract: String
+  contract_name: String
+  owns_total: Float
+  items_total: Int
+  symbol: String
+  description: String
+  floor_price: Float
+  verified: Boolean
+  opensea_verified: Boolean
+}
+
+type Nft {
+  _id: String!
+  contract: String
+  chain: String!
+  tokenId: String
+  name: String
+  description: String
+  image: String
+  imageSmall: String
+  imageLarge: String
+  metadata: Metadata
+  media: String
+  kind: String
+  isFlagged: Boolean
+  lastFlagUpdate: DateTime
+  lastFlagChange: String
+  supply: String
+  remainingSupply: String
+  rarity: Float
+  rarityRank: Float
+  _collection: TokenCollection
+  collection: TokenCollection
+  owner: String
+  contractAddress: String
+  contractName: String
+  contractTokenId: String
+  ercType: String
+  amount: String
+  minter: String
+  views: Float!
+  ownTimestamp: Float
+  mintTimestamp: Float
+  mintTransactionHash: String
+  mintPrice: Float
+  tokenUri: String
+  metadataJson: String
+  contentType: String
+  contentUri: String
+  imageUri: String
+  externalLink: String
+  latestTradePrice: Float
+  latestTradeSymbol: String
+  latestTradeToken: String
+  latestTradeTimestamp: Float
+  nftscanId: String
+  nftscanUri: String
+  smallNftscanUri: String
+  attributes: [AAttribute!]
+  rarityScore: Float
+
+  """Related post for a collection"""
+  post: Post
+  market: Listing
+  is_deleted: Boolean
+  royalties: Royality
+  onMintstargram: Boolean
+}
+
 type RwEvent {
   _id: String!
   event_name: String!
@@ -1299,40 +1334,6 @@ type RecentSearch {
   user: User
   userToSearch: User
   hashtag: Hashtag
-}
-
-type ActTokenData {
-  tokenId: String
-  image: String
-  name: String
-}
-
-type Activity {
-  _id: String!
-
-  """Name field (placeholder)"""
-  type: ActivityTypes!
-
-  """Name field (placeholder)"""
-  user: User
-
-  """Name field (placeholder)"""
-  nftCollection: Collection
-
-  """Name field (placeholder)"""
-  post: Post
-
-  """Name field (placeholder)"""
-  token: ActTokenData
-}
-
-enum ActivityTypes {
-  POST_CREATED
-  COLLECTION_CREATED
-  NFT_MINTED
-  NFT_LISTED
-  BID_CREATED
-  NFY_BUY
 }
 
 type PageInfo {

@@ -10,7 +10,7 @@ import { Types } from 'mongoose';
 export type ActivityDocument = Activity & Document;
 
 @ObjectType()
-class ActTokenData {
+export class ActTokenData {
     @Field({ nullable: true })
     @Prop()
     tokenId: string;
@@ -22,6 +22,10 @@ class ActTokenData {
     @Field({ nullable: true })
     @Prop()
     name: string;
+
+    @Field({ nullable: true })
+    @Prop()
+    contract: string;
 }
 
 registerEnumType(ActivityTypes, {
