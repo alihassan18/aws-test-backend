@@ -922,6 +922,7 @@ export class CollectionsService {
             throw NotFoundException;
         }
         // collection.tokens.push(data);
+        collection.tokenCount = (collection.tokenCount || 0) + 1;
         await collection.save();
         return collection;
     }
