@@ -204,7 +204,7 @@ export class PostService {
 
     async findNftPost(contract, chain, tokenId) {
         let post = await this.postModel.findOne({
-            'tokenData.contract': contract,
+            'tokenData.contract': { $regex: new RegExp(contract, 'i') }, // Case insensitive search
             'tokenData.chain': chain,
             'tokenData.tokenId': tokenId
         });
