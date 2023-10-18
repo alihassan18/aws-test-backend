@@ -395,6 +395,54 @@ export class NotificationService {
         );
         return { success: true };
     }
+    // ------------------- S3 EVENTS --------------------
+
+    async sendOfferNotification(userId, receiverId, token) {
+        const user = await this.userModel.findById(userId).select('userName');
+        const receiver = await this.userModel
+            .findById(receiverId)
+            .select('email');
+
+        await this.create({
+            type: NotificationType.BIDDING,
+            sender: ENotificationFromType.USER,
+            from: userId,
+            receiver: receiverId,
+            nft: token
+        });
+
+        this.emailService.sendBidPlacedEmail(
+            receiver.email,
+            `${user.userName}`,
+            token?.tokenId,
+            `${process.env.FRONT_BASE_URL}/collection/arbitrum/${token?.contract}/${token?.tokenId}`
+        );
+
+        return;
+    }
+
+    async sendBoughtNftNotification(userId, receiverId, token) {
+        const user = await this.userModel.findById(userId).select('userName');
+        const receiver = await this.userModel
+            .findById(receiverId)
+            .select('email');
+
+        await this.create({
+            type: NotificationType.SOLD,
+            sender: ENotificationFromType.USER,
+            from: userId,
+            receiver: receiverId,
+            nft: token
+        });
+
+        this.emailService.sendBoughtNftEmail(
+            receiver.email,
+            `${user.userName}`,
+            token?.tokenId
+        );
+
+        return;
+    }
 
     // ----------------- USER'S FOLLOWERS NOTIFICATIONS -----------------
 
@@ -631,6 +679,37 @@ export class NotificationService {
                     from: userId,
                     receiver: new Types.ObjectId(u),
                     _collection: new Types.ObjectId(collectionId)
+                },
+                true
+            );
+        }
+        return;
+    }
+
+    async alertFollowers4List(userId: Types.ObjectId, token) {
+        const user = await this.userModel.findById(userId).select('userName');
+
+        const { alertsFollowers, emailFollowers } = await this.alertsUsers(
+            userId
+        );
+
+        if (emailFollowers?.length > 0) {
+            await this.emailService.sendListNFT_follower(
+                emailFollowers,
+                user.userName,
+                token.tokenId,
+                `${process.env.FRONT_BASE_URL}/collection/arbitrum/${token?.contract}/${token?.tokenId}`
+            );
+        }
+
+        for (const u of alertsFollowers) {
+            await this.create(
+                {
+                    type: NotificationType.LISTING,
+                    sender: ENotificationFromType.USER,
+                    from: userId,
+                    receiver: new Types.ObjectId(u),
+                    nft: token
                 },
                 true
             );

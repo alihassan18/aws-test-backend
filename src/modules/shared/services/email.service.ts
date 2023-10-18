@@ -238,48 +238,33 @@ export class EmailService {
         // });
     }
 
-    async sendBidPlacedEmail(emails, url, title, image) {
-        console.log(emails, url, title, image);
-
-        // return new Promise((resolve, reject) => {
-        //     const mailOptions = {
-        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
-        //         to: emails,
-        //         subject: 'Bidding Notification',
-        //         html: onBidPlaced(title, image, url)
-        //     };
-        //     transporter.sendMail(mailOptions, function (error, info) {
-        //         if (error) {
-        //             console.log(error);
-        //             reject(error);
-        //         } else {
-        //             console.log(info);
-        //             resolve(info);
-        //         }
-        //     });
-        // });
+    async sendBidPlacedEmail(email, displayName, tokenId, url) {
+        const mailOptions = {
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: email,
+            subject: 'Offer to NFT',
+            template: 'place a bid to a nft',
+            'h:X-Mailgun-Variables': JSON.stringify({
+                displayName,
+                tokenId,
+                url
+            })
+        };
+        return this.MAIL_GUN(mailOptions);
     }
 
-    async sendBoughtNftEmail(to, title, price, currency, image) {
-        console.log(to, title, price, currency, image);
-
-        // return new Promise((resolve, reject) => {
-        //     const mailOptions = {
-        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
-        //         to: to,
-        //         subject: 'NFT Bought Successfully',
-        //         html: onBoughtNFT(title, price, currency, image)
-        //     };
-        //     transporter.sendMail(mailOptions, function (error, info) {
-        //         if (error) {
-        //             console.log(error);
-        //             reject(error);
-        //         } else {
-        //             console.log(info);
-        //             resolve(info);
-        //         }
-        //     });
-        // });
+    async sendBoughtNftEmail(to, displayName, tokenId) {
+        const mailOptions = {
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: to,
+            subject: 'Sale NFT',
+            template: 'buy nft',
+            'h:X-Mailgun-Variables': JSON.stringify({
+                displayName,
+                tokenId
+            })
+        };
+        return this.MAIL_GUN(mailOptions);
     }
 
     async sendSoldtNftEmail(to, title, price, currency, image) {
@@ -350,24 +335,6 @@ export class EmailService {
 
     async sendAcceptOfferEmail(to, title, price, currency, image, url) {
         console.log(to, title, price, currency, image, url);
-
-        // return new Promise((resolve, reject) => {
-        //     const mailOptions = {
-        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
-        //         to: to,
-        //         subject: 'NFT Sold Successfully',
-        //         html: offerAccepted(title, price, currency, image, url)
-        //     };
-        //     transporter.sendMail(mailOptions, function (error, info) {
-        //         if (error) {
-        //             console.log(error);
-        //             reject(error);
-        //         } else {
-        //             console.log(info);
-        //             resolve(info);
-        //         }
-        //     });
-        // });
     }
 
     async sendOfferRejectEmail(to, title, price, currency, image) {
@@ -725,6 +692,22 @@ export class EmailService {
                 contract,
                 image,
                 supply
+            })
+        };
+        return this.MAIL_GUN(mailOptions);
+    }
+
+    async sendListNFT_follower(to, displayName, tokenId, url) {
+        const mailOptions = {
+            from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
+            to: 'notifications@mail.mintstargram.tech',
+            bcc: to,
+            subject: 'List an NFT',
+            template: 'list a nft',
+            'h:X-Mailgun-Variables': JSON.stringify({
+                displayName,
+                tokenId,
+                url
             })
         };
         return this.MAIL_GUN(mailOptions);
