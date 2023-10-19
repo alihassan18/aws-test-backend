@@ -217,7 +217,7 @@ export class CollectionsService {
             const skip = (page - 1) * pageSize;
 
             const updatedQuery = {
-                token_count: { $gt: 0 },
+                ...(query?.is_minted && { token_count: { $gt: 0 } }),
                 ...(query?.keyword && {
                     $or: [
                         {

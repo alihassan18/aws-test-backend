@@ -174,6 +174,9 @@ export class CollectionFilterInput {
     @Field(() => Boolean, { nullable: true })
     is_auto_auction?: boolean;
 
+    @Field(() => Boolean, { nullable: true })
+    is_minted?: boolean;
+
     @Field(() => CollectionSortInput, { nullable: true })
     sort?: CollectionSortInput;
 }
