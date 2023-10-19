@@ -696,7 +696,7 @@ export class AdminService {
                 }
             },
             { $skip: skipCount },
-            { $limit: pageSize },
+            { $limit: pageSize }
         ]);
         return {
             pageSize,
