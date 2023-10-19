@@ -217,6 +217,7 @@ export class CollectionsService {
             const skip = (page - 1) * pageSize;
 
             const updatedQuery = {
+                token_count: { $gt: 0 },
                 ...(query?.keyword && {
                     $or: [
                         {
@@ -922,6 +923,7 @@ export class CollectionsService {
             throw NotFoundException;
         }
         // collection.tokens.push(data);
+        collection.token_count = (collection.token_count || 0) + 1;
         await collection.save();
         return collection;
     }
