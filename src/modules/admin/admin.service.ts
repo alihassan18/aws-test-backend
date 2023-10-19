@@ -549,6 +549,7 @@ export class AdminService {
         };
         const count = await this.userModel.countDocuments({});
         const data = await this.userModel.aggregate([
+            { $sort: filter ? { [filter]: -1 } : { _id: -1 } },
             matchStage,
             {
                 $lookup: {
@@ -696,7 +697,6 @@ export class AdminService {
             },
             { $skip: skipCount },
             { $limit: pageSize },
-            { $sort: filter ? { [filter]: -1 } : { createdAt: -1 } }
         ]);
         return {
             pageSize,
