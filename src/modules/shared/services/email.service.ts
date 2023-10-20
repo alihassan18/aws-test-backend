@@ -697,7 +697,14 @@ export class EmailService {
         return this.MAIL_GUN(mailOptions);
     }
 
-    async sendListNFT_follower(to, displayName, tokenId, url) {
+    async sendListNFT_follower(
+        to,
+        displayName,
+        tokenId,
+        url,
+        image,
+        tokenName
+    ) {
         const mailOptions = {
             from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
             to: 'notifications@mail.mintstargram.tech',
@@ -707,7 +714,9 @@ export class EmailService {
             'h:X-Mailgun-Variables': JSON.stringify({
                 displayName,
                 tokenId,
-                url
+                url,
+                image,
+                tokenName
             })
         };
         return this.MAIL_GUN(mailOptions);

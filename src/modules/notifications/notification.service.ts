@@ -698,7 +698,9 @@ export class NotificationService {
                 emailFollowers,
                 user.userName,
                 token.tokenId,
-                `${process.env.FRONT_BASE_URL}/collection/arbitrum/${token?.contract}/${token?.tokenId}`
+                `${process.env.FRONT_BASE_URL}/collection/arbitrum/${token?.contract}/${token?.tokenId}`,
+                token.image,
+                token.name
             );
         }
 
