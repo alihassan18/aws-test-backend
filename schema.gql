@@ -325,6 +325,93 @@ type FollowersTimestamps {
   createdAt: DateTime
 }
 
+type HashtagCount {
+  name: String!
+  count: Float!
+}
+
+type Last24HrsHashtagCount {
+  name: String!
+  count: Float!
+  _id: String!
+}
+
+type LoginResult {
+  user: User
+  access_token: String
+  twoFa: Boolean
+  notAffiliated: Boolean
+}
+
+type RWLoginResult {
+  user: User
+  access_token: String
+}
+
+type SignOutResult {
+  message: String
+  access_token: String
+}
+
+type EmailSentResult {
+  message: String!
+  success: Boolean!
+  status: Float!
+}
+
+type VerifyCodeOutput {
+  success: Boolean!
+}
+
+type LoginGoogleOutput {
+  user: User
+  access_token: String
+  message: String
+  notAffiliated: Boolean
+  twoFa: Boolean
+}
+
+type VerifyEmailOutput {
+  message: String
+  success: Boolean
+  status: Boolean
+  loginResult: LoginResult
+}
+
+type Verify2FAOutput {
+  message: String
+  success: Boolean
+  status: Boolean
+  token: String
+}
+
+type SearchResult {
+  users: [User!]
+  hashtags: [Hashtag!]
+  hashtagCount: [HashtagCount!]
+  collections: [Collection!]
+}
+
+type CCSNfts7Day {
+  date: String
+  posts: [Post!]
+}
+
+type ContentCreatorStats {
+  days: Float
+  isdays: Boolean
+  followers: Float
+  isfollowers: Boolean
+  iscollection: Boolean
+  isNFTs: Boolean
+  nftsLast7Days: [CCSNfts7Day!]
+}
+
+type Leader {
+  user: User
+  tokenContractCount: Int
+}
+
 type User {
   _id: ID!
   firstName: String
@@ -1394,93 +1481,6 @@ type UserStats {
   sold: Int!
   bought: Int!
   listed: Int!
-}
-
-type HashtagCount {
-  name: String!
-  count: Float!
-}
-
-type Last24HrsHashtagCount {
-  name: String!
-  count: Float!
-  _id: String!
-}
-
-type LoginResult {
-  user: User
-  access_token: String
-  twoFa: Boolean
-  notAffiliated: Boolean
-}
-
-type RWLoginResult {
-  user: User
-  access_token: String
-}
-
-type SignOutResult {
-  message: String
-  access_token: String
-}
-
-type EmailSentResult {
-  message: String!
-  success: Boolean!
-  status: Float!
-}
-
-type VerifyCodeOutput {
-  success: Boolean!
-}
-
-type LoginGoogleOutput {
-  user: User
-  access_token: String
-  message: String
-  notAffiliated: Boolean
-  twoFa: Boolean
-}
-
-type VerifyEmailOutput {
-  message: String
-  success: Boolean
-  status: Boolean
-  loginResult: LoginResult
-}
-
-type Verify2FAOutput {
-  message: String
-  success: Boolean
-  status: Boolean
-  token: String
-}
-
-type SearchResult {
-  users: [User!]
-  hashtags: [Hashtag!]
-  hashtagCount: [HashtagCount!]
-  collections: [Collection!]
-}
-
-type CCSNfts7Day {
-  date: String
-  posts: [Post!]
-}
-
-type ContentCreatorStats {
-  days: Float
-  isdays: Boolean
-  followers: Float
-  isfollowers: Boolean
-  iscollection: Boolean
-  isNFTs: Boolean
-  nftsLast7Days: [CCSNfts7Day!]
-}
-
-type Leader {
-  user: User
-  tokenContractCount: Int
 }
 
 type UsersDataOverview {

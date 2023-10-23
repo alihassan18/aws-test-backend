@@ -6,7 +6,8 @@ import {
     LoginUserInput,
     RWLoginResult,
     SignOutResult,
-    VerifyEmailOutput
+    VerifyEmailOutput,
+    bannedUsernames
 } from 'src/modules/users/dto/users.input';
 import { UserDocument, User } from 'src/modules/users/entities/user.entity';
 import { UsersService } from 'src/modules/users/users.service';
@@ -726,7 +727,7 @@ export class AuthService extends CommonServices {
             });
         }
 
-        if (user.settings.twoFa) {
+        if (user && user.settings.twoFa) {
             await this.userService.send2FaVerificationCode(
                 user?._id,
                 user?.email,
@@ -922,6 +923,11 @@ export class AuthService extends CommonServices {
     }
 
     async isUsernameAvailable(userName: string) {
+
+        if (bannedUsernames.includes(userName)) {
+            return { success: true, message: 'Already available' };
+        }
+
         const isAvailable = await this.userService.findOne({
             userName: { $regex: `^${userName}$`, $options: 'i' }
         });

@@ -13,6 +13,7 @@ import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
 import { Wallet } from 'src/modules/users/entities/wallet.entity';
 import { FollowingTimestamps } from './user-following-timestamps.entity';
 import { FollowersTimestamps } from './user-followers-timestamps.entity';
+import { bannedUsernames } from '../dto/users.input';
 
 export type UserDocument = User &
     Document & {
@@ -39,7 +40,13 @@ export class User extends Document {
     @Field(() => String, { nullable: true })
     @Prop({
         unique: true,
-        required: true
+        required: true,
+        validate: {
+            validator: function (username) {
+                return !bannedUsernames.includes(username);
+            },
+            message: 'This username is not allowed.'
+        }
     })
     userName: string;
 

@@ -10,7 +10,8 @@ import { generateRandomNumber } from 'src/helpers/common.helpers';
 import {
     ContentCreatorStats,
     ProfileInput,
-    SettingsInput
+    SettingsInput,
+    bannedUsernames
 } from './dto/users.input';
 import { COLLECTIONS, USERS } from 'src/constants/db.collections';
 import { Wallet, WalletDocument } from './entities/wallet.entity';
@@ -367,6 +368,10 @@ export class UsersService {
             data?.web?.length >= 300
         ) {
             throw new Error('Social Media link at least 30 characters');
+        }
+
+        if (data?.userName && bannedUsernames.includes(data?.userName)) {
+            throw new Error('This username is not allowed.');
         }
 
         if (

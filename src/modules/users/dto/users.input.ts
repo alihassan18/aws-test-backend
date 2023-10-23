@@ -447,3 +447,11 @@ export class Leader {
     @Field(() => Int, { nullable: true })
     tokenContractCount?: number;
 }
+
+export const bannedUsernames = [
+    'mintstargram',
+    'admin',
+    'support',
+    'metaruffy',
+    'loobr'
+];
