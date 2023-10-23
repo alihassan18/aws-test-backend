@@ -923,7 +923,7 @@ export class AuthService extends CommonServices {
     }
 
     async isUsernameAvailable(userName: string) {
-        if (bannedUsernames.includes(userName)) {
+        if (bannedUsernames.includes(userName?.toLowerCase())) {
             return { success: true, message: 'Already available' };
         }
 
