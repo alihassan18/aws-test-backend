@@ -43,7 +43,7 @@ export class User extends Document {
         required: true,
         validate: {
             validator: function (username) {
-                return !bannedUsernames.includes(username);
+                return !bannedUsernames.includes(username?.toLowerCase());
             },
             message: 'This username is not allowed.'
         }
