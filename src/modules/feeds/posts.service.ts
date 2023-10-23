@@ -460,15 +460,17 @@ export class PostService {
                     post: repliedOnPost?._id
                 });
 
+                const receiver = await this.userModel.findById(
+                    repliedOnPost.author
+                );
+
                 // email service
                 if (
                     createPostInput.inReplyToPost &&
                     !createPostInput.originalPost
                 ) {
                     // simple comment on post
-                    const receiver = await this.userModel.findById(
-                        repliedOnPost.author
-                    );
+
                     if (receiver) {
                         this.emailService.sendCommentEmail(
                             receiver?.email,
@@ -501,7 +503,9 @@ export class PostService {
                     userId,
                     owner.userName,
                     post._id,
-                    post.text
+                    post.text,
+                    [receiver._id],
+                    [receiver.email]
                 );
             }
 
