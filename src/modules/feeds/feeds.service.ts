@@ -416,12 +416,15 @@ export class FeedsService {
             .exec();
         if (!isFollower) {
             if (userId.toString() !== otherUser.toString()) {
-                this.notificationService.create({
-                    type: NotificationType.FOLLOW,
-                    sender: ENotificationFromType.USER,
-                    from: userId,
-                    receiver: new Types.ObjectId(otherUser)
-                });
+                this.notificationService.create(
+                    {
+                        type: NotificationType.FOLLOW,
+                        sender: ENotificationFromType.USER,
+                        from: userId,
+                        receiver: new Types.ObjectId(otherUser)
+                    },
+                    true
+                );
 
                 this.emailService.sendFollowEmail(
                     following.email,

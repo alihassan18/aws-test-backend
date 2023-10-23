@@ -265,6 +265,27 @@ export class SettingsAlertInput {
 
     @Field(() => Boolean, { nullable: true })
     follow: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_post: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_comment: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_repost: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_mint_post: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_created_collection: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_listed: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    followed_sold: boolean;
 }
 
 @InputType()
