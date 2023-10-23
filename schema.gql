@@ -1439,6 +1439,7 @@ type LoginGoogleOutput {
   access_token: String
   message: String
   notAffiliated: Boolean
+  twoFa: Boolean
 }
 
 type VerifyEmailOutput {
