@@ -470,7 +470,7 @@ export class PostService {
                     !createPostInput.originalPost
                 ) {
                     // simple comment on post
-                  
+
                     if (receiver) {
                         this.emailService.sendCommentEmail(
                             receiver?.email,

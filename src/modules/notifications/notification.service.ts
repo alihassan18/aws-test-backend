@@ -546,17 +546,14 @@ export class NotificationService {
         excludeEmails: Array<string>,
         excludeIds: Array<string>
     ) {
-        const { alertsFollowers:a_followers, emailFollowers:e_followers } = await this.alertsUsers(
-            userId,
-            'followed_comment'
-        );
+        const { alertsFollowers: a_followers, emailFollowers: e_followers } =
+            await this.alertsUsers(userId, 'followed_comment');
 
         const emailFollowers =
-        e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];
+            e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];
 
-    const alertsFollowers =
-        a_followers?.filter((item) => !excludeIds?.includes(item)) || [];
-
+        const alertsFollowers =
+            a_followers?.filter((item) => !excludeIds?.includes(item)) || [];
 
         if (emailFollowers?.length > 0) {
             await this.emailService.sendCreateNewComment_follower(
