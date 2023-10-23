@@ -11,6 +11,13 @@ type SettingsAlert {
   mint: Boolean
   comment: Boolean
   follow: Boolean
+  followed_post: Boolean
+  followed_comment: Boolean
+  followed_repost: Boolean
+  followed_mint_post: Boolean
+  followed_created_collection: Boolean
+  followed_listed: Boolean
+  followed_sold: Boolean
 }
 
 type Settings {
@@ -2135,6 +2142,13 @@ input SettingsAlertInput {
   mint: Boolean
   comment: Boolean
   follow: Boolean
+  followed_post: Boolean
+  followed_comment: Boolean
+  followed_repost: Boolean
+  followed_mint_post: Boolean
+  followed_created_collection: Boolean
+  followed_listed: Boolean
+  followed_sold: Boolean
 }
 
 input ProfileInput {

@@ -421,7 +421,7 @@ export class FeedsService {
                     sender: ENotificationFromType.USER,
                     from: userId,
                     receiver: new Types.ObjectId(otherUser)
-                });
+                },true);
 
                 this.emailService.sendFollowEmail(
                     following.email,

@@ -61,6 +61,59 @@ export class SettingsAlert {
         default: true
     })
     follow: boolean;
+
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_post: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_comment: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_repost: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_mint_post: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_created_collection: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_listed: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    followed_sold: boolean;
+
+
+
 }
 
 @ObjectType()

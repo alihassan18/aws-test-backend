@@ -446,13 +446,16 @@ export class NotificationService {
 
     // ----------------- USER'S FOLLOWERS NOTIFICATIONS -----------------
 
-    async alertsUsers(userId: Types.ObjectId): Promise<{
+    async alertsUsers(
+        userId: Types.ObjectId,
+        type: string = 'follow'
+    ): Promise<{
         alertsFollowers: Array<string>;
         emailFollowers: Array<string>;
     }> {
         const settingsFields = [
-            { field: 'alerts.follow', resultField: '$followers._id' },
-            { field: 'email.follow', resultField: '$followers.email' }
+            { field: `alerts.${type}`, resultField: '$followers._id' },
+            { field: `email.${type}`, resultField: '$followers.email' }
         ];
 
         const aggregatedResults = await Promise.all(
@@ -507,7 +510,8 @@ export class NotificationService {
         text: string
     ) {
         const { alertsFollowers, emailFollowers } = await this.alertsUsers(
-            userId
+            userId,
+            'followed_post'
         );
 
         if (emailFollowers?.length > 0) {
@@ -541,7 +545,8 @@ export class NotificationService {
         text: string
     ) {
         const { alertsFollowers, emailFollowers } = await this.alertsUsers(
-            userId
+            userId,
+            'followed_comment'
         );
 
         if (emailFollowers?.length > 0) {
@@ -577,7 +582,7 @@ export class NotificationService {
         excludeIds: Array<string>
     ) {
         const { alertsFollowers: a_followers, emailFollowers: e_followers } =
-            await this.alertsUsers(userId);
+            await this.alertsUsers(userId,'followed_repost');
 
         const emailFollowers =
             e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];
@@ -618,7 +623,8 @@ export class NotificationService {
         picture: string
     ) {
         const { alertsFollowers, emailFollowers } = await this.alertsUsers(
-            userId
+            userId,
+            'followed_mint_post'
         );
 
         if (emailFollowers?.length > 0) {
@@ -657,7 +663,8 @@ export class NotificationService {
         collectionId: string
     ) {
         const { alertsFollowers, emailFollowers } = await this.alertsUsers(
-            userId
+            userId,
+            'followed_created_collection'
         );
 
         if (emailFollowers?.length > 0) {
@@ -690,7 +697,8 @@ export class NotificationService {
         const user = await this.userModel.findById(userId).select('userName');
 
         const { alertsFollowers, emailFollowers } = await this.alertsUsers(
-            userId
+            userId,
+            'followed_listed'
         );
 
         if (emailFollowers?.length > 0) {
