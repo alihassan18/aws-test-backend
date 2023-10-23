@@ -370,7 +370,10 @@ export class UsersService {
             throw new Error('Social Media link at least 30 characters');
         }
 
-        if (data?.userName && bannedUsernames.includes(data?.userName?.toLowerCase())) {
+        if (
+            data?.userName &&
+            bannedUsernames.includes(data?.userName?.toLowerCase())
+        ) {
             throw new Error('This username is not allowed.');
         }
 
