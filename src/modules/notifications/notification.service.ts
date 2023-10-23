@@ -448,7 +448,7 @@ export class NotificationService {
 
     async alertsUsers(
         userId: Types.ObjectId,
-        type: string = 'follow'
+        type = 'follow'
     ): Promise<{
         alertsFollowers: Array<string>;
         emailFollowers: Array<string>;
@@ -582,7 +582,7 @@ export class NotificationService {
         excludeIds: Array<string>
     ) {
         const { alertsFollowers: a_followers, emailFollowers: e_followers } =
-            await this.alertsUsers(userId,'followed_repost');
+            await this.alertsUsers(userId, 'followed_repost');
 
         const emailFollowers =
             e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];

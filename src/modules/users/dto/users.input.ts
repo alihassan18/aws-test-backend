@@ -288,7 +288,6 @@ export class SettingsAlertInput {
     followed_sold: boolean;
 }
 
-
 @InputType()
 export class SettingsInput {
     @Field(() => SettingsAlertInput, { nullable: true })

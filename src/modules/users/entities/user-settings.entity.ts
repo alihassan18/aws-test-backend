@@ -62,7 +62,6 @@ export class SettingsAlert {
     })
     follow: boolean;
 
-
     @Field(() => Boolean, { nullable: true })
     @Prop({
         type: Boolean,
@@ -111,9 +110,6 @@ export class SettingsAlert {
         default: true
     })
     followed_sold: boolean;
-
-
-
 }
 
 @ObjectType()
