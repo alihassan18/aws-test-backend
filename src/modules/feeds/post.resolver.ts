@@ -136,6 +136,9 @@ export class PostResolver {
         if (isDuplicate) {
             throw new Error('duplicate_post');
         } else {
+            if (createPostInput.text?.length >= 300) {
+                throw new Error('Text must be less than 300 characters');
+            }
             const post = await this.postService.create(
                 createPostInput,
                 user,
