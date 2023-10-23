@@ -187,6 +187,9 @@ export class LoginGoogleOutput {
 
     @Field(() => Boolean, { nullable: true })
     notAffiliated?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    twoFa?: boolean;
 }
 
 //------------- RESET PASSWORD ----------------

@@ -726,29 +726,56 @@ export class AuthService extends CommonServices {
             });
         }
 
-        const loggedUser = await this.createJwt(user, IpAddress);
+        if (user.settings.twoFa) {
+            await this.userService.send2FaVerificationCode(
+                user?._id,
+                user?.email,
+                user?.firstName
+            );
 
-        if (loggedUser?.user?.isBlocked === true) {
-            // return {
-            //     message: this.messages.userBlocked,
-            //     success: false,
-            //     status: HttpStatus.FORBIDDEN
-            // };
-            return undefined;
-
-            // ---------------------------
-        }
-        // password protection
-
-        if (!loggedUser.user?.invitation_code) {
+            const jwt = await this.jwtService.signAsync(
+                {
+                    _id: user._id,
+                    email: user.email,
+                    twoFa: user?.settings?.twoFa,
+                    key: user?.key,
+                    temp: true
+                },
+                {
+                    secret: jwtConstants.secret,
+                    expiresIn: 60 * 15
+                }
+            );
             return {
-                notAffiliated: true,
+                access_token: jwt,
                 user: null,
-                access_token: loggedUser.access_token
+                twoFa: user?.settings?.twoFa
             };
-        }
+        } else {
+            const loggedUser = await this.createJwt(user, IpAddress);
 
-        return { ...loggedUser, notAffiliated: false };
+            if (loggedUser?.user?.isBlocked === true) {
+                // return {
+                //     message: this.messages.userBlocked,
+                //     success: false,
+                //     status: HttpStatus.FORBIDDEN
+                // };
+                return undefined;
+
+                // ---------------------------
+            }
+            // password protection
+
+            if (!loggedUser.user?.invitation_code) {
+                return {
+                    notAffiliated: true,
+                    user: null,
+                    access_token: loggedUser.access_token
+                };
+            }
+
+            return { ...loggedUser, notAffiliated: false };
+        }
     }
 
     // ------------------- 2FA VERIFICATION ------------------------
