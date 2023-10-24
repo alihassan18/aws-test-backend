@@ -18,6 +18,10 @@ export class ScoresResult {
 
     @Field(() => Number, { nullable: true })
     @Prop({ type: Number })
+    weekScore: number;
+
+    @Field(() => Number, { nullable: true })
+    @Prop({ type: Number })
     rank: number;
 }
 

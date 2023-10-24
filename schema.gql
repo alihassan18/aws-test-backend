@@ -535,6 +535,7 @@ type Activity {
 
   """Name field (placeholder)"""
   token: ActTokenData
+  createdAt: DateTime
 }
 
 enum ActivityTypes {
@@ -1649,6 +1650,7 @@ type ScoresResult {
   _id: String
   user: User
   monthScore: Float
+  weekScore: Float
   rank: Float
 }
 

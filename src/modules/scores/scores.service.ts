@@ -8,6 +8,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { HighScoreResult, ScoresResult } from './scores.dto';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
+import { addDays, startOfWeek, endOfWeek } from 'date-fns';
 
 @Injectable()
 export class ScoresService {
@@ -55,15 +56,89 @@ export class ScoresService {
         }
     }
 
+    // async getMonthTopScores(): Promise<ScoresResult[]> {
+    //     return await this.scoreModel
+    //         .aggregate([
+    //             {
+    //                 $match: {
+    //                     createdAt: {
+    //                         $lte: endOfMonth(new Date()),
+    //                         $gte: startOfMonth(new Date())
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 $lookup: {
+    //                     from: 'users',
+    //                     localField: 'user',
+    //                     foreignField: '_id',
+    //                     as: 'user'
+    //                 }
+    //             },
+    //             {
+    //                 $unwind: '$user'
+    //             },
+    //             {
+    //                 $group: {
+    //                     _id: '$user._id',
+    //                     monthScore: { $sum: '$score' },
+    //                     user: {
+    //                         $first: {
+    //                             _id: '$user._id',
+    //                             userName: '$user.userName',
+    //                             points: '$user.points',
+    //                             lastName: '$user.lastName',
+    //                             followersCount: '$user.followersCount',
+    //                             firstName: '$user.firstName',
+    //                             avatar: '$user.avatar',
+    //                             isVerified: '$user.isVerified',
+    //                             isSCC: '$user.isSCC'
+    //                         }
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 $setWindowFields: {
+    //                     sortBy: { monthScore: -1 },
+    //                     output: {
+    //                         rank: {
+    //                             $rank: {}
+    //                         }
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 $limit: 100
+    //             }
+    //         ])
+    //         .exec();
+    // }
+
     async getMonthTopScores(): Promise<ScoresResult[]> {
-        return await this.scoreModel
+        const startOfMonthDate = startOfMonth(new Date());
+        const endOfMonthDate = endOfMonth(new Date());
+
+        const startOfLastWeek = startOfWeek(addDays(new Date(), -7))
+        const endOfLastWeek = endOfWeek(addDays(new Date(), -7))
+
+        const res = await this.scoreModel
             .aggregate([
                 {
                     $match: {
-                        createdAt: {
-                            $lte: endOfMonth(new Date()),
-                            $gte: startOfMonth(new Date())
-                        }
+                        $or: [
+                            {
+                                createdAt: {
+                                    $gte: startOfMonthDate,
+                                    $lte: endOfMonthDate
+                                }
+                            },
+                            {
+                                createdAt: {
+                                    $gte: startOfLastWeek,
+                                    $lte: endOfLastWeek
+                                }
+                            }
+                        ]
                     }
                 },
                 {
@@ -80,7 +155,6 @@ export class ScoresService {
                 {
                     $group: {
                         _id: '$user._id',
-                        monthScore: { $sum: '$score' },
                         user: {
                             $first: {
                                 _id: '$user._id',
@@ -92,6 +166,54 @@ export class ScoresService {
                                 avatar: '$user.avatar',
                                 isVerified: '$user.isVerified',
                                 isSCC: '$user.isSCC'
+                            }
+                        },
+                        monthScore: {
+                            $sum: {
+                                $cond: {
+                                    if: {
+                                        $and: [
+                                            {
+                                                $gte: [
+                                                    '$createdAt',
+                                                    startOfMonthDate
+                                                ]
+                                            },
+                                            {
+                                                $lte: [
+                                                    '$createdAt',
+                                                    endOfMonthDate
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    then: '$score',
+                                    else: 0
+                                }
+                            }
+                        },
+                        weekScore: {
+                            $sum: {
+                                $cond: {
+                                    if: {
+                                        $and: [
+                                            {
+                                                $gte: [
+                                                    '$createdAt',
+                                                    startOfLastWeek
+                                                ]
+                                            },
+                                            {
+                                                $lte: [
+                                                    '$createdAt',
+                                                    endOfLastWeek
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    then: '$score',
+                                    else: 0
+                                }
                             }
                         }
                     }
@@ -111,6 +233,7 @@ export class ScoresService {
                 }
             ])
             .exec();
+        return res;
     }
 
     async getMonthScores(): Promise<ScoresResult[]> {
