@@ -241,7 +241,7 @@ export class ReferralService {
             },
             {
                 $match: {
-                    'user': id // Match the userId
+                    user: id // Match the userId
                 }
             },
             {
@@ -269,7 +269,7 @@ export class ReferralService {
             }
         ]);
         console.log(allReferral[0]?.allReferral);
-        
+
         return allReferral[0]?.allReferral || [];
         // return this.userService.userModel.find({ referral: id });
     }

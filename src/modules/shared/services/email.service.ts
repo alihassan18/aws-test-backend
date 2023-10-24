@@ -645,7 +645,6 @@ export class EmailService {
         };
         return this.MAIL_GUN(mailOptions);
     }
-    
 
     async sendCreateNewMintPost_follower(
         to,
