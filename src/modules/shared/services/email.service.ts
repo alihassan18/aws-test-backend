@@ -36,7 +36,6 @@ import { convertHashesMentionsToSimpleText } from 'src/helpers/common.helpers';
 //         pass: env.FROM_EMAIL_PASSWORD
 //     }
 // });
-
 @Injectable()
 export class EmailService {
     constructor(@InjectModel(User.name) private userModel: Model<User>) {}
@@ -666,7 +665,7 @@ export class EmailService {
                 tokenId,
                 tokenName,
                 url,
-                picture
+                picture: `https://ipfs.mintstargram.tech/ipfs/${picture}`
             })
         };
         return this.MAIL_GUN(mailOptions);
