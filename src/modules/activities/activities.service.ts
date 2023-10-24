@@ -48,7 +48,7 @@ export class ActivityService implements OnModuleInit {
                             .exec();
                         if (!activity) {
                             this.activityModel
-                                .create()
+                                .create(values)
                                 .then((activity) => {
                                     console.log('Activity created:', activity);
                                 })
