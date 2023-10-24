@@ -74,6 +74,9 @@ export class Activity extends Document {
     })
     @Prop({ type: ActTokenData })
     token: ActTokenData;
+
+    @Field(() => Date, { nullable: true })
+    createdAt?: Date;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
