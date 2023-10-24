@@ -118,8 +118,8 @@ export class ScoresService {
         const startOfMonthDate = startOfMonth(new Date());
         const endOfMonthDate = endOfMonth(new Date());
 
-        const startOfLastWeek = startOfWeek(addDays(new Date(), -7))
-        const endOfLastWeek = endOfWeek(addDays(new Date(), -7))
+        const startOfLastWeek = startOfWeek(addDays(new Date(), -7));
+        const endOfLastWeek = endOfWeek(addDays(new Date(), -7));
 
         const res = await this.scoreModel
             .aggregate([
