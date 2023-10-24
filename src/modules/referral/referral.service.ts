@@ -234,7 +234,43 @@ export class ReferralService {
         };
     }
 
-    userReferrals(id: Types.ObjectId) {
-        return this.userService.userModel.find({ referral: id });
+    async userReferrals(id: Types.ObjectId) {
+        const allReferral = await this.referralModel.aggregate([
+            {
+                $unwind: '$allReferral'
+            },
+            {
+                $match: {
+                    'user': id // Match the userId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users', // The User model collection name
+                    localField: 'allReferral.id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $group: {
+                    _id: null, // Group all documents together
+                    allReferral: { $addToSet: '$user' } // Use $addToSet to collect unique users
+                }
+            },
+            {
+                $project: {
+                    _id: 0, // Exclude the _id field
+                    allReferral: 1 // Include the unique users in the allReferral field
+                }
+            }
+        ]);
+        console.log(allReferral[0]?.allReferral);
+        
+        return allReferral[0]?.allReferral || [];
+        // return this.userService.userModel.find({ referral: id });
     }
 }
