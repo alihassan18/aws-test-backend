@@ -2033,6 +2033,7 @@ type Mutation {
   deleteNotification(id: String!): Notification!
   stageInviteToFollowers(stageId: String!, stageTitle: String!, stageDesc: String!): SuccessPayload!
   stageInviteToUser(stageId: String!, stageTitle: String!, stageDesc: String!, userToInvite: String!): SuccessPayload!
+  createOneSignal: String!
   createMessage(content: String!): Message!
   createGroupMessage(createGroupMessageInput: CreateGroupMessageInput!): Message!
   createSupportMessage(createSupportMessageInput: CreatePrivateMessageInput!): Message!

@@ -15,6 +15,7 @@ import { ENotificationFromType, NotificationType } from './notifications.enum';
 import { User } from '../users/entities/user.entity';
 import { EmailService } from '../shared/services/email.service';
 import { UsersService } from '../users/users.service';
+import axios from 'axios';
 
 @Injectable()
 export class NotificationService {
@@ -731,5 +732,37 @@ export class NotificationService {
             );
         }
         return;
+    }
+
+    async createOneSignal() {
+        const appId = '39cd8452-fd14-47a5-b89d-3ce51d1e5169';
+        const restApiKey = 'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
+        const playerID = '8853d813-7a9b-4d8b-aa9a-76fae5e4a9ed'; // Replace with the Player ID of the target user
+
+        const notificationData = {
+            app_id: appId,
+            include_player_ids: [playerID,"74fe049c-f59c-40a5-b14c-3dc34f3199ff"], // Specify the target user's Player ID
+            contents: { en: 'Hello, this is a targeted notification!' },
+            // included_segments: ['Subscribed Users'],
+        };
+
+        axios
+            .post(
+                'https://onesignal.com/api/v1/notifications',
+                notificationData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        Authorization: `Basic ${restApiKey}`
+                    }
+                }
+            )
+            .then((response) => {
+                console.log('Notification sent:', response.data);
+            })
+            .catch((error) => {
+                console.error('Notification failed:', error);
+            });
+        return 'ok';
     }
 }
