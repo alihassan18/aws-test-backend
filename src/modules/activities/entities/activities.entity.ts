@@ -6,6 +6,7 @@ import { Post } from 'src/modules/feeds/entities/post.entity';
 import { User } from 'src/modules/users/entities/user.entity';
 import { ActivityTypes } from '../activities.enums';
 import { Types } from 'mongoose';
+import { UserProfile } from '../dto/get-activities.dto';
 
 export type ActivityDocument = Activity & Document;
 
@@ -44,7 +45,7 @@ export class Activity extends Document {
     @Prop({ type: String, enum: ActivityTypes })
     type: ActivityTypes;
 
-    @Field(() => User, {
+    @Field(() => UserProfile, {
         description: 'Name field (placeholder)',
         nullable: true
     })

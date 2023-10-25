@@ -512,6 +512,32 @@ type Referral {
   requested: Boolean!
 }
 
+type UserProfile {
+  """Name of the staking collection"""
+  userName: String!
+
+  """Name of the staking collection"""
+  avatar: String!
+
+  """Name of the staking collection"""
+  type: String!
+
+  """Name of the staking collection"""
+  firstName: String!
+
+  """Name of the staking collection"""
+  lastName: String!
+
+  """Name of the staking collection"""
+  _id: String!
+
+  """Name of the staking collection"""
+  isVerified: Boolean!
+
+  """Name of the staking collection"""
+  _isSCCid: Boolean!
+}
+
 type ActTokenData {
   tokenId: String
   image: String
@@ -526,7 +552,7 @@ type Activity {
   type: ActivityTypes!
 
   """Name field (placeholder)"""
-  user: User
+  user: UserProfile
 
   """Name field (placeholder)"""
   nftCollection: Collection
