@@ -303,6 +303,7 @@ type Collection {
   views: [User!]
   is_deleted: Boolean
   link_preview: String
+  createdAt: String
 }
 
 type Wallet {

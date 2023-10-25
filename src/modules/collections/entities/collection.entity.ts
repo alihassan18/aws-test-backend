@@ -394,6 +394,9 @@ export class Collection extends Document {
     @Field(() => String, { nullable: true })
     @Prop({ default: '' })
     link_preview?: string;
+
+    @Field(() => String, { nullable: true })
+    createdAt?: Date;
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);
