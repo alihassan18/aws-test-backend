@@ -22,7 +22,14 @@ import { UsersService } from '../users/users.service';
 import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../shared/services/cloudinary.service';
+// import { auth, Client } from 'twitter-api-sdk';
 
+// const authClient = new auth.OAuth2User({
+//     client_id: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
+//     client_secret: 'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
+//     callback: 'http://localhost:3000/auth/twitter-auth-callback',
+//     scopes: ['tweet.read', 'users.read', 'offline.access']
+// });
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -30,11 +37,76 @@ export class AuthController {
         private readonly userService: UsersService,
         private readonly cloud: CloudinaryService
     ) {}
+
     @Get('twitter')
     @UseGuards(TwitterAuthGuard)
     async twitterAuth(@Req() req) {
         req.session.token = req.query.token;
     }
+
+    // @Get('twitter-auth')
+    // async twitter_Auth(@Req() req, @Res() res) {
+    //     try {
+    //         // console.log("call twitter");
+
+    //         // // const twitter = new Twitter({
+    //         // //     consumerKey: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
+    //         // //     consumerSecret:
+    //         // //         'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t'
+    //         // // });
+
+    //         // const twitterConfig: AuthClient = {
+    //         //     consumerKey: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
+    //         //     consumerSecret: 'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
+    //         //   };
+
+    //         //   const twitter = new Twitter(twitterConfig);
+
+    //         // const redirectURL = 'https://55b4-182-185-214-32.ngrok-free.app/';
+    //         // const requestToken = twitter.getRequestToken(redirectURL);
+
+    //         // // Store the request token in your session for later use
+    //         // req.session.twitterRequestToken = requestToken;
+
+    //         // // Redirect the user to the Twitter login page
+    //         // res.redirect(twitter.getAuthUrl(requestToken));
+
+    //         // const authClient = new auth.OAuth2User({
+    //         //     client_id: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
+    //         //     client_secret:
+    //         //         'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
+    //         //     callback: 'https://55b4-182-185-214-32.ngrok-free.app/',
+    //         //     scopes: ['tweet.read', 'users.read', 'offline.access']
+    //         // });
+
+    //         const authUrl = await authClient.generateAuthURL({
+    //             code_challenge_method: 's256',
+    //             state: 'twitter-increaser-state',
+    //         });
+
+    //         console.log(authUrl, 'client');
+    //         res.redirect(authUrl);
+
+    //         // const reqAccessToken = await authClient.requestAccessToken(
+    //         //     'VndqdEpxZkQ0X1NIU1dkRElMRWlITWt5b2h0ZUJlSXB4YW9zb3puaW8wNzgtOjE2OTgxNTgyMjgzNzc6MTowOmFjOjE'
+    //         // );
+    //     } catch (error) {
+    //         console.log(error, 'error in twitter');
+    //     }
+    // }
+
+    // @Get('twitter-auth-callback')
+    // async twitter_Auth_callback(@Req() req, @Res() res) {
+    //     console.log('call twitter-auth-callback', req.query);
+
+    //     let token = req.query.code;
+    //     const reqAccessToken = await authClient.requestAccessToken(token);
+    //     const client = new Client(authClient);
+
+    //     const data = await client.users.findMyUser({"user.fields": ["id", "location", "name", "pinned_tweet_id", "profile_image_url"]});
+
+    //     console.log(reqAccessToken, 'reqAccessToken', data);
+    // }
 
     @Get('twitter/callback')
     @UseGuards(AuthGuard('twitter'))

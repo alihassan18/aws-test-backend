@@ -83,7 +83,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                         twitterAccessToken: accessToken,
                         twitterAccessSecret: refreshToken,
                         displayName,
-                        userName: username,
+                        userName: username?.toLowerCase(),
                         ...(_json.email && { email: _json.email }),
                         firstName: name[0],
                         lastName: name[1],
@@ -102,15 +102,60 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
 
                 // Generate JWT access token for user
                 const payload = {
+                    email: user.email,
                     _id: user._id,
-                    twitterId,
-                    username,
-                    email: _json.email
+                    twoFa: user?.settings?.twoFa,
+                    key: user.key
                 };
+
                 const token = await this.jwtService.signAsync(payload, {
                     secret: jwtConstants.secret,
-                    expiresIn: 60 * 15
+                    expiresIn: jwtConstants.expire
                 });
+                // const payload = {
+                //     _id: user._id,
+                //     twitterId,
+                //     username,
+                //     email: _json.email
+                // };
+
+                // const userData = {
+                //     _id: user._id,
+                //     firstName: user.firstName,
+                //     lastName: user.lastName,
+                //     userName: user.userName,
+                //     email: user.email,
+                //     hideWallet: user.hideWallet,
+                //     phoneNumber: user.phoneNumber,
+                //     wallet: user.wallet,
+                //     roles: user.roles,
+                //     isActive: user.isActive,
+                //     avatar: user.avatar,
+                //     coverImage: user.coverImage,
+                //     isEmailVerified: user.isEmailVerified,
+                //     facebook: user.facebook,
+                //     instagram: user.instagram,
+                //     reddit: user.reddit,
+                //     twitter: user.twitter,
+                //     discord: user.discord,
+                //     youtube: user.youtube,
+                //     tiktok: user.tiktok,
+                //     web: user.web,
+                //     bio: user.bio,
+                //     followersCount: user.followersCount,
+                //     followers: user.followers,
+                //     following: user.following,
+                //     followingCount: user.followingCount,
+                //     isVerified: user.isVerified,
+                //     isBlocked: user.isBlocked,
+                //     settings: user.settings,
+                //     key: user.key,
+                //     referral: user.referral,
+                //     wallets: user.wallets,
+                //     source: user.source,
+                //     country: user.country,
+                //     followingHashtags: user.followingHashtags
+                // };
 
                 const userData = {
                     _id: user._id,
@@ -141,13 +186,26 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     followingCount: user.followingCount,
                     isVerified: user.isVerified,
                     isBlocked: user.isBlocked,
+                    isBanned: user.isBanned,
                     settings: user.settings,
+                    isSCC: user.isSCC,
+                    verifyStatus: user.verifyStatus,
                     key: user.key,
                     referral: user.referral,
                     wallets: user.wallets,
                     source: user.source,
                     country: user.country,
-                    followingHashtags: user.followingHashtags
+                    followingHashtags: user.followingHashtags,
+                    twitterId: user.twitterId,
+                    isLinkedInConnected: user.isLinkedInConnected,
+                    followingCollections: user.followingCollections,
+                    backgroundTheme: user.backgroundTheme,
+                    blockedUsers: user.blockedUsers,
+                    affiliatedUser: user.affiliatedUser,
+                    points: user.points,
+                    land_id: user.land_id,
+                    scc_status: user.scc_status,
+                    invitation_code: user.invitation_code
                 };
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
