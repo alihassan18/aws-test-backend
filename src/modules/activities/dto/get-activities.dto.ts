@@ -1,6 +1,6 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
-@InputType()
+@ObjectType()
 export class UserProfile {
     @Field(() => String, { description: 'Name of the staking collection' })
     userName: string;
