@@ -609,7 +609,7 @@ export class NotificationService {
             e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];
 
         const alertsFollowers =
-            a_followers?.filter((item) => !excludeIds?.includes(item)) || [];
+            a_followers?.filter((item) => !excludeIds?.includes(item.toString())) || [];
 
         if (emailFollowers?.length > 0) {
             await this.emailService.sendCreateNewComment_follower(
