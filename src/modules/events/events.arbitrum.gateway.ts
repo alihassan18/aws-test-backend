@@ -52,7 +52,6 @@ export class EventsArbitrumGateway
 
         wss.on('message', async function incoming(data) {
             const parsedData = JSON.parse(data);
-            console.log(parsedData, 'parsedData');
 
             if (parsedData?.event === 'ask.created') {
                 // if (self.isNotValidData(parsedData.data)) {

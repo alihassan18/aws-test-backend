@@ -124,11 +124,14 @@ export class PostResolver {
         context: ContextProps
     ) {
         const user = context.req.user;
+        // console.log(user,'userid');
+
         let isDuplicate;
-        if (!createPostInput.inReplyToPost) {
+        if (!createPostInput?.inReplyToPost || createPostInput?.inReplyToPost) {
             isDuplicate = await this.postService.isDuplicateContent(
                 user._id,
-                createPostInput.text
+                createPostInput.text,
+                createPostInput.inReplyToPost
             );
         }
 
