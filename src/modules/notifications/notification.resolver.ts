@@ -168,15 +168,4 @@ export class NotificationResolver {
             new Types.ObjectId(userToInvite)
         );
     }
-
-    @UseGuards(AuthGuard)
-    @Mutation(() => String)
-    async createOneSignal(
-    ): Promise<string> {
-        return this.notificationService.createOneSignal(
-
-        );
-    }
-
-    
 }
