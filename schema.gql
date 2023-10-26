@@ -521,9 +521,6 @@ type UserProfile {
   avatar: String!
 
   """Name of the staking collection"""
-  type: String!
-
-  """Name of the staking collection"""
   firstName: String!
 
   """Name of the staking collection"""
@@ -536,7 +533,7 @@ type UserProfile {
   isVerified: Boolean!
 
   """Name of the staking collection"""
-  _isSCCid: Boolean!
+  isSCC: Boolean!
 }
 
 type ActTokenData {

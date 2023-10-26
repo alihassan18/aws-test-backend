@@ -9,9 +9,6 @@ export class UserProfile {
     avatar: string;
 
     @Field(() => String, { description: 'Name of the staking collection' })
-    type: string;
-
-    @Field(() => String, { description: 'Name of the staking collection' })
     firstName: string;
 
     @Field(() => String, { description: 'Name of the staking collection' })
@@ -24,5 +21,5 @@ export class UserProfile {
     isVerified: boolean;
 
     @Field(() => Boolean, { description: 'Name of the staking collection' })
-    _isSCCid: boolean;
+    isSCC: boolean;
 }

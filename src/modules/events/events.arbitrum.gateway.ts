@@ -230,7 +230,9 @@ export class EventsArbitrumGateway
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
-                    contract: { $regex: new RegExp(`^${data?.contract}$`, 'i') }
+                    contract: {
+                        $regex: new RegExp(`^${data?.token?.contract}$`, 'i')
+                    }
                 }),
                 this.walletModel.findOne({
                     address: { $regex: new RegExp(`^${data?.to}$`, 'i') }
