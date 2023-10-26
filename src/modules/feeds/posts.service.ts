@@ -513,8 +513,8 @@ export class PostService {
                     owner.userName,
                     post._id,
                     post.text,
-                    [receiver._id],
-                    [receiver.email]
+                    [receiver.email],
+                    [receiver._id.toString()]
                 );
             }
 
