@@ -124,7 +124,6 @@ export class NotificationService {
                     return this.mainCall(data);
             }
         }
-        // return null;
     }
 
     async sendNotification(data: NotificationDocument) {
