@@ -413,7 +413,8 @@ export class AuthService extends CommonServices {
             points: u.points,
             land_id: u.land_id,
             scc_status: u.scc_status,
-            invitation_code: u.invitation_code
+            invitation_code: u.invitation_code,
+            onesignal_keys: u.onesignal_keys
         };
 
         return {

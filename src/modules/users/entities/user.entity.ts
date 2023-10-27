@@ -408,6 +408,13 @@ export class User extends Document {
         type: Date
     })
     lockedAt: Date;
+
+    @Field(() => [String])
+    @Prop({
+        type: [String],
+        default: []
+    })
+    onesignal_keys: string[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(User);

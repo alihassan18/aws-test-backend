@@ -384,6 +384,9 @@ export class ProfileInput {
 
     @Field(() => String, { nullable: true })
     land_id?: string;
+
+    @Field(() => [String], { nullable: true })
+    onesignal_keys?: string[];
 }
 
 @ObjectType()

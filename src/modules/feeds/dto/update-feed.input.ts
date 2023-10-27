@@ -159,3 +159,12 @@ export class StageInput {
     @Prop()
     description: string;
 }
+
+export interface QueryOfDuplicateC {
+    author: Types.ObjectId;
+    text: string;
+    createdAt: {
+        $gte: Date;
+    };
+    inReplyToPost?:Types.ObjectId
+}

@@ -477,6 +477,7 @@ type User {
   invitation_code: String
   login_attempts: Float
   lockedAt: DateTime
+  onesignal_keys: [String!]!
   userId: User!
 }
 
@@ -2187,6 +2188,7 @@ input ProfileInput {
   country: String
   backgroundTheme: String
   land_id: String
+  onesignal_keys: [String!]
 }
 
 input CreateCollectionInput {

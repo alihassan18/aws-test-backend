@@ -15,6 +15,11 @@ import { ENotificationFromType, NotificationType } from './notifications.enum';
 import { User } from '../users/entities/user.entity';
 import { EmailService } from '../shared/services/email.service';
 import { UsersService } from '../users/users.service';
+import axios from 'axios';
+import {
+    generateOnesignalMessage,
+    generateOnesignalURL
+} from './entities/notifications.functions';
 
 @Injectable()
 export class NotificationService {
@@ -119,7 +124,6 @@ export class NotificationService {
                     return this.mainCall(data);
             }
         }
-        // return null;
     }
 
     async sendNotification(data: NotificationDocument) {
@@ -132,13 +136,65 @@ export class NotificationService {
                 },
                 {
                     path: 'receiver',
-                    select: '_id firstName lastName userName avatar isVerified'
+                    select: '_id firstName lastName userName avatar isVerified onesignal_keys'
+                },
+                {
+                    path: '_collection',
+                    select: 'chain contract'
                 }
             ]);
+
         this.privateFeedsGateway.emitNotificationToUser(
             data.receiver?.toString(),
             notification
         );
+
+        if (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            notification.receiver?.onesignal_keys &&
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            notification.receiver?.onesignal_keys?.length > 0
+        ) {
+            this.createOneSignal(notification);
+        }
+    }
+
+    async createOneSignal(notification: NotificationDocument) {
+        const appId = '39cd8452-fd14-47a5-b89d-3ce51d1e5169';
+        const restApiKey = 'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const playerID = [...notification.receiver.onesignal_keys]; // Replace with the Player ID of the target user
+
+        const notificationData = {
+            app_id: appId,
+            include_player_ids: playerID, // Specify the target user's Player ID
+            headings: { en: 'Mintstargram' },
+            contents: { en: generateOnesignalMessage(notification) },
+            url: generateOnesignalURL(notification)
+            // included_segments: ['Subscribed Users'],
+        };
+
+        axios
+            .post(
+                'https://onesignal.com/api/v1/notifications',
+                notificationData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        Authorization: `Basic ${restApiKey}`
+                    }
+                }
+            )
+            .then((response) => {
+                console.log('Notification sent:', response.data);
+            })
+            .catch((error) => {
+                console.error('Notification failed:', error);
+            });
+        return;
     }
 
     async findAll(
@@ -553,7 +609,9 @@ export class NotificationService {
             e_followers?.filter((item) => !excludeEmails?.includes(item)) || [];
 
         const alertsFollowers =
-            a_followers?.filter((item) => !excludeIds?.includes(item)) || [];
+            a_followers?.filter(
+                (item) => !excludeIds?.includes(item.toString())
+            ) || [];
 
         if (emailFollowers?.length > 0) {
             await this.emailService.sendCreateNewComment_follower(
