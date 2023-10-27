@@ -27,6 +27,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/modules/users/entities/user.entity';
 import { Model } from 'mongoose';
 import { convertHashesMentionsToSimpleText } from 'src/helpers/common.helpers';
+import {
+    NotFoundCollectioin,
+    /* hasImageExtension */
+} from 'src/modules/notifications/entities/notifications.functions';
 
 // const transporter = nodemailer.createTransport({
 //     host: 'smtp.mailgun.org',
@@ -665,7 +669,10 @@ export class EmailService {
                 tokenId,
                 tokenName,
                 url,
-                picture: `https://ipfs.mintstargram.tech/ipfs/${picture}`
+                picture:picture
+                //  hasImageExtension(picture)
+                //     ? picture
+                //     : `https://ipfs.mintstargram.tech/ipfs/${picture}`
             })
         };
         return this.MAIL_GUN(mailOptions);
@@ -689,7 +696,7 @@ export class EmailService {
                 displayName,
                 chain,
                 contract,
-                image,
+                image: image ?? NotFoundCollectioin,
                 supply
             })
         };
