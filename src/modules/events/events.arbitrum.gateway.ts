@@ -18,6 +18,7 @@ import {
 import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { ActivityTypes } from '../activities/activities.enums';
 import { NotificationService } from '../notifications/notification.service';
+import { ZackService } from '../zack/zack.service';
 
 const chain = 'arbitrum';
 
@@ -286,6 +287,12 @@ export class EventsArbitrumGateway
 
     async createBid(data) {
         try {
+            /* FS: ZACK: CREATE OFFER DM CREATE */
+            /* Auth token */
+            const zackService = new ZackService();
+            await zackService.getAccessToken();
+            /* FS: ZACK: CREATE OFFER DM END */
+
             const [collection, wallet, taker] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -340,6 +347,23 @@ export class EventsArbitrumGateway
                     }
                 );
             }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const dataPost: any = {
+                to_id: /* taker?.userId */ '651e6250eb6e87da8b919464', // Relpalce with staic key with acutal
+                send_by: wallet?.userId,
+                data: {
+                    type: 'offer_nft',
+                    content: '',
+                    metadata: {
+                        collection: collection,
+                        wallet: wallet,
+                        taker: taker,
+                        data: data
+                    }
+                }
+            };
+            await zackService.sendMessagePrivate(dataPost);
         } catch (error) {
             console.log(error);
         }
