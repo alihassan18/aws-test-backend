@@ -2,24 +2,24 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserProfile {
-    @Field(() => String, { description: 'Name of the staking collection' })
+    @Field(() => String, { nullable: true })
     userName: string;
 
-    @Field(() => String, { description: 'Name of the staking collection' })
+    @Field(() => String, { nullable: true })
     avatar: string;
 
-    @Field(() => String, { description: 'Name of the staking collection' })
+    @Field(() => String, { nullable: true })
     firstName: string;
 
-    @Field(() => String, { description: 'Name of the staking collection' })
+    @Field(() => String, { nullable: true })
     lastName: string;
 
-    @Field(() => String, { description: 'Name of the staking collection' })
+    @Field(() => String, { nullable: true })
     _id: string;
 
-    @Field(() => Boolean, { description: 'Name of the staking collection' })
+    @Field(() => Boolean, { nullable: true })
     isVerified: boolean;
 
-    @Field(() => Boolean, { description: 'Name of the staking collection' })
+    @Field(() => Boolean, { nullable: true })
     isSCC: boolean;
 }

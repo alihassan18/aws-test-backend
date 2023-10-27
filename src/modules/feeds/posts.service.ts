@@ -24,6 +24,7 @@ import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 import { FeedDocument } from './entities/feed.entity';
 import {
     CollectionInput,
+    QueryOfDuplicateC,
     StageInput,
     TokenInput,
     UpdateFeedInput,
@@ -610,26 +611,80 @@ export class PostService {
 
     async isDuplicateContent(
         userId: Types.ObjectId,
-        text: string
+        text: string,
+        inReplyToPost: string
     ): Promise<boolean> {
         const twentyFourHoursAgo = new Date();
         twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
 
-        const existingPost = await this.postModel
-            .findOne({
-                author: userId,
-                text,
-                createdAt: { $gte: twentyFourHoursAgo }
-            })
-            .exec();
+        const query:QueryOfDuplicateC= {
+            author: userId,
+            text,
+            createdAt: { $gte: twentyFourHoursAgo }
+        };
 
-        console.log(existingPost, 'posttttttt');
-        if (existingPost && existingPost.inReplyToPost) {
+        if (inReplyToPost) {
+            query.inReplyToPost = new Types.ObjectId(inReplyToPost);
+
+            const existingPostComment = await this.postModel
+                .findOne(query)
+                .exec();
+
+            return !!existingPostComment;
+        } else {
+            const existingPost = await this.postModel.findOne(query).exec();
+
+            if (existingPost && !existingPost.inReplyToPost) {
+                return true;
+            }
+
             return false;
         }
-
-        return !!existingPost;
     }
+    // async isDuplicateContent(
+    //     userId: Types.ObjectId,
+    //     text: string,
+    //     inReplyToPost:string
+    // ): Promise<boolean> {
+    //     const twentyFourHoursAgo = new Date();
+    //     twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+    //     const existingPost = await this.postModel
+    //         .findOne({
+    //             author: userId,
+    //             text,
+    //             createdAt: { $gte: twentyFourHoursAgo }
+    //         })
+    //         .exec();
+
+    //     console.log(existingPost, 'posttttttt');
+    //     if ( existingPost && !existingPost?.inReplyToPost) {
+    //         return true;
+    //     }
+    //     if(existingPost?.inReplyToPost){
+
+    //         const existingPostComment = await this.postModel
+    //         .findOne({
+    //             author: userId,
+    //             text,
+    //             inReplyToPost,
+    //             createdAt: { $gte: twentyFourHoursAgo }
+    //         })
+    //         .exec();
+    //         console.log(existingPostComment,"existingPostComment");
+    //         console.log({
+    //             author: userId,
+    //             text,
+    //             inReplyToPost,
+    //             createdAt: { $gte: twentyFourHoursAgo }
+    //         },'ddd');
+
+    //         return false
+
+    //     }
+
+    //     // return !!existingPost;
+    // }
 
     async repost(createPostInput: CreateRePostInput, userId: Types.ObjectId) {
         const originalPost = await this.postModel
