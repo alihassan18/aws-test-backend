@@ -166,5 +166,5 @@ export interface QueryOfDuplicateC {
     createdAt: {
         $gte: Date;
     };
-    inReplyToPost?:Types.ObjectId
+    inReplyToPost?: Types.ObjectId;
 }
