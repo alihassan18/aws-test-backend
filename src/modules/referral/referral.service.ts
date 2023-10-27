@@ -256,15 +256,18 @@ export class ReferralService {
                 $unwind: '$user'
             },
             {
+                $sort: { 'user.createdAt': -1 }
+            },
+            {
                 $group: {
-                    _id: null, // Group all documents together
-                    allReferral: { $addToSet: '$user' } // Use $addToSet to collect unique users
+                    _id: null,
+                    allReferral: { $push: '$user' }
                 }
             },
             {
                 $project: {
-                    _id: 0, // Exclude the _id field
-                    allReferral: 1 // Include the unique users in the allReferral field
+                    _id: 0,
+                    allReferral: 1
                 }
             }
         ]);

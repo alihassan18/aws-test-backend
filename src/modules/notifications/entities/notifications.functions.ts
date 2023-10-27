@@ -128,3 +128,19 @@ export const generateOnesignalURL = (notification: Notification) => {
             break;
     }
 };
+
+export function hasImageExtension(text) {
+    // Define an array of lowercase image file extensions
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.svg'];
+
+    // Convert the text to lowercase for case-insensitive matching
+    const lowercaseText = text.toLowerCase();
+
+    // Check if any of the lowercase image extensions are present in the lowercase text
+    return imageExtensions.some((extension) =>
+        lowercaseText.includes(extension)
+    );
+}
+
+export const NotFoundCollectioin =
+    'https://res.cloudinary.com/mintstar/image/upload/v1698399995/mintstar/dttttxoezzjglulafecq.png';
