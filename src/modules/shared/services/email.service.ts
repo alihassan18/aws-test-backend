@@ -28,7 +28,7 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { Model } from 'mongoose';
 import { convertHashesMentionsToSimpleText } from 'src/helpers/common.helpers';
 import {
-    NotFoundCollectioin,
+    NotFoundCollectioin
     /* hasImageExtension */
 } from 'src/modules/notifications/entities/notifications.functions';
 
@@ -669,7 +669,7 @@ export class EmailService {
                 tokenId,
                 tokenName,
                 url,
-                picture:picture
+                picture: picture
                 //  hasImageExtension(picture)
                 //     ? picture
                 //     : `https://ipfs.mintstargram.tech/ipfs/${picture}`
