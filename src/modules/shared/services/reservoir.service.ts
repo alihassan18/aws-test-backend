@@ -226,6 +226,9 @@ export class ReservoirService {
 
     async getToken(contract: string, chainName: string, tokenId: string) {
         try {
+            console.log('contract', contract);
+            console.log('chainName', chainName);
+            console.log('tokenId', tokenId);
             sdk.auth(process.env.RESERVOIR_API_KEY);
             const chain = chains[chainName];
             sdk.server(chain.reservoirBaseUrl);
