@@ -18,9 +18,9 @@ export enum NotificationType {
     COMMENT_REPLY = 'COMMENT_REPLY',
     MENTIONED = 'MENTIONED',
     VOTE = 'VOTE',
-    Like = 'LIKE',
-    Like_COMMENT = 'LIKE_COMMENT',
-    Hashtag = 'HASHTAG',
+    LIKE = 'LIKE',
+    LIKE_COMMENT = 'LIKE_COMMENT',
+    HASHTAG = 'HASHTAG',
     MESSAGE = 'MESSAGE',
     // SEND FOLLOWER NOTICE
     FOLLOWER_POST = 'FOLLOWER_POST',
