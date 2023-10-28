@@ -375,7 +375,6 @@ export class EventsArbitrumGateway
                 to_id = ownerWallet?.userId;
             }
 
-            
             if (to_id) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const dataPost: any = {
