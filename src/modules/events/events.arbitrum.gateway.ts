@@ -19,6 +19,8 @@ import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { ActivityTypes } from '../activities/activities.enums';
 import { NotificationService } from '../notifications/notification.service';
 import { ZackService } from '../zack/zack.service';
+import { UserDocument } from '../users/entities/user.entity';
+import { USERS } from 'src/constants/db.collections';
 
 const chain = 'arbitrum';
 
@@ -37,6 +39,7 @@ export class EventsArbitrumGateway
         private activityModel: Model<ActivityDocument>,
         @InjectModel(Wallet.name)
         private walletModel: Model<WalletDocument>,
+        @InjectModel(USERS) readonly userModel: Model<UserDocument>,
         private readonly notifificationService: NotificationService
     ) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -292,7 +295,7 @@ export class EventsArbitrumGateway
             const zackService = new ZackService();
             await zackService.getAccessToken();
             /* FS: ZACK: CREATE OFFER DM END */
-
+            console.log('data?.owner', data);
             const [collection, wallet, taker] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -348,22 +351,53 @@ export class EventsArbitrumGateway
                 );
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const dataPost: any = {
-                to_id: /* taker?.userId */ '651e6250eb6e87da8b919464', // Relpalce with staic key with acutal
-                send_by: wallet?.userId,
-                data: {
-                    type: 'offer_nft',
-                    content: '',
-                    metadata: {
-                        collection: collection,
-                        wallet: wallet,
-                        taker: taker,
-                        data: data
+            let ownerWallet = null;
+            if (collection?.owner) {
+                ownerWallet = await this.walletModel.findOne({
+                    address: {
+                        $regex: new RegExp(`^${collection?.owner}$`, 'i')
                     }
-                }
-            };
-            await zackService.sendMessagePrivate(dataPost);
+                });
+            }
+            console.log('ownerWallet', ownerWallet);
+
+            let owner = null;
+            if (ownerWallet.userId) {
+                owner = await this.userModel.findOne({
+                    _id: ownerWallet.userId
+                });
+            }
+
+            let to_id = null;
+            if (data.criteria.type == 'token') {
+                to_id = '651e6250eb6e87da8b919464'; // replace this ntf owner.
+            } else if (data.criteria.type == 'collection') {
+                to_id = ownerWallet?.userId;
+            }
+
+            
+            if (to_id) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const dataPost: any = {
+                    to_id: to_id,
+                    send_by: wallet?.userId,
+                    data: {
+                        type:
+                            data.criteria.type == 'token'
+                                ? 'offer_nft'
+                                : 'offer_collection',
+                        content: '',
+                        metadata: {
+                            collection: collection,
+                            wallet: wallet,
+                            taker: taker,
+                            owner: owner,
+                            data: data
+                        }
+                    }
+                };
+                await zackService.sendMessagePrivate(dataPost);
+            }
         } catch (error) {
             console.log(error);
         }
