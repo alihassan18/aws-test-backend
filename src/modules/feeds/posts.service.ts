@@ -335,7 +335,7 @@ export class PostService {
         //             /* Notification */
         //             if (userId.toString() !== follower.toString()) {
         //                 this.notificationService.create({
-        //                     type: NotificationType.Hashtag,
+        //                     type: NotificationType.HASHTAG,
         //                     sender: ENotificationFromType.USER,
         //                     from: userId,
         //                     receiver: follower,
