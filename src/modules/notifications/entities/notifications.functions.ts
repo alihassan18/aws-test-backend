@@ -15,10 +15,12 @@ export const NotificationMessages = {
     [NotificationType.STAGE]: 'is live. Join now!',
     [NotificationType.FOLLOW]: 'has started following you',
     [NotificationType.FOLLOWER_POST]: 'you followed has created a new post',
-    [NotificationType.FOLLOWER_MINT]: 'you followed has created a new mint post',
+    [NotificationType.FOLLOWER_MINT]:
+        'you followed has created a new mint post',
     [NotificationType.FOLLOWER_COMMENT]: 'you followed has added a comment',
     [NotificationType.FOLLOWER_REPOST]: 'you followed has reposted',
-    [NotificationType.FOLLOWER_CREATE_COLLECTION]: 'you followed has created a new collection',
+    [NotificationType.FOLLOWER_CREATE_COLLECTION]:
+        'you followed has created a new collection',
     [NotificationType.BIDDING]: 'has make an offer on your NFT',
     [NotificationType.SOLD]: 'has sold your NFT',
     [NotificationType.LISTING]: 'you followed has listed an NFT'

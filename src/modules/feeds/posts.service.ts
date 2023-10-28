@@ -609,7 +609,6 @@ export class PostService {
         return post;
     }
 
-  
     async isDuplicateContent(
         userId: Types.ObjectId,
         text: string,
@@ -649,7 +648,7 @@ export class PostService {
     // ): Promise<boolean> {
     //     const twentyFourHoursAgo = new Date();
     //     twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
-        
+
     //     const existingPost = await this.postModel
     //         .findOne({
     //             author: userId,
@@ -679,9 +678,9 @@ export class PostService {
     //             inReplyToPost,
     //             createdAt: { $gte: twentyFourHoursAgo }
     //         },'ddd');
-            
+
     //         return false
-            
+
     //     }
 
     //     // return !!existingPost;
