@@ -204,6 +204,9 @@ export class AuthService extends CommonServices {
         IpAddress: string
     ): Promise<LoginResult | undefined> {
         // password protection
+        /* Test Zack */
+
+        //console.log('zackService.getStoreToken()', zackService.getStoreToken());
 
         // This will be used for the initial login
         let userToAttempt: UserDocument | undefined;

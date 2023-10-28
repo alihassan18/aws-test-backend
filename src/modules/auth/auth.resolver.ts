@@ -38,6 +38,7 @@ export class AuthResolver extends CommonServices {
             user,
             IpAddress
         );
+
         if (result) return result;
         throw new BadRequestException('Incorrect email or password');
     }

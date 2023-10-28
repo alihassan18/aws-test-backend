@@ -618,7 +618,7 @@ export class PostService {
         const twentyFourHoursAgo = new Date();
         twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
 
-        const query:QueryOfDuplicateC= {
+        const query: QueryOfDuplicateC = {
             author: userId,
             text,
             createdAt: { $gte: twentyFourHoursAgo }
