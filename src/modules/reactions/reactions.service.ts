@@ -259,7 +259,7 @@ export class ReactionService {
         if (userId.toString() !== post.author?._id?.toString()) {
             if (post.inReplyToPost) {
                 this.notificationService.create({
-                    type: NotificationType.Like_COMMENT,
+                    type: NotificationType.LIKE_COMMENT,
                     sender: ENotificationFromType.USER,
                     from: userId,
                     receiver: post.author,
@@ -267,7 +267,7 @@ export class ReactionService {
                 });
             } else {
                 this.notificationService.create({
-                    type: NotificationType.Like,
+                    type: NotificationType.LIKE,
                     sender: ENotificationFromType.USER,
                     from: userId,
                     receiver: post.author,
@@ -443,7 +443,7 @@ export class ReactionService {
         // if (userId.toString() !== message.author.toString()) {
         //     /* Notification */
         //     this.notificationService.create({
-        //         type: NotificationType.Like,
+        //         type: NotificationType.LIKE,
         //         sender: ENotificationFromType.USER,
         //         from: userId,
         //         receiver: post.author,

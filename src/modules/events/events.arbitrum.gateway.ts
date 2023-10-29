@@ -1,4 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
+import axios from 'axios';
+
 import {
     WebSocketGateway,
     WebSocketServer,
@@ -19,6 +21,9 @@ import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { ActivityTypes } from '../activities/activities.enums';
 import { NotificationService } from '../notifications/notification.service';
 import { ZackService } from '../zack/zack.service';
+import { UserDocument } from '../users/entities/user.entity';
+import { USERS } from 'src/constants/db.collections';
+import { ReservoirService } from '../shared/services/reservoir.service';
 
 const chain = 'arbitrum';
 
@@ -37,6 +42,8 @@ export class EventsArbitrumGateway
         private activityModel: Model<ActivityDocument>,
         @InjectModel(Wallet.name)
         private walletModel: Model<WalletDocument>,
+        private readonly reservoirService: ReservoirService,
+        @InjectModel(USERS) readonly userModel: Model<UserDocument>,
         private readonly notifificationService: NotificationService
     ) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -292,7 +299,6 @@ export class EventsArbitrumGateway
             const zackService = new ZackService();
             await zackService.getAccessToken();
             /* FS: ZACK: CREATE OFFER DM END */
-
             const [collection, wallet, taker] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -348,24 +354,103 @@ export class EventsArbitrumGateway
                 );
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const dataPost: any = {
-                to_id: /* taker?.userId */ '651e6250eb6e87da8b919464', // Relpalce with staic key with acutal
-                send_by: wallet?.userId,
-                data: {
-                    type: 'offer_nft',
-                    content: '',
-                    metadata: {
-                        collection: collection,
-                        wallet: wallet,
-                        taker: taker,
-                        data: data
+            let ownerWallet = null;
+            if (collection?.owner) {
+                ownerWallet = await this.walletModel.findOne({
+                    address: {
+                        $regex: new RegExp(`^${collection?.owner}$`, 'i')
+                    }
+                });
+            }
+
+            let owner = null;
+            if (ownerWallet.userId) {
+                owner = await this.userModel.findOne({
+                    _id: ownerWallet.userId
+                });
+            }
+
+            let to_id = null;
+            if (data.criteria.kind == 'token') {
+                const tokenInfo = await this.getTokenById(
+                    data.contract,
+                    data.criteria?.data?.token?.tokenId
+                );
+                console.log(
+                    'tokenInfo',
+                    data.contract,
+                    data.criteria?.data?.token?.tokenId
+                );
+                console.log('tokenInfo', tokenInfo);
+                if (
+                    tokenInfo &&
+                    tokenInfo.tokens[0] &&
+                    tokenInfo.tokens[0].token &&
+                    tokenInfo.tokens[0].token.owner
+                ) {
+                    const api_owner_wallet_address =
+                        tokenInfo.tokens[0].token.owner;
+                    ownerWallet = await this.walletModel.findOne({
+                        address: {
+                            $regex: new RegExp(
+                                `^${api_owner_wallet_address}$`,
+                                'i'
+                            )
+                        }
+                    });
+                    if (ownerWallet && ownerWallet.userId) {
+                        to_id = ownerWallet.userId.toString();
+                        owner = await this.userModel.findOne({
+                            _id: ownerWallet.userId
+                        });
                     }
                 }
-            };
-            await zackService.sendMessagePrivate(dataPost);
+                console.log('tokenInfo', to_id);
+            } else if (data.criteria.kind == 'collection') {
+                to_id = ownerWallet.userId.toString();
+            }
+
+            console.log('to_id', to_id);
+            if (to_id) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const dataPost: any = {
+                    to_id: to_id,
+                    send_by: wallet?.userId,
+                    data: {
+                        type:
+                            data.criteria.kind == 'token'
+                                ? 'offer_nft'
+                                : 'offer_collection',
+                        content: '',
+                        metadata: {
+                            collection: collection,
+                            wallet: wallet,
+                            taker: taker,
+                            owner: owner,
+                            data: data
+                        }
+                    }
+                };
+                await zackService.sendMessagePrivate(dataPost);
+            }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async getTokenById(collection: string, tokenId: string) {
+        try {
+            const url = `https://api-arbitrum.reservoir.tools/tokens/v6?tokens=${collection}:${tokenId}`;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { status, data } = await axios.get<any>(url, {
+                headers: {
+                    'x-auth-token': process.env.RESERVOIR_API_KEY
+                }
+            });
+            return status == 200 ? data : null;
+        } catch (error) {
+            console.log('sendMessageError', error);
+            return null;
         }
     }
 }

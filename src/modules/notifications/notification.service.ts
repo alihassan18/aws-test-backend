@@ -91,7 +91,7 @@ export class NotificationService {
                     }
                     break;
 
-                case NotificationType.Like:
+                case NotificationType.LIKE:
                 case NotificationType.REACTION:
                     if (await isSettingEnabled(data?.receiver, 'alerts.like')) {
                         return this.mainCall(data);
