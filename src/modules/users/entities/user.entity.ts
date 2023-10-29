@@ -415,6 +415,10 @@ export class User extends Document {
         default: []
     })
     onesignal_keys: string[];
+
+    @Field(() => Number, { nullable: true })
+    @Prop({ type: Number, default: 0 })
+    minted?: number;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(User);

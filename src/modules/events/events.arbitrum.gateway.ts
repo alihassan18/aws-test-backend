@@ -24,6 +24,7 @@ import { ZackService } from '../zack/zack.service';
 import { UserDocument } from '../users/entities/user.entity';
 import { USERS } from 'src/constants/db.collections';
 import { ReservoirService } from '../shared/services/reservoir.service';
+import { zeroAddress } from 'viem';
 
 const chain = 'arbitrum';
 
@@ -234,6 +235,11 @@ export class EventsArbitrumGateway
     }
     async createSale(data) {
         try {
+            // This means the user in minting the token and we are just listning for the buy transactions.
+            if (data?.from === zeroAddress) {
+                return;
+            }
+
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',

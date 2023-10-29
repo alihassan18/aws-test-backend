@@ -1133,10 +1133,7 @@ export class NftsService {
             .exec();
         const address = wallets.map((item) => item?.address);
 
-        const minterCount = this.postModel.countDocuments({
-            author: userId,
-            'tokenData.isMinted': true
-        });
+        const userQuery = this.userModel.findById(userId);
         const ownerCount = this.tokenModel.countDocuments({
             owner: { $in: address }
         });
@@ -1151,14 +1148,14 @@ export class NftsService {
             maker: { $in: address },
             status: 'filled'
         });
-        const [minted, owned, sold, bought, listed] = await Promise.all([
-            minterCount,
+        const [user, owned, sold, bought, listed] = await Promise.all([
+            userQuery,
             ownerCount,
             soldCount,
             boughtCount,
             listedCount
         ]);
-        return { minted, owned, sold, bought, listed };
+        return { minted: user?.minted, owned, sold, bought, listed };
     }
 
     async hideToken(data: HiddenTokensInput): Promise<boolean> {

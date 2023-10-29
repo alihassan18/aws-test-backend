@@ -433,6 +433,19 @@ export class PostService {
             }
         }
 
+        /* Increase minted count if user posted a token */
+        if (createPostInput?.tokenData?.isMinted) {
+            await this.userModel
+                .findByIdAndUpdate(
+                    userId,
+                    {
+                        $inc: { minted: 1 }
+                    },
+                    { new: true }
+                )
+                .exec();
+        }
+
         const repliedOnPost = await this.postModel
             .findById(createPostInput.inReplyToPost)
             .exec();
