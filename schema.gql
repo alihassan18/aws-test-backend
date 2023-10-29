@@ -337,6 +337,16 @@ type Last24HrsHashtagCount {
   _id: String!
 }
 
+type UserProfile {
+  userName: String
+  avatar: String
+  firstName: String
+  lastName: String
+  _id: String
+  isVerified: Boolean
+  isSCC: Boolean
+}
+
 type LoginResult {
   user: User
   access_token: String
@@ -409,7 +419,7 @@ type ContentCreatorStats {
 }
 
 type Leader {
-  user: User
+  user: UserProfile
   tokenContractCount: Int
 }
 
@@ -511,16 +521,6 @@ type Referral {
   totalRedeemed: Float!
   referralVolumeTraded: Float!
   requested: Boolean!
-}
-
-type UserProfile {
-  userName: String
-  avatar: String
-  firstName: String
-  lastName: String
-  _id: String
-  isVerified: Boolean
-  isSCC: Boolean
 }
 
 type ActTokenData {

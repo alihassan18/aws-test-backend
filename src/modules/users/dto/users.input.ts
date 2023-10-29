@@ -6,6 +6,7 @@ import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
 import { HashtagCount } from 'src/modules/feeds/entities/hashcount.entity';
 import { Collection } from 'src/modules/collections/entities/collection.entity';
 import { Post } from 'src/modules/feeds/entities/post.entity';
+import { UserProfile } from 'src/modules/activities/dto/get-activities.dto';
 @InputType()
 export class CreateUserInput {
     @Field(() => String)
@@ -444,8 +445,8 @@ export class ContentCreatorStats {
 
 @ObjectType()
 export class Leader {
-    @Field(() => User, { nullable: true })
-    user?: User;
+    @Field(() => UserProfile, { nullable: true })
+    user?: UserProfile;
 
     @Field(() => Int, { nullable: true })
     tokenContractCount?: number;
