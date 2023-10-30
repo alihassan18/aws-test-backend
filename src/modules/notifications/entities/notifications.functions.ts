@@ -22,7 +22,7 @@ export const NotificationMessages = {
     [NotificationType.FOLLOWER_CREATE_COLLECTION]:
         'you followed has created a new collection',
     [NotificationType.BIDDING]: 'has make an offer on your NFT',
-    [NotificationType.SOLD]: 'has sold your NFT',
+    [NotificationType.SOLD]: 'has bought your NFT',
     [NotificationType.LISTING]: 'you followed has listed an NFT'
 };
 export const generateOnesignalMessage = (notification: Notification) => {
@@ -152,7 +152,7 @@ export const generateOnesignalMessage = (notification: Notification) => {
         case NotificationType.LISTING:
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            return `${notification.from.userName}  ${
+            return `${notification.from.userName} ${
                 NotificationMessages[NotificationType.LISTING]
             }`;
         case NotificationType.SYSTEM:
