@@ -11,6 +11,7 @@ import { COLLECTIONS } from 'src/constants/db.collections';
 import { CollectionDocument } from '../collections/entities/collection.entity';
 import { ActivityTypes } from './activities.enums';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
+import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 @Injectable()
 export class ActivityService implements OnModuleInit {
@@ -20,7 +21,8 @@ export class ActivityService implements OnModuleInit {
         @InjectModel(Post.name)
         private postModel: Model<PostDocument>,
         @InjectModel(COLLECTIONS)
-        private collectionModel: Model<CollectionDocument>
+        private collectionModel: Model<CollectionDocument>,
+        private publicFeedsGateway: PublicFeedsGateway
     ) {
         this.onCreateCollection();
         this.onMintPost();
@@ -49,7 +51,17 @@ export class ActivityService implements OnModuleInit {
                         if (!activity) {
                             this.activityModel
                                 .create(values)
-                                .then((activity) => {
+                                .then(async (activity) => {
+                                    const data = await this.activityModel
+                                        .findById(activity?._id)
+                                        .populate('user') // Populate the 'user' field
+                                        .populate('post') // Populate the 'post' field
+                                        .populate('nftCollection') // Populate the 'nftCollection' field
+                                        .exec();
+
+                                    this.publicFeedsGateway.emitRecentActivities(
+                                        data
+                                    );
                                     console.log('Activity created:', activity);
                                 })
                                 .catch((error) => {
@@ -76,36 +88,35 @@ export class ActivityService implements OnModuleInit {
                 // Create an async IIFE (Immediately Invoked Function Expression)
                 if (data.operationType === 'insert') {
                     // MongoDB uses 'insert' for creation operations
-                    const post: PostDocument = data?.fullDocument;
-                    const values = {
-                        user: post.author,
-                        post: post?._id,
-                        type: ActivityTypes.NFT_MINTED
-                    };
-
-                    const activity = await this.activityModel
-                        .findOne(values)
-                        .exec();
-                    if (
-                        !activity &&
-                        post?.tokenData?.isMinted &&
-                        post?.tokenData?.collectionName &&
-                        post?.tokenData?.contract
-                    ) {
-                        this.activityModel
-                            .create(values)
-                            .then((activity) => {
-                                console.log('Activity created:', activity);
-                            })
-                            .catch((error) => {
-                                console.error(
-                                    'Error creating activity:',
-                                    error
-                                );
-                            });
-                    } else {
-                        console.log('This activity already exists.');
-                    }
+                    // const post: PostDocument = data?.fullDocument;
+                    // const values = {
+                    //     user: post.author,
+                    //     post: post?._id,
+                    //     type: ActivityTypes.NFT_MINTED
+                    // };
+                    // const activity = await this.activityModel
+                    //     .findOne(values)
+                    //     .exec();
+                    // if (
+                    //     !activity &&
+                    //     post?.tokenData?.isMinted &&
+                    //     post?.tokenData?.collectionName &&
+                    //     post?.tokenData?.contract
+                    // ) {
+                    //     this.activityModel
+                    //         .create(values)
+                    //         .then((activity) => {
+                    //             console.log('Activity created:', activity);
+                    //         })
+                    //         .catch((error) => {
+                    //             console.error(
+                    //                 'Error creating activity:',
+                    //                 error
+                    //             );
+                    //         });
+                    // } else {
+                    //     console.log('This activity already exists.');
+                    // }
                 } else if (data.operationType === 'delete') {
                     const deletedPostId = data.documentKey._id; // Get the ID of the deleted post
 
