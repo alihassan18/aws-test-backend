@@ -171,7 +171,11 @@ export class NotificationService {
         const notificationData = {
             app_id: appId,
             include_player_ids: playerID, // Specify the target user's Player ID
-            headings: { en: 'Mintstargram' },
+
+            headings:
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                { en: notification.from?.userName || 'Mintstargram' },
             contents: { en: generateOnesignalMessage(notification) },
             url: generateOnesignalURL(notification)
             // included_segments: ['Subscribed Users'],
