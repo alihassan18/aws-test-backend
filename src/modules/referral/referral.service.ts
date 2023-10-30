@@ -81,7 +81,7 @@ export class ReferralService {
             const calculation = await this.calculate(totalUsers);
             const { commissionPercentage, level } = calculation;
 
-            let otherUserDB = await this.userService.findById(
+            const otherUserDB = await this.userService.findById(
                 new Types.ObjectId(otherUser)
             );
 
