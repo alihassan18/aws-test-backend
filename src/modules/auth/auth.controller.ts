@@ -169,9 +169,7 @@ export class AuthController {
                         }
                     );
                     res.redirect(
-                        `${
-                            process.env.FRONT_BASE_URL
-                        }/?twitter_login=true&user_token=${jwt}&two_fa={${user?.settings?.twoFa}}`
+                        `${process.env.FRONT_BASE_URL}/?twitter_login=true&user_token=${jwt}&two_fa={${user?.settings?.twoFa}}`
                     );
                     // return {
                     //     access_token: jwt,
@@ -200,9 +198,7 @@ export class AuthController {
                         //     access_token: loggedUser.access_token
                         // };
                         return res.redirect(
-                            `${
-                                process.env.FRONT_BASE_URL
-                            }/?twitter_login=true&user_token=${loggedUser.access_token}&not_affiliated=true`
+                            `${process.env.FRONT_BASE_URL}/?twitter_login=true&user_token=${loggedUser.access_token}&not_affiliated=true`
                         );
                     }
                     return res.redirect(
@@ -215,7 +211,6 @@ export class AuthController {
 
                     // return { ...loggedUser, notAffiliated: false };
                 }
-                
             }
         }
     }
