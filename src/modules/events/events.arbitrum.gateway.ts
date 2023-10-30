@@ -25,6 +25,7 @@ import { UserDocument } from '../users/entities/user.entity';
 import { USERS } from 'src/constants/db.collections';
 import { ReservoirService } from '../shared/services/reservoir.service';
 import { zeroAddress } from 'viem';
+import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 const chain = 'arbitrum';
 
@@ -45,7 +46,9 @@ export class EventsArbitrumGateway
         private walletModel: Model<WalletDocument>,
         private readonly reservoirService: ReservoirService,
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
-        private readonly notifificationService: NotificationService
+        private readonly notifificationService: NotificationService,
+        // @Inject(forwardRef(() => PublicFeedsGateway))
+        private publicFeedsGateway: PublicFeedsGateway
     ) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
@@ -209,19 +212,27 @@ export class EventsArbitrumGateway
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            const activity = await this.activityModel.findOne(values).exec();
-            if (!activity) {
-                this.activityModel
-                    .create(values)
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            } else {
+            // const activity = await this.activityModel.findOne(values).exec();
+            // if (!activity) {
+            this.activityModel
+                .create(values)
+                .then(async (activity) => {
+                    const data = await this.activityModel
+                        .findById(activity?._id)
+                        .populate('user') // Populate the 'user' field
+                        .populate('post') // Populate the 'post' field
+                        .populate('nftCollection') // Populate the 'nftCollection' field
+                        .exec();
+
+                    this.publicFeedsGateway.emitRecentActivities(data);
+                    console.log('Activity created:', activity);
+                })
+                .catch((error) => {
+                    console.error('Error creating activity:', error);
+                });
+            /*  } else {
                 console.log('This activity already exists.');
-            }
+            } */
 
             if (wallet?.userId) {
                 this.notifificationService.alertFollowers4List(wallet?.userId, {
@@ -271,7 +282,42 @@ export class EventsArbitrumGateway
             if (!activity) {
                 this.activityModel
                     .create(values)
-                    .then((activity) => {
+                    .then(async (activity) => {
+                        const data = await this.activityModel
+                            .findById(activity?._id)
+                            .populate('user') // Populate the 'user' field
+                            .populate('post') // Populate the 'post' field
+                            .populate('nftCollection') // Populate the 'nftCollection' field
+                            .select({
+                                _id: 1, // Include the _id field
+                                type: 1, // Include the type field
+                                createdAt: 1, // Include the createdAt field
+                                'user.userName': 1, // Include the userName field from the user object
+                                'user.avatar': 1, // Include the avatar field from the user object
+                                'user.firstName': 1, // Include the firstName field from the user object
+                                'user.lastName': 1, // Include the lastName field from the user object
+                                'user._id': 1, // Include the _id field from the user object
+                                'user.isVerified': 1, // Include the isVerified field from the user object
+                                'user.isSCC': 1, // Include the isSCC field from the user object
+                                'post._id': 1, // Include the _id field from the post object
+                                'post.text': 1, // Include the text field from the post object
+                                'post.tokenData.chain': 1, // Include the chain field from the tokenData field within the post object
+                                'post.tokenData.contract': 1, // Include the contract field from the tokenData field within the post object
+                                'post.tokenData.tokenId': 1, // Include the tokenId field from the tokenData field within the post object
+                                'post.tokenData.collectionName': 1, // Include the collectionName field from the tokenData field within the post object
+                                'post.tokenData.image': 1, // Include the image field from the tokenData field within the post object
+                                'nftCollection.name': 1, // Include the name field from the nftCollection object
+                                'nftCollection._id': 1, // Include the _id field from the nftCollection object
+                                'nftCollection.contract': 1, // Include the contract field from the nftCollection object
+                                'nftCollection.chain': 1, // Include the chain field from the nftCollection object
+                                'nftCollection.image': 1, // Include the image field from the nftCollection object
+                                'token.tokenId': 1, // Include the tokenId field from the token object
+                                'token.name': 1, // Include the name field from the token object
+                                'token.image': 1 // Include the image field from the token object
+                            })
+                            .exec();
+
+                        this.publicFeedsGateway.emitRecentActivities(data);
                         console.log('Activity created:', activity);
                     })
                     .catch((error) => {
@@ -334,7 +380,42 @@ export class EventsArbitrumGateway
             if (!activity) {
                 this.activityModel
                     .create(values)
-                    .then((activity) => {
+                    .then(async (activity) => {
+                        const data = await this.activityModel
+                            .findById(activity?._id)
+                            .populate('user') // Populate the 'user' field
+                            .populate('post') // Populate the 'post' field
+                            .populate('nftCollection') // Populate the 'nftCollection' field
+                            .select({
+                                _id: 1, // Include the _id field
+                                type: 1, // Include the type field
+                                createdAt: 1, // Include the createdAt field
+                                'user.userName': 1, // Include the userName field from the user object
+                                'user.avatar': 1, // Include the avatar field from the user object
+                                'user.firstName': 1, // Include the firstName field from the user object
+                                'user.lastName': 1, // Include the lastName field from the user object
+                                'user._id': 1, // Include the _id field from the user object
+                                'user.isVerified': 1, // Include the isVerified field from the user object
+                                'user.isSCC': 1, // Include the isSCC field from the user object
+                                'post._id': 1, // Include the _id field from the post object
+                                'post.text': 1, // Include the text field from the post object
+                                'post.tokenData.chain': 1, // Include the chain field from the tokenData field within the post object
+                                'post.tokenData.contract': 1, // Include the contract field from the tokenData field within the post object
+                                'post.tokenData.tokenId': 1, // Include the tokenId field from the tokenData field within the post object
+                                'post.tokenData.collectionName': 1, // Include the collectionName field from the tokenData field within the post object
+                                'post.tokenData.image': 1, // Include the image field from the tokenData field within the post object
+                                'nftCollection.name': 1, // Include the name field from the nftCollection object
+                                'nftCollection._id': 1, // Include the _id field from the nftCollection object
+                                'nftCollection.contract': 1, // Include the contract field from the nftCollection object
+                                'nftCollection.chain': 1, // Include the chain field from the nftCollection object
+                                'nftCollection.image': 1, // Include the image field from the nftCollection object
+                                'token.tokenId': 1, // Include the tokenId field from the token object
+                                'token.name': 1, // Include the name field from the token object
+                                'token.image': 1 // Include the image field from the token object
+                            })
+                            .exec();
+
+                        this.publicFeedsGateway.emitRecentActivities(data);
                         console.log('Activity created:', activity);
                     })
                     .catch((error) => {

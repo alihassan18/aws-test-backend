@@ -7,6 +7,7 @@ import { User } from 'src/modules/users/entities/user.entity';
 import { ActivityTypes } from '../activities.enums';
 import { Types } from 'mongoose';
 import { UserProfile } from '../dto/get-activities.dto';
+import { COLLECTIONS } from 'src/constants/db.collections';
 
 export type ActivityDocument = Activity & Document;
 
@@ -57,7 +58,7 @@ export class Activity extends Document {
         name: 'nftCollection',
         nullable: true
     })
-    @Prop({ type: Types.ObjectId, ref: Collection.name })
+    @Prop({ type: Types.ObjectId, ref: COLLECTIONS })
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nftCollection: Types.ObjectId;
