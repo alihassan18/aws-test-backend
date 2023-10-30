@@ -22,6 +22,9 @@ import { UsersService } from '../users/users.service';
 import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../shared/services/cloudinary.service';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
+import { jwtConstants } from 'src/constants/jwt.constant';
 // import { auth, Client } from 'twitter-api-sdk';
 
 // const authClient = new auth.OAuth2User({
@@ -35,7 +38,9 @@ export class AuthController {
     constructor(
         private readonly linkedinService: LinkedinService,
         private readonly userService: UsersService,
-        private readonly cloud: CloudinaryService
+        private readonly cloud: CloudinaryService,
+        private readonly jwtService: JwtService,
+        private readonly authService: AuthService
     ) {}
 
     @Get('twitter')
@@ -113,7 +118,7 @@ export class AuthController {
     async twitterCallback(@Req() req, @Res() res) {
         // Handle user authentication and create a session
         // This will depend on your specific application requirements
-        const { user, token } = req.user;
+        const { user, token, isUserLogin } = req.user;
         console.log(user && !token);
 
         if (user && !token) {
@@ -140,7 +145,73 @@ export class AuthController {
             });
 
             // Redirect to the frontend site
-            return res.redirect(process.env.FRONT_BASE_URL);
+            if (isUserLogin) {
+                return res.redirect(process.env.FRONT_BASE_URL);
+            } else {
+                if (user && user.settings.twoFa) {
+                    await this.userService.send2FaVerificationCode(
+                        user?._id,
+                        user?.email,
+                        user?.firstName
+                    );
+
+                    const jwt = await this.jwtService.signAsync(
+                        {
+                            _id: user._id,
+                            email: user.email,
+                            twoFa: user?.settings?.twoFa,
+                            key: user?.key,
+                            temp: true
+                        },
+                        {
+                            secret: jwtConstants.secret,
+                            expiresIn: 60 * 15
+                        }
+                    );
+                    res.redirect(
+                        `${process.env.FRONT_BASE_URL}/?twitter_login=true&user_token=${jwt}&two_fa={${user?.settings?.twoFa}}`
+                    );
+                    // return {
+                    //     access_token: jwt,
+                    //     user: null,
+                    //     twoFa: user?.settings?.twoFa
+                    // };
+                } else {
+                    const loggedUser = await this.authService.createJwt(user);
+
+                    if (loggedUser?.user?.isBlocked === true) {
+                        // return {
+                        //     message: this.messages.userBlocked,
+                        //     success: false,
+                        //     status: HttpStatus.FORBIDDEN
+                        // };
+                        return res.redirect(process.env.FRONT_BASE_URL);
+
+                        // ---------------------------
+                    }
+                    // password protection
+
+                    if (!loggedUser.user?.invitation_code) {
+                        // return {
+                        //     notAffiliated: true,
+                        //     user: null,
+                        //     access_token: loggedUser.access_token
+                        // };
+                        return res.redirect(
+                            `${process.env.FRONT_BASE_URL}/?twitter_login=true&user_token=${loggedUser.access_token}&not_affiliated=true`
+                        );
+                    }
+                    return res.redirect(
+                        `${
+                            process.env.FRONT_BASE_URL
+                        }/?twitter_user=${encodeURIComponent(
+                            JSON.stringify(loggedUser.user)
+                        )}&twitter_login=true&not_affiliated=false`
+                    );
+
+                    // return { ...loggedUser, notAffiliated: false };
+                }
+            }
         }
     }
 

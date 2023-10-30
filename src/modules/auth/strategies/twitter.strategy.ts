@@ -41,7 +41,6 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
             //@ts-ignore
             const tokenn = req.session.token;
             const { id: twitterId, displayName, username, _json } = profile;
-            console.log(tokenn, 'tokenn');
 
             if (tokenn) {
                 const decoded = await this.jwtService.verifyAsync(tokenn, {
@@ -77,13 +76,20 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
+
+                    const isUsernameAvailable = await this.userModel.findOne({
+                        userName: username?.toLowerCase()
+                    });
                     // Create new user in the database if user doesn't exist
                     user = await this.userModel.create({
                         twitterId,
                         twitterAccessToken: accessToken,
                         twitterAccessSecret: refreshToken,
                         displayName,
-                        userName: username?.toLowerCase(),
+                        userName: isUsernameAvailable
+                            ? username?.toLowerCase() +
+                              `${Math.floor(1000 + Math.random() * 9000)}`
+                            : username?.toLowerCase(),
                         ...(_json.email && { email: _json.email }),
                         firstName: name[0],
                         lastName: name[1],
@@ -205,11 +211,17 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     points: user.points,
                     land_id: user.land_id,
                     scc_status: user.scc_status,
-                    invitation_code: user.invitation_code
+                    invitation_code: user.invitation_code,
+                    onesignal_keys: user.onesignal_keys
                 };
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                done(null, { user: userData, token });
+
+                done(null, {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    user: userData,
+                    token,
+                    isUserLogin: Boolean(tokenn)
+                });
             }
         } catch (error) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
