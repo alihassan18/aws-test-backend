@@ -81,10 +81,19 @@ export class ReferralService {
             const calculation = await this.calculate(totalUsers);
             const { commissionPercentage, level } = calculation;
 
+            let otherUserDB = await this.userService.findById(
+                new Types.ObjectId(otherUser)
+            );
+
             const result = await this.referralModel.findByIdAndUpdate(
                 refferalUser?._id,
                 {
-                    $addToSet: { allReferral: { id: otherUser } },
+                    $addToSet: {
+                        allReferral: {
+                            id: otherUser,
+                            createdAt: otherUserDB?.createdAt
+                        }
+                    },
                     level: level,
                     count: totalUsers,
                     commissionPercentage: commissionPercentage
@@ -122,13 +131,28 @@ export class ReferralService {
             //     });
             // };
             const filterDataByTimeRange = (data, months) => {
+                // const currentDate = new Date();
+                // const startDate = new Date();
+                // startDate.setMonth(startDate.getMonth() - months);
+
+                // const filteredData = data.filter((obj) => {
+                //     if (obj.createdAt) {
+                //         const date = new Date(obj.createdAt);
+                //         return date >= startDate && date <= currentDate;
+                //     }
+                //     return false;
+                // });
                 const currentDate = new Date();
+                currentDate.setUTCHours(23, 59, 59, 999); // Set time to end of the day in UTC
+
                 const startDate = new Date();
                 startDate.setMonth(startDate.getMonth() - months);
+                startDate.setUTCHours(0, 0, 0, 0); // Set time to the start of the day in UTC
 
                 const filteredData = data.filter((obj) => {
                     if (obj.createdAt) {
                         const date = new Date(obj.createdAt);
+                        date.setUTCHours(date.getUTCHours()); // Set the date's time zone to UTC
                         return date >= startDate && date <= currentDate;
                     }
                     return false;
