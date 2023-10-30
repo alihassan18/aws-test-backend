@@ -11,6 +11,7 @@ import { Types } from 'mongoose';
 // import EventEmitter from 'events';
 import { Server, Socket } from 'socket.io';
 import {
+    EMIT_RECENT_ACTIVITIES,
     GET_COMMENT_VIEWS,
     GET_DELETED_POST,
     GET_FEEDS,
@@ -323,6 +324,12 @@ export class PublicFeedsGateway
 
     async emitTopScorersData(payload) {
         this.server.emit(GET_MONTH_SCORERES, {
+            data: payload
+        });
+    }
+
+    async emitRecentActivities(payload) {
+        this.server.emit(EMIT_RECENT_ACTIVITIES, {
             data: payload
         });
     }

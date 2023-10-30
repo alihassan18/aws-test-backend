@@ -286,8 +286,10 @@ export class AuthController {
                 user.settings.isLinkedInEnabled = true;
                 await user.save();
             }
-
-            return res.redirect(`${process.env.FRONT_BASE_URL}?linkedin=true`);
+            const redirectUrl = accessToken
+                ? `${process.env.FRONT_BASE_URL}?linkedin=true`
+                : `${process.env.FRONT_BASE_URL}`;
+            return res.redirect(redirectUrl);
         } catch (error) {
             console.log('Error in linkedin callback', error);
         }

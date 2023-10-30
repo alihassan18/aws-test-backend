@@ -25,6 +25,7 @@ import { UserDocument } from '../users/entities/user.entity';
 import { USERS } from 'src/constants/db.collections';
 import { ReservoirService } from '../shared/services/reservoir.service';
 import { zeroAddress } from 'viem';
+import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 const chain = 'arbitrum';
 
@@ -45,7 +46,9 @@ export class EventsArbitrumGateway
         private walletModel: Model<WalletDocument>,
         private readonly reservoirService: ReservoirService,
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
-        private readonly notifificationService: NotificationService
+        private readonly notifificationService: NotificationService,
+        // @Inject(forwardRef(() => PublicFeedsGateway))
+        private publicFeedsGateway: PublicFeedsGateway
     ) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
@@ -209,19 +212,27 @@ export class EventsArbitrumGateway
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            const activity = await this.activityModel.findOne(values).exec();
-            if (!activity) {
-                this.activityModel
-                    .create(values)
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            } else {
+            // const activity = await this.activityModel.findOne(values).exec();
+            // if (!activity) {
+            this.activityModel
+                .create(values)
+                .then(async (activity) => {
+                    const data = await this.activityModel
+                        .findById(activity?._id)
+                        .populate('user') // Populate the 'user' field
+                        .populate('post') // Populate the 'post' field
+                        .populate('nftCollection') // Populate the 'nftCollection' field
+                        .exec();
+
+                    this.publicFeedsGateway.emitRecentActivities(data);
+                    console.log('Activity created:', activity);
+                })
+                .catch((error) => {
+                    console.error('Error creating activity:', error);
+                });
+            /*  } else {
                 console.log('This activity already exists.');
-            }
+            } */
 
             if (wallet?.userId) {
                 this.notifificationService.alertFollowers4List(wallet?.userId, {
@@ -236,10 +247,6 @@ export class EventsArbitrumGateway
     async createSale(data) {
         try {
             // This means the user in minting the token and we are just listning for the buy transactions.
-            if (data?.from === zeroAddress) {
-                return;
-            }
-
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -261,25 +268,38 @@ export class EventsArbitrumGateway
             const values = {
                 user: to?.userId,
                 nftCollection: collection?._id,
-                type: ActivityTypes.NFY_BUY,
+                type:
+                    data?.from === zeroAddress
+                        ? ActivityTypes.NFT_MINTED
+                        : ActivityTypes.NFY_BUY,
                 token: {
                     ...data?.token,
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            const activity = await this.activityModel.findOne(values).exec();
-            if (!activity) {
-                this.activityModel
-                    .create(values)
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            } else {
-                console.log('This activity already exists.');
-            }
+            // const activity = await this.activityModel
+            //     .findOne(values)
+            //     .exec();
+            // if (!activity) {
+            this.activityModel
+                .create(values)
+                .then(async (activity) => {
+                    const data = await this.activityModel
+                        .findById(activity?._id)
+                        .populate('user') // Populate the 'user' field
+                        .populate('post') // Populate the 'post' field
+                        .populate('nftCollection') // Populate the 'nftCollection' field
+                        .exec();
+
+                    this.publicFeedsGateway.emitRecentActivities(data);
+                    console.log('Activity created:', activity);
+                })
+                .catch((error) => {
+                    console.error('Error creating activity:', error);
+                });
+            // } else {
+            //     console.log('This activity already exists.');
+            // }
 
             // NOTIFY
 
@@ -334,7 +354,15 @@ export class EventsArbitrumGateway
             if (!activity) {
                 this.activityModel
                     .create(values)
-                    .then((activity) => {
+                    .then(async (activity) => {
+                        const data = await this.activityModel
+                            .findById(activity?._id)
+                            .populate('user') // Populate the 'user' field
+                            .populate('post') // Populate the 'post' field
+                            .populate('nftCollection') // Populate the 'nftCollection' field
+                            .exec();
+
+                        this.publicFeedsGateway.emitRecentActivities(data);
                         console.log('Activity created:', activity);
                     })
                     .catch((error) => {
