@@ -132,17 +132,17 @@ export class AuthController {
             req.session.isAuthenticated = true;
 
             // Set the authentication token as a cookie on the response object
-            res.cookie('jwt', token, {
-                httpOnly: true,
-                secure: true, // enable this for HTTPS connections
-                expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // set the expiration time to 1 day from now
-            });
-            // Set the authentication token as a cookie on the response object
-            res.cookie('user', JSON.stringify(user), {
-                httpOnly: true,
-                secure: true, // enable this for HTTPS connections
-                expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // set the expiration time to 1 day from now
-            });
+            // res.cookie('jwt', token, {
+            //     httpOnly: true,
+            //     secure: true, // enable this for HTTPS connections
+            //     expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // set the expiration time to 1 day from now
+            // });
+            // // Set the authentication token as a cookie on the response object
+            // res.cookie('user', JSON.stringify(user), {
+            //     httpOnly: true,
+            //     secure: true, // enable this for HTTPS connections
+            //     expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // set the expiration time to 1 day from now
+            // });
 
             // Redirect to the frontend site
             if (isUserLogin) {
