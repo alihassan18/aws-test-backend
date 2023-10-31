@@ -220,7 +220,7 @@ export class ScoresService {
                 },
                 {
                     $setWindowFields: {
-                        sortBy: { monthScore: -1 },
+                        sortBy: { weekScore: -1 },
                         output: {
                             rank: {
                                 $rank: {}

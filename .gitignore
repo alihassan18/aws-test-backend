@@ -16,6 +16,7 @@ lerna-debug.log*
 .package-lock.json
 .env.development
 .env.production
+.env.local
 # OS
 .DS_Store
 
