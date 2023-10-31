@@ -73,7 +73,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                         $or: [{ twitterId }, { email: _json?.email }]
                     })
                     .exec();
-                    console.log(profile,'profile',accessToken,'user',user);
+                console.log(profile, 'profile', accessToken, 'user', user);
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
