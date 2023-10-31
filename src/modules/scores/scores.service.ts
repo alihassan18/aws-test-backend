@@ -8,7 +8,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { HighScoreResult, ScoresResult } from './scores.dto';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
-import { addDays, startOfWeek, endOfWeek } from 'date-fns';
+import { startOfWeek, endOfDay } from 'date-fns';
 
 @Injectable()
 export class ScoresService {
@@ -118,8 +118,10 @@ export class ScoresService {
         const startOfMonthDate = startOfMonth(new Date());
         const endOfMonthDate = endOfMonth(new Date());
 
-        const startOfLastWeek = startOfWeek(addDays(new Date(), -7));
-        const endOfLastWeek = endOfWeek(addDays(new Date(), -7));
+        // const startOfLastWeek = startOfWeek(addDays(new Date(), -7));
+        // const endOfLastWeek = endOfWeek(addDays(new Date(), -7));
+        const startOfWeekDate = startOfWeek(new Date());
+        const endOfToday = endOfDay(new Date());
 
         const res = await this.scoreModel
             .aggregate([
@@ -134,8 +136,8 @@ export class ScoresService {
                             },
                             {
                                 createdAt: {
-                                    $gte: startOfLastWeek,
-                                    $lte: endOfLastWeek
+                                    $gte: startOfWeekDate,
+                                    $lte: endOfToday
                                 }
                             }
                         ]
@@ -200,14 +202,11 @@ export class ScoresService {
                                             {
                                                 $gte: [
                                                     '$createdAt',
-                                                    startOfLastWeek
+                                                    startOfWeekDate
                                                 ]
                                             },
                                             {
-                                                $lte: [
-                                                    '$createdAt',
-                                                    endOfLastWeek
-                                                ]
+                                                $lte: ['$createdAt', endOfToday]
                                             }
                                         ]
                                     },
