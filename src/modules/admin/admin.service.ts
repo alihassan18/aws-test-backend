@@ -715,7 +715,7 @@ export class AdminService {
         await this.userModel.findByIdAndUpdate(id, {
             $set: { isBlocked: status }
         });
-         if (status) {
+        if (status) {
             this.publicFeedsGateway.emitBlockUserByAdmin(id);
         }
         return { success: true };
