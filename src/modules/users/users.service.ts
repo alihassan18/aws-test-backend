@@ -411,21 +411,30 @@ export class UsersService {
                 throw new Error('Username can only be changed once in 7 days');
             }
         } else {
-            return this.userModel.findByIdAndUpdate(
-                id,
-                {
-                    $set: {
-                        ...data,
-                        ...(data.userName && { userNameUpdateAt: new Date() })
-                    },
-                    ...(data?.onesignal_keys && {
+            if (data?.onesignal_keys) {
+                return this.userModel.findByIdAndUpdate(
+                    id,
+                    {
                         $addToSet: {
                             onesignal_keys: { $each: data.onesignal_keys }
                         }
-                    })
-                },
-                { new: true }
-            );
+                    },
+                    { new: true }
+                );
+            } else {
+                return this.userModel.findByIdAndUpdate(
+                    id,
+                    {
+                        $set: {
+                            ...data,
+                            ...(data.userName && {
+                                userNameUpdateAt: new Date()
+                            })
+                        }
+                    },
+                    { new: true }
+                );
+            }
         }
     }
 
