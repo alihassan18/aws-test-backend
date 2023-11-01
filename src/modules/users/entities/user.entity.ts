@@ -423,7 +423,7 @@ export class User extends Document {
 
 export const UsersSchema = SchemaFactory.createForClass(User);
 
-UsersSchema.index({ onesignal_keys: 1});
+UsersSchema.index({ onesignal_keys: 1 });
 
 function validateEmail(email: string) {
     const expression =

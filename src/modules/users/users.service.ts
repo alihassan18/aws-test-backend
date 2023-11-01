@@ -370,8 +370,11 @@ export class UsersService {
             throw new Error('Social Media link at least 30 characters');
         }
 
-        if(data?.onesignal_keys){
-            await this.userModel.updateMany({}, { $pullAll: { onesignal_keys: data.onesignal_keys } });
+        if (data?.onesignal_keys) {
+            await this.userModel.updateMany(
+                {},
+                { $pullAll: { onesignal_keys: data.onesignal_keys } }
+            );
         }
 
         if (
