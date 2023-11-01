@@ -370,6 +370,13 @@ export class UsersService {
             throw new Error('Social Media link at least 30 characters');
         }
 
+        if (data?.onesignal_keys) {
+            await this.userModel.updateMany(
+                {},
+                { $pullAll: { onesignal_keys: data.onesignal_keys } }
+            );
+        }
+
         if (
             data?.userName &&
             bannedUsernames.includes(data?.userName?.toLowerCase())
@@ -1212,4 +1219,6 @@ export class UsersService {
             console.log(error);
         }
     }
+
+    // ---------------- ONE SIGNAL KEYS ADD ------------------
 }

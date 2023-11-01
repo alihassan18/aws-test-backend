@@ -163,6 +163,8 @@ export class NotificationService {
 
     async createOneSignal(notification: NotificationDocument) {
         const appId = '39cd8452-fd14-47a5-b89d-3ce51d1e5169';
+        // const appId = 'd9b91836-2788-49ca-b1fb-5386b73ddaa9';
+        // const restApiKey = 'NDE0MDVhNGYtOTk3Yi00NDE0LTkwOWQtNWE3NzhmMjIyMjdi';
         const restApiKey = 'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -200,6 +202,47 @@ export class NotificationService {
             });
         return;
     }
+
+    // async test_createOneSignal() {
+    //     // const appId = '39cd8452-fd14-47a5-b89d-3ce51d1e5169';
+    //     const appId = 'd9b91836-2788-49ca-b1fb-5386b73ddaa9';
+    //     const restApiKey = 'NDE0MDVhNGYtOTk3Yi00NDE0LTkwOWQtNWE3NzhmMjIyMjdi';
+    //     //  'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
+    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //     // @ts-ignore
+    //     const playerID = ['21b139a6-f0dd-4602-bd6a-8ba48821db04']; // Replace with the Player ID of the target user
+
+    //     const notificationData = {
+    //         app_id: appId,
+    //         include_player_ids: playerID, // Specify the target user's Player ID
+
+    //         headings:
+    //             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //             // @ts-ignore
+    //             { en: 'Mintstargram' },
+    //         contents: { en: 'hello' }
+    //         // included_segments: ['Subscribed Users'],
+    //     };
+
+    //     axios
+    //         .post(
+    //             'https://onesignal.com/api/v1/notifications',
+    //             notificationData,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json; charset=utf-8',
+    //                     Authorization: `Basic ${restApiKey}`
+    //                 }
+    //             }
+    //         )
+    //         .then((response) => {
+    //             console.log('Notification sent:', response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Notification failed:', error);
+    //         });
+    //     return 'ok';
+    // }
 
     async findAll(
         query: FilterQuery<NotificationFilterInput>,
