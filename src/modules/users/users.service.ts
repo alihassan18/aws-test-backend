@@ -417,7 +417,12 @@ export class UsersService {
                     $set: {
                         ...data,
                         ...(data.userName && { userNameUpdateAt: new Date() })
-                    }
+                    },
+                    ...(data?.onesignal_keys && {
+                        $addToSet: {
+                            onesignal_keys: { $each: data.onesignal_keys }
+                        }
+                    })
                 },
                 { new: true }
             );
