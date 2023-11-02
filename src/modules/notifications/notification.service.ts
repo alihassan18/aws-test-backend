@@ -206,7 +206,7 @@ export class NotificationService {
     async test_createOneSignal() {
         const appId = '39cd8452-fd14-47a5-b89d-3ce51d1e5169';
         // const appId = 'd9b91836-2788-49ca-b1fb-5386b73ddaa9';
-        const restApiKey = 'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi'
+        const restApiKey = 'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
         //  'NzE0MjE3NWEtNjY5My00ZjA1LWJjOGUtN2U2NmNlZTg2NTVi';
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
