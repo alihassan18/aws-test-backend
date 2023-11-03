@@ -143,8 +143,8 @@ export class AuthResolver extends CommonServices {
             code: code,
             userId: ctx.req.user._id
         });
-        if (response.success) return response;
-        throw new BadRequestException('Could not send email with the provided');
+        if (response?.success) return response;
+        throw new BadRequestException('Wrong authentication code');
     }
 
     // --------- 2FA LOGIN -------------

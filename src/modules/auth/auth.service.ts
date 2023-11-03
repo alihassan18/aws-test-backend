@@ -812,7 +812,7 @@ export class AuthService extends CommonServices {
             const { email, code, userId } = body;
 
             const response = await this.verifyCode({ email, code });
-            if (response.success) {
+            if (response?.success) {
                 const user = await this.userService.userModel.findById(userId);
                 const updated =
                     await this.userService.userModel.findByIdAndUpdate(
@@ -850,7 +850,9 @@ export class AuthService extends CommonServices {
                 };
             }
         } catch (error) {
-            return;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            throw new Error(error?.message);
         }
     }
 
@@ -871,6 +873,14 @@ export class AuthService extends CommonServices {
             const user = await this.userService.userModel.findById(userId);
             const result: LoginResult = await this.createJwt(user, IpAddress);
             return result;
+            // if (user.settings.threeFa) {
+            // } else {
+            //     const result: LoginResult = await this.createJwt(
+            //         user,
+            //         IpAddress
+            //     );
+            //     return result;
+            // }
         }
     }
 
