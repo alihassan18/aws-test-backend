@@ -198,7 +198,7 @@ export class NotificationService {
                 console.log('Notification sent:', response.data);
             })
             .catch((error) => {
-                console.error('Notification failed:', error);
+                console.error('Notification failed:', error?.response?.data?.errors);
             });
         return;
     }
