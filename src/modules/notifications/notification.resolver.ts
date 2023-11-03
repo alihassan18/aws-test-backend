@@ -167,7 +167,7 @@ export class NotificationResolver {
             stageDesc,
             new Types.ObjectId(userToInvite)
         );
-    } 
+    }
 
     // @UseGuards(AuthGuard)
     // @Mutation(() => String)
