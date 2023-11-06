@@ -821,8 +821,14 @@ export class AuthService extends CommonServices {
                             $set: {
                                 settings: {
                                     ...user.settings,
-                                    twoFa: user.settings?.twoFa ? false : true
-                                }
+                                    twoFa: user.settings?.twoFa ? false : true,
+                                    ...(user.settings?.twoFa && {
+                                        threeFa: false
+                                    })
+                                },
+                                ...(user.settings?.twoFa && {
+                                    base32_secret: ''
+                                })
                             }
                         },
                         { new: true }
@@ -874,6 +880,9 @@ export class AuthService extends CommonServices {
             const result: LoginResult = await this.createJwt(user, IpAddress);
             return result;
             // if (user.settings.threeFa) {
+            //     return {
+            //         threeFa: true
+            //     };
             // } else {
             //     const result: LoginResult = await this.createJwt(
             //         user,

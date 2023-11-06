@@ -103,6 +103,9 @@ export class LoginResult {
 
     @Field(() => Boolean, { nullable: true })
     twoFa?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    threeFa?: boolean;
     // password protection
     @Field(() => Boolean, { nullable: true })
     notAffiliated?: boolean;
