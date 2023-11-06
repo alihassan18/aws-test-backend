@@ -416,6 +416,10 @@ export class User extends Document {
     })
     onesignal_keys: string[];
 
+    @Field(() => String, { nullable: true })
+    @Prop({ type: String, default: false })
+    base32_secret?: string;
+
     @Field(() => Number, { nullable: true })
     @Prop({ type: Number, default: 0 })
     minted?: number;

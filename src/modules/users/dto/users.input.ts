@@ -317,6 +317,12 @@ export class SettingsInput {
 
     @Field(() => Boolean, { nullable: true })
     twoFa?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    threeFa?: boolean;
+
+    @Field(() => String, { nullable: true })
+    base32_secret?: string;
 }
 
 // -------- EDIT PROFILE ----------------
