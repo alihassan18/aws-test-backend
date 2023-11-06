@@ -302,7 +302,7 @@ export class UsersService {
             { _id: userId },
             {
                 settings: data,
-                base32_secret:data?.base32_secret || ""
+                base32_secret: data?.base32_secret || ''
                 // ...(data?.base32_secret && {
                 //     base32_secret: data.base32_secret
                 // })
