@@ -20,7 +20,8 @@ import {
     GET_POST_REACTIONS,
     GET_POST_VIEWS,
     GET_QOUTE_COUNTS,
-    GET_REPOST_COUNTS
+    GET_REPOST_COUNTS,
+    LOGOUT_FROM_ADMIN
 } from 'src/constants/socket.constants';
 import { differenceInSeconds } from 'src/helpers/common.helpers';
 import { Post, Reactions } from 'src/modules/feeds/entities/post.entity';
@@ -324,6 +325,12 @@ export class PublicFeedsGateway
 
     async emitTopScorersData(payload) {
         this.server.emit(GET_MONTH_SCORERES, {
+            data: payload
+        });
+    }
+
+    async emitBlockUserByAdmin(payload) {
+        this.server.emit(LOGOUT_FROM_ADMIN, {
             data: payload
         });
     }

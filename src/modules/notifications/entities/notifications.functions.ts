@@ -25,136 +25,196 @@ export const NotificationMessages = {
     [NotificationType.SOLD]: 'has bought your NFT',
     [NotificationType.LISTING]: 'you followed has listed an NFT'
 };
+// export const generateOnesignalMessage = (notification: Notification) => {
+//     switch (notification.type) {
+//         case NotificationType.REPOST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.REPOST]
+//             }`;
+//         // case NotificationType.REPOST_COMMENT: //not present in db
+//         //     return NotificationMessages[NotificationType.REPOST_COMMENT];
+//         case NotificationType.VOTE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.VOTE]
+//             }`;
+//         case NotificationType.MENTIONED:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.MENTIONED]
+//             }`;
+//         case NotificationType.COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.COMMENT]
+//             }`;
+//         case NotificationType.REACTION:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.REACTION]
+//             }`;
+
+//         case NotificationType.LIKE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LIKE]
+//             }`;
+//         case NotificationType.LIKE_COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LIKE_COMMENT]
+//             }`;
+//         case NotificationType.COMMENT_REPLY:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.COMMENT_REPLY]
+//             }`;
+//         case NotificationType.HASHTAG:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.HASHTAG]
+//             }`;
+//         case NotificationType.STAGE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.STAGE]
+//             }`;
+//         case NotificationType.FOLLOW:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOW]
+//             }`;
+
+//         // followers notification
+
+//         case NotificationType.FOLLOWER_POST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_POST]
+//             }`;
+//         case NotificationType.FOLLOWER_MINT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_MINT]
+//             }`;
+
+//         case NotificationType.FOLLOWER_COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_COMMENT]
+//             }`;
+
+//         case NotificationType.FOLLOWER_REPOST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_REPOST]
+//             }`;
+
+//         case NotificationType.FOLLOWER_CREATE_COLLECTION:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[
+//                     NotificationType.FOLLOWER_CREATE_COLLECTION
+//                 ]
+//             }`;
+
+//         // s3 notification
+//         case NotificationType.BIDDING:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.BIDDING]
+//             }`;
+//         case NotificationType.SOLD:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.SOLD]
+//             }`;
+
+//         case NotificationType.LISTING:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LISTING]
+//             }`;
+//         case NotificationType.SYSTEM:
+//             return notification.message;
+//         default:
+//             break;
+//     }
+// };
+
 export const generateOnesignalMessage = (notification: Notification) => {
     switch (notification.type) {
         case NotificationType.REPOST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.REPOST]
-            }`;
+            return NotificationMessages[NotificationType.REPOST];
         // case NotificationType.REPOST_COMMENT: //not present in db
         //     return NotificationMessages[NotificationType.REPOST_COMMENT];
         case NotificationType.VOTE:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.VOTE]
-            }`;
+            return NotificationMessages[NotificationType.VOTE];
         case NotificationType.MENTIONED:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.MENTIONED]
-            }`;
+            return NotificationMessages[NotificationType.MENTIONED];
         case NotificationType.COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.COMMENT]
-            }`;
+            return NotificationMessages[NotificationType.COMMENT];
         case NotificationType.REACTION:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.REACTION]
-            }`;
-
+            return NotificationMessages[NotificationType.REACTION];
         case NotificationType.LIKE:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.LIKE]
-            }`;
+            return NotificationMessages[NotificationType.LIKE];
         case NotificationType.LIKE_COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.LIKE_COMMENT]
-            }`;
+            return NotificationMessages[NotificationType.LIKE_COMMENT];
         case NotificationType.COMMENT_REPLY:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.COMMENT_REPLY]
-            }`;
+            return NotificationMessages[NotificationType.COMMENT_REPLY];
         case NotificationType.HASHTAG:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.HASHTAG]
-            }`;
+            return NotificationMessages[NotificationType.HASHTAG];
         case NotificationType.STAGE:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.STAGE]
-            }`;
+            return NotificationMessages[NotificationType.STAGE];
         case NotificationType.FOLLOW:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.FOLLOW]
-            }`;
+            return NotificationMessages[NotificationType.FOLLOW];
 
         // followers notification
 
         case NotificationType.FOLLOWER_POST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.FOLLOWER_POST]
-            }`;
+            return NotificationMessages[NotificationType.FOLLOWER_POST];
         case NotificationType.FOLLOWER_MINT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.FOLLOWER_MINT]
-            }`;
+            return NotificationMessages[NotificationType.FOLLOWER_MINT];
 
         case NotificationType.FOLLOWER_COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.FOLLOWER_COMMENT]
-            }`;
+            return NotificationMessages[NotificationType.FOLLOWER_COMMENT];
 
         case NotificationType.FOLLOWER_REPOST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.FOLLOWER_REPOST]
-            }`;
+            return NotificationMessages[NotificationType.FOLLOWER_REPOST];
 
         case NotificationType.FOLLOWER_CREATE_COLLECTION:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[
-                    NotificationType.FOLLOWER_CREATE_COLLECTION
-                ]
-            }`;
+            return NotificationMessages[
+                NotificationType.FOLLOWER_CREATE_COLLECTION
+            ];
 
         // s3 notification
         case NotificationType.BIDDING:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.BIDDING]
-            }`;
+            return NotificationMessages[NotificationType.BIDDING];
         case NotificationType.SOLD:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.SOLD]
-            }`;
+            return NotificationMessages[NotificationType.SOLD];
 
         case NotificationType.LISTING:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} ${
-                NotificationMessages[NotificationType.LISTING]
-            }`;
+            return NotificationMessages[NotificationType.LISTING];
         case NotificationType.SYSTEM:
             return notification.message;
         default:

@@ -362,6 +362,9 @@ export class FeedsService {
     // ---------- USER FOLLOW HERE DUE TO PRIVATE GATEWAY ISSUE
 
     async follow(otherUser, userId) {
+        if (otherUser == userId?.toString()) {
+            return new Error('You cannot follow to yourself');
+        }
         const following = await this.userModel
             .findOne({ _id: otherUser })
             .lean()

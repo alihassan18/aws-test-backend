@@ -1309,7 +1309,7 @@ export class PostService {
 
         this.publicFeedsGateway.emitRepostCountOnPost({
             postId: originalPost.id.toString(),
-            repostCount: originalPostt.repostCount
+            repostCount: originalPostt?.repostCount
         });
 
         await this.feedsService.createFeed({

@@ -370,6 +370,13 @@ export class UsersService {
             throw new Error('Social Media link at least 30 characters');
         }
 
+        if (data?.onesignal_keys) {
+            await this.userModel.updateMany(
+                {},
+                { $pullAll: { onesignal_keys: data.onesignal_keys } }
+            );
+        }
+
         if (
             data?.userName &&
             bannedUsernames.includes(data?.userName?.toLowerCase())
@@ -404,16 +411,30 @@ export class UsersService {
                 throw new Error('Username can only be changed once in 7 days');
             }
         } else {
-            return this.userModel.findByIdAndUpdate(
-                id,
-                {
-                    $set: {
-                        ...data,
-                        ...(data.userName && { userNameUpdateAt: new Date() })
-                    }
-                },
-                { new: true }
-            );
+            if (data?.onesignal_keys) {
+                return this.userModel.findByIdAndUpdate(
+                    id,
+                    {
+                        $addToSet: {
+                            onesignal_keys: { $each: data.onesignal_keys }
+                        }
+                    },
+                    { new: true }
+                );
+            } else {
+                return this.userModel.findByIdAndUpdate(
+                    id,
+                    {
+                        $set: {
+                            ...data,
+                            ...(data.userName && {
+                                userNameUpdateAt: new Date()
+                            })
+                        }
+                    },
+                    { new: true }
+                );
+            }
         }
     }
 
@@ -1217,4 +1238,6 @@ export class UsersService {
             console.log(error);
         }
     }
+
+    // ---------------- ONE SIGNAL KEYS ADD ------------------
 }
