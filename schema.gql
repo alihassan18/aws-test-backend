@@ -24,6 +24,7 @@ type Settings {
   alerts: SettingsAlert!
   email: SettingsAlert!
   twoFa: Boolean
+  threeFa: Boolean
   messagePrivacy: String!
   isLinkedInEnabled: Boolean!
   isTwitterEnabled: Boolean!
@@ -488,6 +489,7 @@ type User {
   login_attempts: Float
   lockedAt: DateTime
   onesignal_keys: [String!]!
+  base32_secret: String
   minted: Float
   userId: User!
 }
@@ -2147,6 +2149,8 @@ input SettingsInput {
   isAutoMintEnabled: Boolean
   lastMintedCollection: String
   twoFa: Boolean
+  threeFa: Boolean
+  base32_secret: String
 }
 
 input SettingsAlertInput {
