@@ -1,12 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 
-import {
-    WebSocketGateway,
-    WebSocketServer,
-    OnGatewayConnection,
-    OnGatewayDisconnect
-} from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'ws';
 import * as WebSocket from 'ws'; // Import the WebSocket class
 // import { Listing, ListingDocument } from '../listings/entities/listing.entity';
@@ -26,15 +21,20 @@ import { USERS } from 'src/constants/db.collections';
 import { ReservoirService } from '../shared/services/reservoir.service';
 import { zeroAddress } from 'viem';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
+import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
 const chain = 'arbitrum';
 
 @WebSocketGateway()
-export class EventsArbitrumGateway
-    implements OnGatewayConnection, OnGatewayDisconnect
-{
+// OnGatewayConnection,
+// OnGatewayDisconnect,
+export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
     @WebSocketServer()
     server: Server;
+
+    private wss: WebSocket;
+    private readonly wssUrl: string;
+    private isConnected = false;
 
     constructor(
         // @InjectModel(Listing.name) private listingModel: Model<ListingDocument>,
@@ -47,60 +47,96 @@ export class EventsArbitrumGateway
         private readonly reservoirService: ReservoirService,
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
         private readonly notifificationService: NotificationService,
-        // @Inject(forwardRef(() => PublicFeedsGateway))
         private publicFeedsGateway: PublicFeedsGateway
     ) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self = this;
-        // Connect to the WebSocket URL
-        const wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
-        const wss = new WebSocket(wssUrl); // Use the imported WebSocket class
+        this.wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
+    }
 
-        wss.on('open', () => {
-            console.log('Connected to WebSocket');
+    private collectionChangeStream;
+
+    // Call this method in your gateway's initialization logic
+    watchForNewCollections() {
+        // Assuming collectionModel is a Mongoose model for your collections
+        this.collectionChangeStream = this.collectionModel.watch([
+            {
+                $match: {
+                    operationType: 'insert'
+                }
+            }
+        ]);
+
+        this.collectionChangeStream.on('change', (change) => {
+            console.log('New collection created:', change.fullDocument);
+            // Now that you have the new collection, you can send a subscription message to your WebSocket server
+            const newCollectionContract =
+                change.fullDocument.contract.toLowerCase();
+
+            const askSubscriptionMessage = JSON.stringify({
+                type: 'subscribe',
+                event: 'ask.created', // Replace with actual event name if different
+                status: 'success',
+                filters: {
+                    contract: newCollectionContract // The server might expect a single contract or an array
+                }
+            });
+            const saleSubscriptionMessage = JSON.stringify({
+                type: 'subscribe',
+                event: 'sale.created', // Replace with actual event name if different
+                status: 'success',
+                filters: {
+                    contract: newCollectionContract // The server might expect a single contract or an array
+                }
+            });
+            const bidSubscriptionMessage = JSON.stringify({
+                type: 'subscribe',
+                event: 'bid.created', // Replace with actual event name if different
+                status: 'success',
+                filters: {
+                    contract: newCollectionContract // The server might expect a single contract or an array
+                }
+            });
+
+            // Send the subscription message to the WebSocket server
+            // Assuming you have access to the WebSocket instance `wss` here, otherwise, you'll need to structure your code to allow for this
+            this.wss.send(askSubscriptionMessage);
+            this.wss.send(saleSubscriptionMessage);
+            this.wss.send(bidSubscriptionMessage);
+        });
+    }
+
+    onModuleInit() {
+        this.connect();
+    }
+
+    onModuleDestroy() {
+        this.disconnect();
+    }
+
+    private connect() {
+        this.wss = new WebSocket(this.wssUrl);
+
+        this.wss.on('open', () => {
+            this.isConnected = true;
+            console.log('WebSocket connected');
+            // Perform any subscriptions here
         });
 
-        wss.on('message', async function incoming(data) {
+        this.wss.on('message', async (data) => {
             const parsedData = JSON.parse(data);
 
             if (parsedData?.event === 'ask.created') {
-                // if (self.isNotValidData(parsedData.data)) {
-                //     console.log('data is not valid');
-                //     return;
-                // }
-                self.createListings(parsedData.data);
+                this.createListings(parsedData.data);
             }
             if (parsedData?.event === 'sale.created') {
-                self.createSale(parsedData.data);
+                this.createSale(parsedData.data);
             }
             if (parsedData?.event === 'bid.created') {
-                // if (self.isNotValidData(parsedData.data)) {
-                //     console.log('data is not valid');
-                //     return;
-                // }
-                self.createBid(parsedData.data);
+                this.createBid(parsedData.data);
             }
-            // if (parsedData?.event === 'ask.updated') {
-            //     if (
-            //         parsedData?.data?.status == 'inactive' ||
-            //         parsedData?.data?.status == 'expired' ||
-            //         parsedData?.data?.status == 'cancelled'
-            //     ) {
-            //         self.deleteListing(parsedData.data);
-            //     } else {
-            //         self.updateListing(parsedData.data);
-            //     }
-            // }
 
-            // if (parsedData?.event == 'token.created') {
-            //     console.log(parsedData);
-            //     self.createToken(parsedData.data?.token);
-            // }
             // When the connection is ready, subscribe to the top-bids event
             if (JSON.parse(data).status === 'ready') {
-                const collections = await self.collectionModel
+                const collections = await this.collectionModel
                     .find({
                         chain: chain,
                         is_content_creator: true
@@ -109,7 +145,7 @@ export class EventsArbitrumGateway
                     .exec();
 
                 if (collections.length) {
-                    wss.send(
+                    this.wss.send(
                         JSON.stringify({
                             type: 'subscribe',
                             event: 'ask.created',
@@ -123,7 +159,7 @@ export class EventsArbitrumGateway
                     );
                 }
                 if (collections.length) {
-                    wss.send(
+                    this.wss.send(
                         JSON.stringify({
                             type: 'subscribe',
                             event: 'sale.created',
@@ -137,7 +173,7 @@ export class EventsArbitrumGateway
                     );
                 }
                 if (collections.length) {
-                    wss.send(
+                    this.wss.send(
                         JSON.stringify({
                             type: 'subscribe',
                             event: 'bid.created',
@@ -153,31 +189,22 @@ export class EventsArbitrumGateway
             }
         });
 
-        wss.on('close', () => {
-            console.log('Disconnected from WebSocket');
-        });
-        wss.on('error', (err) => {
-            console.log('Disconnected from WebSocket', err);
-        });
-    }
-
-    handleConnection(client: WebSocket) {
-        console.log('Client connected:', client);
-
-        client.on('message', (message: string) => {
-            console.log('Received message:', message);
-            // Process the received message
+        this.wss.on('close', () => {
+            this.isConnected = false;
+            console.log('WebSocket disconnected, attempting to reconnect...');
+            setTimeout(() => this.connect(), 5000); // Reconnect after 5 seconds
         });
 
-        client.on('close', () => {
-            console.log('Client disconnected');
+        this.wss.on('error', (err) => {
+            console.error('WebSocket encountered an error:', err);
+            this.wss.close(); // Close the connection if an error occurs
         });
     }
 
-    handleDisconnect(client: WebSocket) {
-        console.log(client);
-
-        console.log('Client disconnected');
+    private disconnect() {
+        if (this.wss) {
+            this.wss.close();
+        }
     }
 
     isNotValidData(data) {
