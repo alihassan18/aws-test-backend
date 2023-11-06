@@ -352,6 +352,7 @@ type LoginResult {
   user: User
   access_token: String
   twoFa: Boolean
+  threeFa: Boolean
   notAffiliated: Boolean
 }
 
