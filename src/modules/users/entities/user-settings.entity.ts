@@ -127,9 +127,9 @@ export class Settings {
     @Prop({ type: Boolean, default: false })
     twoFa?: boolean;
 
-    // @Field(() => Boolean, { nullable: true })
-    // @Prop({ type: Boolean, default: false })
-    // threeFa?: boolean;
+    @Field(() => Boolean, { nullable: true })
+    @Prop({ type: Boolean, default: false })
+    threeFa?: boolean;
 
     @Field(() => String)
     @Prop({

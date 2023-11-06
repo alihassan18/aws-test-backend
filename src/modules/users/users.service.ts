@@ -300,7 +300,13 @@ export class UsersService {
     async changeSettings(userId: Types.ObjectId, data: SettingsInput) {
         return this.userModel.findOneAndUpdate(
             { _id: userId },
-            { settings: data },
+            {
+                settings: data,
+                base32_secret:data?.base32_secret || ""
+                // ...(data?.base32_secret && {
+                //     base32_secret: data.base32_secret
+                // })
+            },
             {
                 new: true
             }

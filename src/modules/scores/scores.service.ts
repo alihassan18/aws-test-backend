@@ -8,7 +8,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { HighScoreResult, ScoresResult } from './scores.dto';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
-import { startOfWeek, endOfDay } from 'date-fns';
+import { startOfWeek, endOfDay, addDays } from 'date-fns';
 
 @Injectable()
 export class ScoresService {
@@ -118,10 +118,10 @@ export class ScoresService {
         const startOfMonthDate = startOfMonth(new Date());
         const endOfMonthDate = endOfMonth(new Date());
 
-        // const startOfLastWeek = startOfWeek(addDays(new Date(), -7));
-        // const endOfLastWeek = endOfWeek(addDays(new Date(), -7));
-        const startOfWeekDate = startOfWeek(new Date());
-        const endOfToday = endOfDay(new Date());
+        const now = new Date();
+        const currentDay = now.getDay();
+        const startOfWeekDate = startOfWeek(now, { weekStartsOn: 1 }); // Monday (weekStartsOn: 1)
+        const endOfToday = endOfDay(addDays(now, 7 - currentDay));
 
         const res = await this.scoreModel
             .aggregate([
