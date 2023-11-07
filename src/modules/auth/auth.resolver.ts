@@ -168,6 +168,27 @@ export class AuthResolver extends CommonServices {
         throw new BadRequestException('Could not send email with the provided');
     }
 
+    // --------- 3FA LOGIN -------------
+
+    @Mutation(() => LoginResult)
+    @UseGuards(AuthGuard)
+    async verify3faLogin(
+        @Context() ctx: ContextProps,
+        @Args('code') code: string,
+        @IpAddress() IpAddress
+    ): Promise<LoginResult | undefined> {
+        const response = await this.authService.verify3faLogin(
+            {
+                code: code,
+                userId: ctx.req.user._id
+            },
+            IpAddress
+        );
+
+        if (response) return response;
+        throw new BadRequestException('Code is not valid. Please try again');
+    }
+
     // --------- DELETE ACCOUNT -------------
 
     @Mutation(() => VerifyEmailOutput)

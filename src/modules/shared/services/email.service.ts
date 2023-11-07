@@ -107,6 +107,7 @@ export class EmailService {
                 code: code
             })
         };
+        console.log(code);
         return this.MAIL_GUN(mailOptions);
     }
 

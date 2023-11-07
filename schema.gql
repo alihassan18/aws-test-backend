@@ -2012,6 +2012,7 @@ type Mutation {
   send2faCode: VerifyEmailOutput!
   verify2faCode(code: String!): Verify2FAOutput!
   verify2faLogin(code: String!): LoginResult!
+  verify3faLogin(code: String!): LoginResult!
   deleteUserAccount: VerifyEmailOutput!
   updatePassword(currentPassword: String!, newPassword: String!): String!
   adminLogin(user: LoginUserInput!): LoginResult!
