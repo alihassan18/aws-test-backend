@@ -164,14 +164,14 @@ export class ReactionService {
             }
         }
         if (token) {
-            console.log('in the required condition');
+            
             const post = await this.postModel.findOne({
                 'tokenData.chain': token.chain,
                 'tokenData.contract': token.contract,
                 'tokenData.tokenId': token.tokenId
             });
             if (post) {
-                post_ID = post._id;
+                //post_ID = post._id;
             } else {
                 const {
                     name,
@@ -193,8 +193,8 @@ export class ReactionService {
                         collectionImage
                     }
                 });
-                post.save();
-                post_ID = post._id;
+                await post.save();
+                //post_ID = post._id;
             }
         }
         const postId = new Types.ObjectId(post_ID);
@@ -209,7 +209,7 @@ export class ReactionService {
             .findOne({
                 user: userId,
                 post: postId,
-                emoji: emoji
+                //emoji: emoji
             })
             .exec();
 
@@ -314,7 +314,7 @@ export class ReactionService {
         if (!post) {
             throw new Error('Post not found.');
         }
-
+        
         const reaction = await this.reactionModel
             .findOne({
                 post: postId,
