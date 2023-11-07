@@ -27,9 +27,9 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
         private readonly jwtService: JwtService
     ) {
         super({
-            consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            consumerKey: 'R1dubjdkRXJIRXNWMGlvUVBueng6MTpjaQ',
             consumerSecret:
-                'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
+                'M8wdM_XweQMsJR1_ai1xnCi1P6si_xHmAK4CCtuYHt_8nmtK9f',
             callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
             includeEmail: true,
             passReqToCallback: true
