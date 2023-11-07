@@ -44,7 +44,7 @@ import {
 } from '../notifications/notifications.enum';
 import { ScoresService } from '../scores/scores.service';
 import * as speakeasy from 'speakeasy';
-import * as base32 from 'thirty-two'
+import * as base32 from 'thirty-two';
 
 @Injectable()
 export class AuthService extends CommonServices {
