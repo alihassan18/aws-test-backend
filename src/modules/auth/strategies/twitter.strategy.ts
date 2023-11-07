@@ -74,7 +74,6 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                         email: _json?.email
                     })
                     .exec();
-                
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
