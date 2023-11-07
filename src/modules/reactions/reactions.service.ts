@@ -164,7 +164,6 @@ export class ReactionService {
             }
         }
         if (token) {
-            
             const post = await this.postModel.findOne({
                 'tokenData.chain': token.chain,
                 'tokenData.contract': token.contract,
@@ -208,7 +207,7 @@ export class ReactionService {
         let reaction = await this.reactionModel
             .findOne({
                 user: userId,
-                post: postId,
+                post: postId
                 //emoji: emoji
             })
             .exec();
@@ -314,7 +313,7 @@ export class ReactionService {
         if (!post) {
             throw new Error('Post not found.');
         }
-        
+
         const reaction = await this.reactionModel
             .findOne({
                 post: postId,
