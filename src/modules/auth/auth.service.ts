@@ -731,6 +731,11 @@ export class AuthService extends CommonServices {
                 isEmailVerified: true,
                 ...(referral && { referral })
             });
+
+            await this.referralModel.create({
+                user: user?._id,
+                requested: true
+            });
         }
 
         if (user && user.settings.twoFa) {
