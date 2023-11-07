@@ -8,6 +8,10 @@ import { Model } from 'mongoose';
 import { Strategy, Profile } from 'passport-twitter';
 import { USERS } from 'src/constants/db.collections';
 import { jwtConstants } from 'src/constants/jwt.constant';
+import {
+    Referral,
+    ReferralDocument
+} from 'src/modules/referral/entities/referral.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 
 interface Info {
@@ -18,6 +22,8 @@ interface Info {
 export class TwitterStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
+        @InjectModel(Referral.name)
+        readonly referralModel: Model<ReferralDocument>,
         private readonly jwtService: JwtService
     ) {
         super({
@@ -98,6 +104,10 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     });
                     user.settings.isTwitterEnabled = true;
                     await user.save();
+                    await this.referralModel.create({
+                        user: user?._id,
+                        requested: true
+                    });
                 } else {
                     // Update user's access token and access secret if user already exists
                     user.twitterAccessToken = accessToken;
@@ -225,6 +235,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 });
             }
         } catch (error) {
+            console.log(error, 'error-=');
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             done(error);
