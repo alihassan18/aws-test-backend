@@ -41,7 +41,10 @@ export class AuthGuard implements CanActivate {
                 payload?.temp &&
                 (request.body.operationName?.toLowerCase() ==
                     'verify2falogin' ||
-                    request.body.operationName?.toLowerCase() == 'send2facode')
+                    request.body.operationName?.toLowerCase() ==
+                        'send2facode' ||
+                    request.body.operationName?.toLowerCase() ==
+                        'verify3falogin')
             ) {
                 request['user'] = user;
                 return true;

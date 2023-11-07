@@ -43,6 +43,8 @@ import {
     NotificationType
 } from '../notifications/notifications.enum';
 import { ScoresService } from '../scores/scores.service';
+import * as speakeasy from 'speakeasy';
+import * as base32 from 'thirty-two';
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -877,19 +879,55 @@ export class AuthService extends CommonServices {
         const response = await this.verifyCode({ email, code });
         if (response.success) {
             const user = await this.userService.userModel.findById(userId);
-            const result: LoginResult = await this.createJwt(user, IpAddress);
-            return result;
-            // if (user.settings.threeFa) {
-            //     return {
-            //         threeFa: true
-            //     };
-            // } else {
-            //     const result: LoginResult = await this.createJwt(
-            //         user,
-            //         IpAddress
-            //     );
-            //     return result;
-            // }
+            if (user.settings.threeFa) {
+                return {
+                    threeFa: true
+                };
+            } else {
+                const result: LoginResult = await this.createJwt(
+                    user,
+                    IpAddress
+                );
+                return result;
+            }
+        }
+    }
+
+    // ------------------- 3FA LOGIN ------------------------
+
+    async verify3faLogin(
+        body: {
+            code: string;
+            userId: Types.ObjectId;
+        },
+        IpAddress
+    ) {
+        try {
+            const { code, userId } = body;
+
+            const user = await this.userService.userModel.findById(userId);
+            if (user.base32_secret) {
+                const secretBuffer = base32.decode(user.base32_secret);
+                const isVerified = await speakeasy.totp.verify({
+                    secret: secretBuffer,
+                    encoding: 'base32',
+                    token: code
+                });
+                if (isVerified) {
+                    const result: LoginResult = await this.createJwt(
+                        user,
+                        IpAddress
+                    );
+                    return result;
+                } else {
+                    throw new Error('Code is not valid. Please try again');
+                }
+            } else {
+                throw new Error('Base32 secret is not valid. Please try again');
+            }
+        } catch (error) {
+            console.log(error, 'error in 3fa  validate');
+            throw new Error('Code is not valid. Please try again');
         }
     }
 
