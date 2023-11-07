@@ -8,7 +8,10 @@ import { Model } from 'mongoose';
 import { Strategy, Profile } from 'passport-twitter';
 import { USERS } from 'src/constants/db.collections';
 import { jwtConstants } from 'src/constants/jwt.constant';
-import { Referral, ReferralDocument } from 'src/modules/referral/entities/referral.entity';
+import {
+    Referral,
+    ReferralDocument
+} from 'src/modules/referral/entities/referral.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 
 interface Info {
@@ -21,11 +24,12 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
         @InjectModel(Referral.name)
         readonly referralModel: Model<ReferralDocument>,
-        private readonly jwtService: JwtService,
+        private readonly jwtService: JwtService
     ) {
         super({
-            consumerKey: "RdKeJZgn21yOyP5aKt8piFvWg",
-            consumerSecret:"IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F",
+            consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            consumerSecret:
+                'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
             callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
             includeEmail: true,
             passReqToCallback: true
@@ -232,7 +236,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 });
             }
         } catch (error) {
-            console.log(error,'error-=')
+            console.log(error, 'error-=');
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             done(error);
