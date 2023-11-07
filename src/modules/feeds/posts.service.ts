@@ -63,7 +63,7 @@ export class PostService {
     constructor(
         @InjectModel(Post.name) private postModel: Model<PostDocument>,
         @InjectModel(User.name) private userModel: Model<User>,
-        @InjectModel(StakingCollection.name) 
+        @InjectModel(StakingCollection.name)
         private stakingCollectionModel: Model<StakingCollectionDocument>,
         public hashtagsService: HashtagsService,
         public userService: UsersService,
@@ -83,7 +83,7 @@ export class PostService {
     async findById(id: Types.ObjectId): Promise<Post> {
         return this.postModel.findById(id).exec();
     }
- 
+
     async update(
         id: Types.ObjectId,
         userId: Types.ObjectId,
@@ -1608,10 +1608,9 @@ export class PostService {
             const twentyFourHoursAgo = new Date(
                 Date.now() - 24 * 60 * 60 * 1000
             );
-            collectionViewsTimestamps =
-                collectionViewsTimestamps.filter(
-                    (timestamp) => timestamp >= twentyFourHoursAgo
-                );
+            collectionViewsTimestamps = collectionViewsTimestamps.filter(
+                (timestamp) => timestamp >= twentyFourHoursAgo
+            );
 
             // Update the postViews and collectionViewsTimestamps
             let postViews = post.postViews;
@@ -1621,10 +1620,15 @@ export class PostService {
                 postId: postId.toString(),
                 postViews: postViews
             });
-            
+
             return await this.postModel.findOneAndUpdate(
                 { _id: postId },
-                { $set: { postViews: postViews , collectionViewsTimestamps: collectionViewsTimestamps  } },
+                {
+                    $set: {
+                        postViews: postViews,
+                        collectionViewsTimestamps: collectionViewsTimestamps
+                    }
+                },
                 { new: true }
             );
 
