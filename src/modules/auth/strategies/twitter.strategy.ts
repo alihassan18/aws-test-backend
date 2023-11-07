@@ -70,10 +70,11 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 // Check if user already exists in the database
                 let user = await this.userModel
                     .findOne({
-                        $or: [{ twitterId }, { email: _json?.email }]
+                        // $or: [{ twitterId }, { email: _json?.email }]
+                        email: _json?.email
                     })
                     .exec();
-                console.log(profile, 'profile', accessToken, 'user', user);
+                
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
@@ -91,7 +92,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                             ? username?.toLowerCase() +
                               `${Math.floor(1000 + Math.random() * 9000)}`
                             : username?.toLowerCase(),
-                        ...(_json.email && { email: _json.email }),
+                        email: _json.email,
                         firstName: name[0],
                         lastName: name[1],
                         avatar: _json.profile_image_url
