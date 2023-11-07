@@ -63,7 +63,7 @@ export class PostService {
     constructor(
         @InjectModel(Post.name) private postModel: Model<PostDocument>,
         @InjectModel(User.name) private userModel: Model<User>,
-        @InjectModel(StakingCollection.name)
+        @InjectModel(StakingCollection.name) 
         private stakingCollectionModel: Model<StakingCollectionDocument>,
         public hashtagsService: HashtagsService,
         public userService: UsersService,
@@ -83,7 +83,7 @@ export class PostService {
     async findById(id: Types.ObjectId): Promise<Post> {
         return this.postModel.findById(id).exec();
     }
-
+ 
     async update(
         id: Types.ObjectId,
         userId: Types.ObjectId,
@@ -1600,27 +1600,35 @@ export class PostService {
             // Calculate the timestamp to add
             const timestampToAdd = new Date();
 
+            let collectionViewsTimestamps = post.collectionViewsTimestamps;
             // Push the new timestamp into the collectionViewsTimestamps array
-            post.collectionViewsTimestamps.push(timestampToAdd);
+            collectionViewsTimestamps.push(timestampToAdd);
 
             // Remove timestamps older than 24 hours
             const twentyFourHoursAgo = new Date(
                 Date.now() - 24 * 60 * 60 * 1000
             );
-            post.collectionViewsTimestamps =
-                post.collectionViewsTimestamps.filter(
+            collectionViewsTimestamps =
+                collectionViewsTimestamps.filter(
                     (timestamp) => timestamp >= twentyFourHoursAgo
                 );
 
             // Update the postViews and collectionViewsTimestamps
-            post.postViews += Math.floor(time);
+            let postViews = post.postViews;
+            postViews += Math.floor(time);
 
             this.publicFeedsGateway.emitPostViews({
                 postId: postId.toString(),
-                postViews: post.postViews
+                postViews: postViews
             });
+            
+            return await this.postModel.findOneAndUpdate(
+                { _id: postId },
+                { $set: { postViews: postViews , collectionViewsTimestamps: collectionViewsTimestamps  } },
+                { new: true }
+            );
 
-            return await post.save();
+            //return await post.save();
         } catch (error) {
             console.error(error);
         }
