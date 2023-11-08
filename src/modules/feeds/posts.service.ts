@@ -1604,27 +1604,39 @@ export class PostService {
             // Calculate the timestamp to add
             const timestampToAdd = new Date();
 
+            let collectionViewsTimestamps = post.collectionViewsTimestamps;
             // Push the new timestamp into the collectionViewsTimestamps array
-            post.collectionViewsTimestamps.push(timestampToAdd);
+            collectionViewsTimestamps.push(timestampToAdd);
 
             // Remove timestamps older than 24 hours
             const twentyFourHoursAgo = new Date(
                 Date.now() - 24 * 60 * 60 * 1000
             );
-            post.collectionViewsTimestamps =
-                post.collectionViewsTimestamps.filter(
-                    (timestamp) => timestamp >= twentyFourHoursAgo
-                );
+            collectionViewsTimestamps = collectionViewsTimestamps.filter(
+                (timestamp) => timestamp >= twentyFourHoursAgo
+            );
 
             // Update the postViews and collectionViewsTimestamps
-            post.postViews += Math.floor(time);
+            let postViews = post.postViews;
+            postViews += Math.floor(time);
 
             this.publicFeedsGateway.emitPostViews({
                 postId: postId.toString(),
-                postViews: post.postViews
+                postViews: postViews
             });
 
-            return await post.save();
+            return await this.postModel.findOneAndUpdate(
+                { _id: postId },
+                {
+                    $set: {
+                        postViews: postViews,
+                        collectionViewsTimestamps: collectionViewsTimestamps
+                    }
+                },
+                { new: true }
+            );
+
+            //return await post.save();
         } catch (error) {
             console.error(error);
         }
