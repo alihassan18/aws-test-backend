@@ -416,7 +416,7 @@ export class User extends Document {
     })
     onesignal_keys: string[];
 
-    @Field(() => String, { nullable: true })
+    // @Field(() => String, { nullable: true })
     @Prop({ type: String, default: false })
     base32_secret?: string;
 

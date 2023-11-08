@@ -118,6 +118,7 @@ export class AuthController {
     async twitterCallback(@Req() req, @Res() res) {
         // Handle user authentication and create a session
         // This will depend on your specific application requirements
+        req.session.token = '';
         const { user, token, isUserLogin } = req.user;
         console.log(user && !token);
 

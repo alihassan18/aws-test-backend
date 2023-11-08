@@ -490,7 +490,6 @@ type User {
   login_attempts: Float
   lockedAt: DateTime
   onesignal_keys: [String!]!
-  base32_secret: String
   minted: Float
   userId: User!
 }

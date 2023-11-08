@@ -80,7 +80,7 @@ export class UsersService {
     ) {}
 
     public hideFields =
-        '-email -roles -phoneNumber -lastLogin -invitation_code -login_attempts -lockedAt -base32_secret';
+        '-email -roles -phoneNumber -lastLogin -invitation_code -login_attempts -lockedAt';
 
     create(data) {
         return this.userModel.create(data);
