@@ -218,7 +218,7 @@ export class PostService {
                 }
             ]
         });
-console.log(post,'post',contract, chain, tokenId);
+        console.log(post, 'post', contract, chain, tokenId);
 
         if (!post) {
             const collection =
