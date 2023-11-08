@@ -134,6 +134,7 @@ import {
     Activity,
     ActivitySchema
 } from '../activities/entities/activities.entity';
+import { Sales, SalesSchema } from '../sales/entities/sales.entity';
 
 const models = [
     { name: USERS, schema: UsersSchema },
@@ -168,6 +169,7 @@ const models = [
     { name: HiddenTokens.name, schema: HiddenTokensSchema },
     { name: InvitationCode.name, schema: InvitationCodeSchema },
     { name: Activity.name, schema: ActivitySchema },
+    { name: Sales.name, schema: SalesSchema },
 
     //  --------------------------------------
     //          RUFFY WORLD COLLECTIONS

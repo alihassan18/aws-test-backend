@@ -1446,6 +1446,39 @@ type RecentSearch {
   hashtag: Hashtag
 }
 
+type SalesCollection {
+  id: String
+  name: String
+  image: String
+}
+
+type SalesToken {
+  tokenId: String
+  name: String
+  image: String
+  contract: String
+  collection: SalesCollection
+}
+
+type SalesSource {
+  domain: String
+  name: String
+  icon: String
+}
+
+type SalesCriteria {
+  kind: String
+  token: SalesToken
+  collection: SalesCollection
+}
+
+type SalesOrder {
+  id: String
+  side: String
+  source: SalesSource
+  criteria: SalesCriteria
+}
+
 type PageInfo {
   hasNextPage: Boolean
   endCursor: String
@@ -1621,6 +1654,21 @@ type ReferralsOutput {
   graphData: [ReferralsGraphData!]
 }
 
+type UserReferrals {
+  user: User
+  buys: Int
+  volume: Float
+  ourCommission: Float
+  affiliateLevel: Int
+  yourCommission: Float
+  referral: Referral
+}
+
+type UserRewards {
+  rewards: Float
+  volume: Float
+}
+
 type NotificationResults {
   records: [Notification!]!
   hasNextPage: Boolean
@@ -1758,7 +1806,8 @@ type Query {
   usersUseHashtag(hashtag: String!): [Post!]
   hashtagFollowersUsers(hashtag: String!): [User!]!
   affiliatedData(duration: String!): ReferralsOutput!
-  userReferrals: [User!]!
+  userReferrals: [UserReferrals!]!
+  userRewards: UserRewards!
   notifications(query: NotificationFilterInput, limit: Int! = 10, cursor: String, currentPage: Int): NotificationResults!
   notification(id: String!): Notification
   getUnSeenCounts: Float!
