@@ -8,6 +8,10 @@ import { Model } from 'mongoose';
 import { Strategy, Profile } from 'passport-twitter';
 import { USERS } from 'src/constants/db.collections';
 import { jwtConstants } from 'src/constants/jwt.constant';
+import {
+    Referral,
+    ReferralDocument
+} from 'src/modules/referral/entities/referral.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 
 interface Info {
@@ -18,11 +22,14 @@ interface Info {
 export class TwitterStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
+        @InjectModel(Referral.name)
+        readonly referralModel: Model<ReferralDocument>,
         private readonly jwtService: JwtService
     ) {
         super({
-            consumerKey: process.env.TWITTER_CONSUMER_KEY,
-            consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+            consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            consumerSecret:
+                'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
             callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
             includeEmail: true,
             passReqToCallback: true
@@ -70,10 +77,10 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 // Check if user already exists in the database
                 let user = await this.userModel
                     .findOne({
-                        $or: [{ twitterId }, { email: _json?.email }]
+                        // $or: [{ twitterId }, { email: _json?.email }]
+                        email: _json?.email
                     })
                     .exec();
-                console.log(profile, 'profile', accessToken, 'user', user);
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
@@ -91,13 +98,17 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                             ? username?.toLowerCase() +
                               `${Math.floor(1000 + Math.random() * 9000)}`
                             : username?.toLowerCase(),
-                        ...(_json.email && { email: _json.email }),
+                        email: _json.email,
                         firstName: name[0],
                         lastName: name[1],
                         avatar: _json.profile_image_url
                     });
                     user.settings.isTwitterEnabled = true;
                     await user.save();
+                    await this.referralModel.create({
+                        user: user?._id,
+                        requested: true
+                    });
                 } else {
                     // Update user's access token and access secret if user already exists
                     user.twitterAccessToken = accessToken;
@@ -225,6 +236,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 });
             }
         } catch (error) {
+            console.log(error, 'error-=');
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             done(error);

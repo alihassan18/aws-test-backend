@@ -97,12 +97,15 @@ export class UpdateUserInput {
 @ObjectType()
 export class LoginResult {
     @Field(() => User, { nullable: true })
-    user: User;
+    user?: User;
     @Field(() => String, { nullable: true })
-    access_token: string;
+    access_token?: string;
 
     @Field(() => Boolean, { nullable: true })
     twoFa?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    threeFa?: boolean;
     // password protection
     @Field(() => Boolean, { nullable: true })
     notAffiliated?: boolean;

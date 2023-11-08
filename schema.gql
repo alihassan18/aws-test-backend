@@ -352,6 +352,7 @@ type LoginResult {
   user: User
   access_token: String
   twoFa: Boolean
+  threeFa: Boolean
   notAffiliated: Boolean
 }
 
@@ -489,7 +490,6 @@ type User {
   login_attempts: Float
   lockedAt: DateTime
   onesignal_keys: [String!]!
-  base32_secret: String
   minted: Float
   userId: User!
 }
@@ -2060,6 +2060,7 @@ type Mutation {
   send2faCode: VerifyEmailOutput!
   verify2faCode(code: String!): Verify2FAOutput!
   verify2faLogin(code: String!): LoginResult!
+  verify3faLogin(code: String!): LoginResult!
   deleteUserAccount: VerifyEmailOutput!
   updatePassword(currentPassword: String!, newPassword: String!): String!
   adminLogin(user: LoginUserInput!): LoginResult!
