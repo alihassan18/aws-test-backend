@@ -218,6 +218,7 @@ export class PostService {
                 }
             ]
         });
+console.log(post,'post',contract, chain, tokenId);
 
         if (!post) {
             const collection =
@@ -229,7 +230,7 @@ export class PostService {
                 author: collection?.creator,
                 tokenData: {
                     chain: chain,
-                    contract: contract,
+                    contract: contract?.toLowerCase(),
                     tokenId: tokenId
                     // name,
                     // image
@@ -609,7 +610,6 @@ export class PostService {
         return post;
     }
 
-  
     async isDuplicateContent(
         userId: Types.ObjectId,
         text: string,
@@ -618,7 +618,7 @@ export class PostService {
         const twentyFourHoursAgo = new Date();
         twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
 
-        const query:QueryOfDuplicateC= {
+        const query: QueryOfDuplicateC = {
             author: userId,
             text,
             createdAt: { $gte: twentyFourHoursAgo }
@@ -649,7 +649,7 @@ export class PostService {
     // ): Promise<boolean> {
     //     const twentyFourHoursAgo = new Date();
     //     twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
-        
+
     //     const existingPost = await this.postModel
     //         .findOne({
     //             author: userId,
@@ -679,9 +679,9 @@ export class PostService {
     //             inReplyToPost,
     //             createdAt: { $gte: twentyFourHoursAgo }
     //         },'ddd');
-            
+
     //         return false
-            
+
     //     }
 
     //     // return !!existingPost;
