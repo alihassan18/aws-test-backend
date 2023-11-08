@@ -50,7 +50,7 @@ export class FeedsResolver {
 
     @ResolveField(() => Feed)
     async owner(@Parent() feed: Feed): Promise<UserDocument> {
-        return this.userService.findById(feed?.owner);
+        return this.userService.findById(feed?.owner, true);
     }
 
     @Query(() => Feed, { name: 'feed' })

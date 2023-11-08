@@ -1,10 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
-import {
-    WebSocketGateway,
-    WebSocketServer,
-    OnGatewayConnection,
-    OnGatewayDisconnect
-} from '@nestjs/websockets';
+import axios from 'axios';
+
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'ws';
 import * as WebSocket from 'ws'; // Import the WebSocket class
 // import { Listing, ListingDocument } from '../listings/entities/listing.entity';
@@ -18,154 +15,129 @@ import {
 import { Wallet, WalletDocument } from '../users/entities/wallet.entity';
 import { ActivityTypes } from '../activities/activities.enums';
 import { NotificationService } from '../notifications/notification.service';
+import { ZackService } from '../zack/zack.service';
+import { UserDocument } from '../users/entities/user.entity';
+import { USERS } from 'src/constants/db.collections';
+import { ReservoirService } from '../shared/services/reservoir.service';
+import { zeroAddress } from 'viem';
+import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
+import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Sales, SalesDocument } from '../sales/entities/sales.entity';
 
 const chain = 'arbitrum';
 
 @WebSocketGateway()
-export class EventsArbitrumGateway
-    implements OnGatewayConnection, OnGatewayDisconnect
-{
+// OnGatewayConnection,
+// OnGatewayDisconnect,
+export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
     @WebSocketServer()
     server: Server;
+
+    private wss: WebSocket;
+    private readonly wssUrl: string;
+    private isConnected = false;
 
     constructor(
         // @InjectModel(Listing.name) private listingModel: Model<ListingDocument>,
         @InjectModel(COLLECTIONS)
         private collectionModel: Model<CollectionDocument>,
+        @InjectModel(Sales.name)
+        private salesModel: Model<SalesDocument>,
         @InjectModel(Activity.name)
         private activityModel: Model<ActivityDocument>,
         @InjectModel(Wallet.name)
         private walletModel: Model<WalletDocument>,
-        private readonly notifificationService: NotificationService
+        private readonly reservoirService: ReservoirService,
+        @InjectModel(USERS) readonly userModel: Model<UserDocument>,
+        private readonly notifificationService: NotificationService,
+        private publicFeedsGateway: PublicFeedsGateway
     ) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self = this;
-        // Connect to the WebSocket URL
-        const wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
-        const wss = new WebSocket(wssUrl); // Use the imported WebSocket class
+        this.wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
+    }
 
-        wss.on('open', () => {
-            console.log('Connected to WebSocket');
+    onModuleInit() {
+        this.connect();
+    }
+
+    onModuleDestroy() {
+        this.disconnect();
+    }
+
+    private connect() {
+        this.wss = new WebSocket(this.wssUrl);
+
+        this.wss.on('open', () => {
+            this.isConnected = true;
+            console.log('WebSocket connected');
+            // Perform any subscriptions here
         });
 
-        wss.on('message', async function incoming(data) {
+        this.wss.on('message', async (data) => {
             const parsedData = JSON.parse(data);
 
             if (parsedData?.event === 'ask.created') {
-                // if (self.isNotValidData(parsedData.data)) {
-                //     console.log('data is not valid');
-                //     return;
-                // }
-                self.createListings(parsedData.data);
+                this.createListings(parsedData.data);
             }
             if (parsedData?.event === 'sale.created') {
-                self.createSale(parsedData.data);
+                this.createSale(parsedData.data);
             }
             if (parsedData?.event === 'bid.created') {
-                // if (self.isNotValidData(parsedData.data)) {
-                //     console.log('data is not valid');
-                //     return;
-                // }
-                self.createBid(parsedData.data);
+                this.createBid(parsedData.data);
             }
-            // if (parsedData?.event === 'ask.updated') {
-            //     if (
-            //         parsedData?.data?.status == 'inactive' ||
-            //         parsedData?.data?.status == 'expired' ||
-            //         parsedData?.data?.status == 'cancelled'
-            //     ) {
-            //         self.deleteListing(parsedData.data);
-            //     } else {
-            //         self.updateListing(parsedData.data);
-            //     }
-            // }
 
-            // if (parsedData?.event == 'token.created') {
-            //     console.log(parsedData);
-            //     self.createToken(parsedData.data?.token);
-            // }
             // When the connection is ready, subscribe to the top-bids event
             if (JSON.parse(data).status === 'ready') {
-                const collections = await self.collectionModel
-                    .find({
-                        chain: chain,
-                        is_content_creator: true
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'ask.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
                     })
-                    .select('contract')
-                    .exec();
+                );
 
-                if (collections.length) {
-                    wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'ask.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
-                if (collections.length) {
-                    wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'sale.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
-                if (collections.length) {
-                    wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'bid.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'sale.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
+                    })
+                );
+
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'bid.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
+                    })
+                );
             }
         });
 
-        wss.on('close', () => {
-            console.log('Disconnected from WebSocket');
-        });
-        wss.on('error', (err) => {
-            console.log('Disconnected from WebSocket', err);
-        });
-    }
-
-    handleConnection(client: WebSocket) {
-        console.log('Client connected:', client);
-
-        client.on('message', (message: string) => {
-            console.log('Received message:', message);
-            // Process the received message
+        this.wss.on('close', () => {
+            this.isConnected = false;
+            console.log('WebSocket disconnected, attempting to reconnect...');
+            setTimeout(() => this.connect(), 5000); // Reconnect after 5 seconds
         });
 
-        client.on('close', () => {
-            console.log('Client disconnected');
+        this.wss.on('error', (err) => {
+            console.error('WebSocket encountered an error:', err);
+            this.wss.close(); // Close the connection if an error occurs
         });
     }
 
-    handleDisconnect(client: WebSocket) {
-        console.log(client);
-
-        console.log('Client disconnected');
+    private disconnect() {
+        if (this.wss) {
+            this.wss.close();
+        }
     }
 
     isNotValidData(data) {
@@ -200,19 +172,27 @@ export class EventsArbitrumGateway
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            const activity = await this.activityModel.findOne(values).exec();
-            if (!activity) {
-                this.activityModel
-                    .create(values)
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            } else {
+            // const activity = await this.activityModel.findOne(values).exec();
+            // if (!activity) {
+            this.activityModel
+                .create(values)
+                .then(async (activity) => {
+                    const data = await this.activityModel
+                        .findById(activity?._id)
+                        .populate('user') // Populate the 'user' field
+                        .populate('post') // Populate the 'post' field
+                        .populate('nftCollection') // Populate the 'nftCollection' field
+                        .exec();
+
+                    this.publicFeedsGateway.emitRecentActivities(data);
+                    console.log('Activity created:', activity);
+                })
+                .catch((error) => {
+                    console.error('Error creating activity:', error);
+                });
+            /*  } else {
                 console.log('This activity already exists.');
-            }
+            } */
 
             if (wallet?.userId) {
                 this.notifificationService.alertFollowers4List(wallet?.userId, {
@@ -224,8 +204,13 @@ export class EventsArbitrumGateway
             console.log(error);
         }
     }
+
     async createSale(data) {
         try {
+            const sales = await this.salesModel.create(data);
+            console.log(sales, 'sales');
+
+            // This means the user in minting the token and we are just listning for the buy transactions.
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -247,25 +232,38 @@ export class EventsArbitrumGateway
             const values = {
                 user: to?.userId,
                 nftCollection: collection?._id,
-                type: ActivityTypes.NFY_BUY,
+                type:
+                    data?.from === zeroAddress
+                        ? ActivityTypes.NFT_MINTED
+                        : ActivityTypes.NFY_BUY,
                 token: {
                     ...data?.token,
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            const activity = await this.activityModel.findOne(values).exec();
-            if (!activity) {
-                this.activityModel
-                    .create(values)
-                    .then((activity) => {
-                        console.log('Activity created:', activity);
-                    })
-                    .catch((error) => {
-                        console.error('Error creating activity:', error);
-                    });
-            } else {
-                console.log('This activity already exists.');
-            }
+            // const activity = await this.activityModel
+            //     .findOne(values)
+            //     .exec();
+            // if (!activity) {
+            this.activityModel
+                .create(values)
+                .then(async (activity) => {
+                    const data = await this.activityModel
+                        .findById(activity?._id)
+                        .populate('user') // Populate the 'user' field
+                        .populate('post') // Populate the 'post' field
+                        .populate('nftCollection') // Populate the 'nftCollection' field
+                        .exec();
+
+                    this.publicFeedsGateway.emitRecentActivities(data);
+                    console.log('Activity created:', activity);
+                })
+                .catch((error) => {
+                    console.error('Error creating activity:', error);
+                });
+            // } else {
+            //     console.log('This activity already exists.');
+            // }
 
             // NOTIFY
 
@@ -286,6 +284,11 @@ export class EventsArbitrumGateway
 
     async createBid(data) {
         try {
+            /* FS: ZACK: CREATE OFFER DM CREATE */
+            /* Auth token */
+            const zackService = new ZackService();
+            await zackService.getAccessToken();
+            /* FS: ZACK: CREATE OFFER DM END */
             const [collection, wallet, taker] = await Promise.all([
                 this.collectionModel.findOne({
                     // chain: 'arbitrum',
@@ -315,7 +318,15 @@ export class EventsArbitrumGateway
             if (!activity) {
                 this.activityModel
                     .create(values)
-                    .then((activity) => {
+                    .then(async (activity) => {
+                        const data = await this.activityModel
+                            .findById(activity?._id)
+                            .populate('user') // Populate the 'user' field
+                            .populate('post') // Populate the 'post' field
+                            .populate('nftCollection') // Populate the 'nftCollection' field
+                            .exec();
+
+                        this.publicFeedsGateway.emitRecentActivities(data);
                         console.log('Activity created:', activity);
                     })
                     .catch((error) => {
@@ -340,8 +351,104 @@ export class EventsArbitrumGateway
                     }
                 );
             }
+
+            let ownerWallet = null;
+            if (collection?.owner) {
+                ownerWallet = await this.walletModel.findOne({
+                    address: {
+                        $regex: new RegExp(`^${collection?.owner}$`, 'i')
+                    }
+                });
+            }
+
+            let owner = null;
+            if (ownerWallet.userId) {
+                owner = await this.userModel.findOne({
+                    _id: ownerWallet.userId
+                });
+            }
+
+            let to_id = null;
+            if (data.criteria.kind == 'token') {
+                const tokenInfo = await this.getTokenById(
+                    data.contract,
+                    data.criteria?.data?.token?.tokenId
+                );
+                console.log(
+                    'tokenInfo',
+                    data.contract,
+                    data.criteria?.data?.token?.tokenId
+                );
+                console.log('tokenInfo', tokenInfo);
+                if (
+                    tokenInfo &&
+                    tokenInfo.tokens[0] &&
+                    tokenInfo.tokens[0].token &&
+                    tokenInfo.tokens[0].token.owner
+                ) {
+                    const api_owner_wallet_address =
+                        tokenInfo.tokens[0].token.owner;
+                    ownerWallet = await this.walletModel.findOne({
+                        address: {
+                            $regex: new RegExp(
+                                `^${api_owner_wallet_address}$`,
+                                'i'
+                            )
+                        }
+                    });
+                    if (ownerWallet && ownerWallet.userId) {
+                        to_id = ownerWallet.userId.toString();
+                        owner = await this.userModel.findOne({
+                            _id: ownerWallet.userId
+                        });
+                    }
+                }
+                console.log('tokenInfo', to_id);
+            } else if (data.criteria.kind == 'collection') {
+                to_id = ownerWallet.userId.toString();
+            }
+
+            console.log('to_id', to_id);
+            if (to_id) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const dataPost: any = {
+                    to_id: to_id,
+                    send_by: wallet?.userId,
+                    data: {
+                        type:
+                            data.criteria.kind == 'token'
+                                ? 'offer_nft'
+                                : 'offer_collection',
+                        content: '',
+                        metadata: {
+                            collection: collection,
+                            wallet: wallet,
+                            taker: taker,
+                            owner: owner,
+                            data: data
+                        }
+                    }
+                };
+                await zackService.sendMessagePrivate(dataPost);
+            }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async getTokenById(collection: string, tokenId: string) {
+        try {
+            const url = `https://api-arbitrum.reservoir.tools/tokens/v6?tokens=${collection}:${tokenId}`;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { status, data } = await axios.get<any>(url, {
+                headers: {
+                    'x-auth-token': process.env.RESERVOIR_API_KEY
+                }
+            });
+            return status == 200 ? data : null;
+        } catch (error) {
+            console.log('sendMessageError', error);
+            return null;
         }
     }
 }

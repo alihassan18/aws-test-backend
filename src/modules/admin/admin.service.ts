@@ -1,13 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { USERS } from 'src/constants/db.collections';
 import { UserDocument } from '../users/entities/user.entity';
 import { Model } from 'mongoose';
 import { UsersDataOutput } from './dto/create-admin.input';
+import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 @Injectable()
 export class AdminService {
-    constructor(@InjectModel(USERS) readonly userModel: Model<UserDocument>) {}
+    constructor(
+        @InjectModel(USERS) readonly userModel: Model<UserDocument>,
+        @Inject(forwardRef(() => PublicFeedsGateway))
+        private publicFeedsGateway: PublicFeedsGateway
+    ) {}
 
     async usersStats() {
         const usersDataOver = await this.userModel.aggregate([
@@ -710,6 +715,9 @@ export class AdminService {
         await this.userModel.findByIdAndUpdate(id, {
             $set: { isBlocked: status }
         });
+        if (status) {
+            this.publicFeedsGateway.emitBlockUserByAdmin(id);
+        }
         return { success: true };
     }
 
@@ -717,6 +725,10 @@ export class AdminService {
         await this.userModel.findByIdAndUpdate(id, {
             $set: { isBanned: status }
         });
+        if (status) {
+            this.publicFeedsGateway.emitBlockUserByAdmin(id);
+        }
+
         return { success: true };
     }
 

@@ -336,7 +336,7 @@ export class PostService {
         //             /* Notification */
         //             if (userId.toString() !== follower.toString()) {
         //                 this.notificationService.create({
-        //                     type: NotificationType.Hashtag,
+        //                     type: NotificationType.HASHTAG,
         //                     sender: ENotificationFromType.USER,
         //                     from: userId,
         //                     receiver: follower,
@@ -432,6 +432,19 @@ export class PostService {
                     inReplyToPost: post._id
                 });
             }
+        }
+
+        /* Increase minted count if user posted a token */
+        if (createPostInput?.tokenData?.isMinted) {
+            await this.userModel
+                .findByIdAndUpdate(
+                    userId,
+                    {
+                        $inc: { minted: 1 }
+                    },
+                    { new: true }
+                )
+                .exec();
         }
 
         const repliedOnPost = await this.postModel
@@ -1297,7 +1310,7 @@ export class PostService {
 
         this.publicFeedsGateway.emitRepostCountOnPost({
             postId: originalPost.id.toString(),
-            repostCount: originalPostt.repostCount
+            repostCount: originalPostt?.repostCount
         });
 
         await this.feedsService.createFeed({
@@ -1505,8 +1518,10 @@ export class PostService {
         accessSecret: string
     ): Promise<void> {
         const client = new TwitterApi({
-            appKey: process.env.TWITTER_CONSUMER_KEY,
-            appSecret: process.env.TWITTER_CONSUMER_SECRET,
+            // appKey: process.env.TWITTER_CONSUMER_KEY,
+            // appSecret: process.env.TWITTER_CONSUMER_SECRET,
+            appKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            appSecret: 'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
             accessToken,
             accessSecret
         });
@@ -1560,8 +1575,10 @@ export class PostService {
     ): Promise<boolean> {
         try {
             const client = new TwitterApi({
-                appKey: process.env.TWITTER_CONSUMER_KEY,
-                appSecret: process.env.TWITTER_CONSUMER_SECRET,
+                // appKey: process.env.TWITTER_CONSUMER_KEY,
+                // appSecret: process.env.TWITTER_CONSUMER_SECRET,
+                appKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+                appSecret: 'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
                 accessToken,
                 accessSecret
             });
@@ -1588,27 +1605,39 @@ export class PostService {
             // Calculate the timestamp to add
             const timestampToAdd = new Date();
 
+            let collectionViewsTimestamps = post.collectionViewsTimestamps;
             // Push the new timestamp into the collectionViewsTimestamps array
-            post.collectionViewsTimestamps.push(timestampToAdd);
+            collectionViewsTimestamps.push(timestampToAdd);
 
             // Remove timestamps older than 24 hours
             const twentyFourHoursAgo = new Date(
                 Date.now() - 24 * 60 * 60 * 1000
             );
-            post.collectionViewsTimestamps =
-                post.collectionViewsTimestamps.filter(
-                    (timestamp) => timestamp >= twentyFourHoursAgo
-                );
+            collectionViewsTimestamps = collectionViewsTimestamps.filter(
+                (timestamp) => timestamp >= twentyFourHoursAgo
+            );
 
             // Update the postViews and collectionViewsTimestamps
-            post.postViews += Math.floor(time);
+            let postViews = post.postViews;
+            postViews += Math.floor(time);
 
             this.publicFeedsGateway.emitPostViews({
                 postId: postId.toString(),
-                postViews: post.postViews
+                postViews: postViews
             });
 
-            return await post.save();
+            return await this.postModel.findOneAndUpdate(
+                { _id: postId },
+                {
+                    $set: {
+                        postViews: postViews,
+                        collectionViewsTimestamps: collectionViewsTimestamps
+                    }
+                },
+                { new: true }
+            );
+
+            //return await post.save();
         } catch (error) {
             console.error(error);
         }

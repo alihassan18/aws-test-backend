@@ -24,6 +24,7 @@ type Settings {
   alerts: SettingsAlert!
   email: SettingsAlert!
   twoFa: Boolean
+  threeFa: Boolean
   messagePrivacy: String!
   isLinkedInEnabled: Boolean!
   isTwitterEnabled: Boolean!
@@ -337,10 +338,21 @@ type Last24HrsHashtagCount {
   _id: String!
 }
 
+type UserProfile {
+  userName: String
+  avatar: String
+  firstName: String
+  lastName: String
+  _id: String
+  isVerified: Boolean
+  isSCC: Boolean
+}
+
 type LoginResult {
   user: User
   access_token: String
   twoFa: Boolean
+  threeFa: Boolean
   notAffiliated: Boolean
 }
 
@@ -409,7 +421,7 @@ type ContentCreatorStats {
 }
 
 type Leader {
-  user: User
+  user: UserProfile
   tokenContractCount: Int
 }
 
@@ -478,6 +490,7 @@ type User {
   login_attempts: Float
   lockedAt: DateTime
   onesignal_keys: [String!]!
+  minted: Float
   userId: User!
 }
 
@@ -511,16 +524,6 @@ type Referral {
   totalRedeemed: Float!
   referralVolumeTraded: Float!
   requested: Boolean!
-}
-
-type UserProfile {
-  userName: String
-  avatar: String
-  firstName: String
-  lastName: String
-  _id: String
-  isVerified: Boolean
-  isSCC: Boolean
 }
 
 type ActTokenData {
@@ -1443,6 +1446,39 @@ type RecentSearch {
   hashtag: Hashtag
 }
 
+type SalesCollection {
+  id: String
+  name: String
+  image: String
+}
+
+type SalesToken {
+  tokenId: String
+  name: String
+  image: String
+  contract: String
+  collection: SalesCollection
+}
+
+type SalesSource {
+  domain: String
+  name: String
+  icon: String
+}
+
+type SalesCriteria {
+  kind: String
+  token: SalesToken
+  collection: SalesCollection
+}
+
+type SalesOrder {
+  id: String
+  side: String
+  source: SalesSource
+  criteria: SalesCriteria
+}
+
 type PageInfo {
   hasNextPage: Boolean
   endCursor: String
@@ -1618,6 +1654,21 @@ type ReferralsOutput {
   graphData: [ReferralsGraphData!]
 }
 
+type UserReferrals {
+  user: User
+  buys: Int
+  volume: Float
+  ourCommission: Float
+  affiliateLevel: Int
+  yourCommission: Float
+  referral: Referral
+}
+
+type UserRewards {
+  rewards: Float
+  volume: Float
+}
+
 type NotificationResults {
   records: [Notification!]!
   hasNextPage: Boolean
@@ -1755,7 +1806,8 @@ type Query {
   usersUseHashtag(hashtag: String!): [Post!]
   hashtagFollowersUsers(hashtag: String!): [User!]!
   affiliatedData(duration: String!): ReferralsOutput!
-  userReferrals: [User!]!
+  userReferrals: [UserReferrals!]!
+  userRewards: UserRewards!
   notifications(query: NotificationFilterInput, limit: Int! = 10, cursor: String, currentPage: Int): NotificationResults!
   notification(id: String!): Notification
   getUnSeenCounts: Float!
@@ -2008,6 +2060,7 @@ type Mutation {
   send2faCode: VerifyEmailOutput!
   verify2faCode(code: String!): Verify2FAOutput!
   verify2faLogin(code: String!): LoginResult!
+  verify3faLogin(code: String!): LoginResult!
   deleteUserAccount: VerifyEmailOutput!
   updatePassword(currentPassword: String!, newPassword: String!): String!
   adminLogin(user: LoginUserInput!): LoginResult!
@@ -2146,6 +2199,8 @@ input SettingsInput {
   isAutoMintEnabled: Boolean
   lastMintedCollection: String
   twoFa: Boolean
+  threeFa: Boolean
+  base32_secret: String
 }
 
 input SettingsAlertInput {

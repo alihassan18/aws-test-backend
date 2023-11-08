@@ -38,6 +38,7 @@ export class AuthResolver extends CommonServices {
             user,
             IpAddress
         );
+
         if (result) return result;
         throw new BadRequestException('Incorrect email or password');
     }
@@ -142,8 +143,8 @@ export class AuthResolver extends CommonServices {
             code: code,
             userId: ctx.req.user._id
         });
-        if (response.success) return response;
-        throw new BadRequestException('Could not send email with the provided');
+        if (response?.success) return response;
+        throw new BadRequestException('Wrong authentication code');
     }
 
     // --------- 2FA LOGIN -------------
@@ -165,6 +166,27 @@ export class AuthResolver extends CommonServices {
         );
         if (response) return response;
         throw new BadRequestException('Could not send email with the provided');
+    }
+
+    // --------- 3FA LOGIN -------------
+
+    @Mutation(() => LoginResult)
+    @UseGuards(AuthGuard)
+    async verify3faLogin(
+        @Context() ctx: ContextProps,
+        @Args('code') code: string,
+        @IpAddress() IpAddress
+    ): Promise<LoginResult | undefined> {
+        const response = await this.authService.verify3faLogin(
+            {
+                code: code,
+                userId: ctx.req.user._id
+            },
+            IpAddress
+        );
+
+        if (response) return response;
+        throw new BadRequestException('Code is not valid. Please try again');
     }
 
     // --------- DELETE ACCOUNT -------------

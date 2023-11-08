@@ -6,6 +6,7 @@ import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
 import { HashtagCount } from 'src/modules/feeds/entities/hashcount.entity';
 import { Collection } from 'src/modules/collections/entities/collection.entity';
 import { Post } from 'src/modules/feeds/entities/post.entity';
+import { UserProfile } from 'src/modules/activities/dto/get-activities.dto';
 @InputType()
 export class CreateUserInput {
     @Field(() => String)
@@ -96,12 +97,15 @@ export class UpdateUserInput {
 @ObjectType()
 export class LoginResult {
     @Field(() => User, { nullable: true })
-    user: User;
+    user?: User;
     @Field(() => String, { nullable: true })
-    access_token: string;
+    access_token?: string;
 
     @Field(() => Boolean, { nullable: true })
     twoFa?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    threeFa?: boolean;
     // password protection
     @Field(() => Boolean, { nullable: true })
     notAffiliated?: boolean;
@@ -316,6 +320,12 @@ export class SettingsInput {
 
     @Field(() => Boolean, { nullable: true })
     twoFa?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    threeFa?: boolean;
+
+    @Field(() => String, { nullable: true })
+    base32_secret?: string;
 }
 
 // -------- EDIT PROFILE ----------------
@@ -444,8 +454,8 @@ export class ContentCreatorStats {
 
 @ObjectType()
 export class Leader {
-    @Field(() => User, { nullable: true })
-    user?: User;
+    @Field(() => UserProfile, { nullable: true })
+    user?: UserProfile;
 
     @Field(() => Int, { nullable: true })
     tokenContractCount?: number;

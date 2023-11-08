@@ -1,89 +1,220 @@
 import { NotificationType } from '../notifications.enum';
 import { Notification } from '../entities/notification.entity';
 
+export const NotificationMessages = {
+    [NotificationType.REPOST]: 'has reposted your post',
+    // [NotificationType.REPOST_COMMENT]: 'has reposted your comment',
+    [NotificationType.VOTE]: 'has voted on your poll',
+    [NotificationType.MENTIONED]: 'has mentioned you in the post',
+    [NotificationType.COMMENT]: ' has commented on your post',
+    [NotificationType.REACTION]: 'has reacted on your post',
+    [NotificationType.LIKE]: 'has liked to your post',
+    [NotificationType.LIKE_COMMENT]: 'has reacted to your comment',
+    [NotificationType.COMMENT_REPLY]: 'has replied on your comment',
+    [NotificationType.HASHTAG]: 'someone added new post in hashtag',
+    [NotificationType.STAGE]: 'is live. Join now!',
+    [NotificationType.FOLLOW]: 'has started following you',
+    [NotificationType.FOLLOWER_POST]: 'you followed has created a new post',
+    [NotificationType.FOLLOWER_MINT]:
+        'you followed has created a new mint post',
+    [NotificationType.FOLLOWER_COMMENT]: 'you followed has added a comment',
+    [NotificationType.FOLLOWER_REPOST]: 'you followed has reposted',
+    [NotificationType.FOLLOWER_CREATE_COLLECTION]:
+        'you followed has created a new collection',
+    [NotificationType.BIDDING]: 'has make an offer on your NFT',
+    [NotificationType.SOLD]: 'has bought your NFT',
+    [NotificationType.LISTING]: 'you followed has listed an NFT'
+};
+// export const generateOnesignalMessage = (notification: Notification) => {
+//     switch (notification.type) {
+//         case NotificationType.REPOST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.REPOST]
+//             }`;
+//         // case NotificationType.REPOST_COMMENT: //not present in db
+//         //     return NotificationMessages[NotificationType.REPOST_COMMENT];
+//         case NotificationType.VOTE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.VOTE]
+//             }`;
+//         case NotificationType.MENTIONED:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.MENTIONED]
+//             }`;
+//         case NotificationType.COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.COMMENT]
+//             }`;
+//         case NotificationType.REACTION:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.REACTION]
+//             }`;
+
+//         case NotificationType.LIKE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LIKE]
+//             }`;
+//         case NotificationType.LIKE_COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LIKE_COMMENT]
+//             }`;
+//         case NotificationType.COMMENT_REPLY:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.COMMENT_REPLY]
+//             }`;
+//         case NotificationType.HASHTAG:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.HASHTAG]
+//             }`;
+//         case NotificationType.STAGE:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.STAGE]
+//             }`;
+//         case NotificationType.FOLLOW:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOW]
+//             }`;
+
+//         // followers notification
+
+//         case NotificationType.FOLLOWER_POST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_POST]
+//             }`;
+//         case NotificationType.FOLLOWER_MINT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_MINT]
+//             }`;
+
+//         case NotificationType.FOLLOWER_COMMENT:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_COMMENT]
+//             }`;
+
+//         case NotificationType.FOLLOWER_REPOST:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.FOLLOWER_REPOST]
+//             }`;
+
+//         case NotificationType.FOLLOWER_CREATE_COLLECTION:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[
+//                     NotificationType.FOLLOWER_CREATE_COLLECTION
+//                 ]
+//             }`;
+
+//         // s3 notification
+//         case NotificationType.BIDDING:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.BIDDING]
+//             }`;
+//         case NotificationType.SOLD:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.SOLD]
+//             }`;
+
+//         case NotificationType.LISTING:
+//             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//             // @ts-ignore
+//             return `${notification.from.userName} ${
+//                 NotificationMessages[NotificationType.LISTING]
+//             }`;
+//         case NotificationType.SYSTEM:
+//             return notification.message;
+//         default:
+//             break;
+//     }
+// };
+
 export const generateOnesignalMessage = (notification: Notification) => {
     switch (notification.type) {
         case NotificationType.REPOST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Reposted your post`;
+            return NotificationMessages[NotificationType.REPOST];
+        // case NotificationType.REPOST_COMMENT: //not present in db
+        //     return NotificationMessages[NotificationType.REPOST_COMMENT];
         case NotificationType.VOTE:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Voted on your post`;
+            return NotificationMessages[NotificationType.VOTE];
         case NotificationType.MENTIONED:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Mentioned you in a post`;
+            return NotificationMessages[NotificationType.MENTIONED];
         case NotificationType.COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Commented on your post`;
+            return NotificationMessages[NotificationType.COMMENT];
         case NotificationType.REACTION:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Reacted on your post`;
-        case NotificationType.Like:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Liked your post`;
-        case NotificationType.Like_COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Reacted your comment`;
+            return NotificationMessages[NotificationType.REACTION];
+        case NotificationType.LIKE:
+            return NotificationMessages[NotificationType.LIKE];
+        case NotificationType.LIKE_COMMENT:
+            return NotificationMessages[NotificationType.LIKE_COMMENT];
         case NotificationType.COMMENT_REPLY:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Replied on your comment`;
-        case NotificationType.Hashtag:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} added new post in hastag`;
+            return NotificationMessages[NotificationType.COMMENT_REPLY];
+        case NotificationType.HASHTAG:
+            return NotificationMessages[NotificationType.HASHTAG];
         case NotificationType.STAGE:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} is live now`;
+            return NotificationMessages[NotificationType.STAGE];
         case NotificationType.FOLLOW:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Started following you`;
+            return NotificationMessages[NotificationType.FOLLOW];
 
         // followers notification
 
         case NotificationType.FOLLOWER_POST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Created a post`;
+            return NotificationMessages[NotificationType.FOLLOWER_POST];
         case NotificationType.FOLLOWER_MINT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Mint an NFT Post`;
+            return NotificationMessages[NotificationType.FOLLOWER_MINT];
+
         case NotificationType.FOLLOWER_COMMENT:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} Added a comment`;
+            return NotificationMessages[NotificationType.FOLLOWER_COMMENT];
+
         case NotificationType.FOLLOWER_REPOST:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return ` ${notification.from.userName} your follower has reposted`;
+            return NotificationMessages[NotificationType.FOLLOWER_REPOST];
+
         case NotificationType.FOLLOWER_CREATE_COLLECTION:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} your follower has created a collection`;
+            return NotificationMessages[
+                NotificationType.FOLLOWER_CREATE_COLLECTION
+            ];
 
         // s3 notification
         case NotificationType.BIDDING:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} make an offer on your NFT`;
+            return NotificationMessages[NotificationType.BIDDING];
         case NotificationType.SOLD:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} sold your NFT`;
+            return NotificationMessages[NotificationType.SOLD];
+
         case NotificationType.LISTING:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return `${notification.from.userName} your follower list an NFT`;
+            return NotificationMessages[NotificationType.LISTING];
         case NotificationType.SYSTEM:
             return notification.message;
         default:
@@ -98,9 +229,9 @@ export const generateOnesignalURL = (notification: Notification) => {
         case NotificationType.MENTIONED:
         case NotificationType.COMMENT:
         case NotificationType.REACTION:
-        case NotificationType.Like:
-        case NotificationType.Like_COMMENT:
-        case NotificationType.Hashtag:
+        case NotificationType.LIKE:
+        case NotificationType.LIKE_COMMENT:
+        case NotificationType.HASHTAG:
         case NotificationType.FOLLOWER_POST:
         case NotificationType.FOLLOWER_COMMENT:
         case NotificationType.FOLLOWER_REPOST:

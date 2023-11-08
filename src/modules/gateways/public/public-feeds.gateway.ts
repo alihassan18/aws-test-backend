@@ -11,6 +11,7 @@ import { Types } from 'mongoose';
 // import EventEmitter from 'events';
 import { Server, Socket } from 'socket.io';
 import {
+    EMIT_RECENT_ACTIVITIES,
     GET_COMMENT_VIEWS,
     GET_DELETED_POST,
     GET_FEEDS,
@@ -19,7 +20,8 @@ import {
     GET_POST_REACTIONS,
     GET_POST_VIEWS,
     GET_QOUTE_COUNTS,
-    GET_REPOST_COUNTS
+    GET_REPOST_COUNTS,
+    LOGOUT_FROM_ADMIN
 } from 'src/constants/socket.constants';
 import { differenceInSeconds } from 'src/helpers/common.helpers';
 import { Post, Reactions } from 'src/modules/feeds/entities/post.entity';
@@ -323,6 +325,18 @@ export class PublicFeedsGateway
 
     async emitTopScorersData(payload) {
         this.server.emit(GET_MONTH_SCORERES, {
+            data: payload
+        });
+    }
+
+    async emitBlockUserByAdmin(payload) {
+        this.server.emit(LOGOUT_FROM_ADMIN, {
+            data: payload
+        });
+    }
+
+    async emitRecentActivities(payload) {
+        this.server.emit(EMIT_RECENT_ACTIVITIES, {
             data: payload
         });
     }

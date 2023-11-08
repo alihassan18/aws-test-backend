@@ -415,9 +415,19 @@ export class User extends Document {
         default: []
     })
     onesignal_keys: string[];
+
+    // @Field(() => String, { nullable: true })
+    @Prop({ type: String, default: false })
+    base32_secret?: string;
+
+    @Field(() => Number, { nullable: true })
+    @Prop({ type: Number, default: 0 })
+    minted?: number;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(User);
+
+UsersSchema.index({ onesignal_keys: 1 });
 
 function validateEmail(email: string) {
     const expression =

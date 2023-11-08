@@ -164,14 +164,13 @@ export class ReactionService {
             }
         }
         if (token) {
-            console.log('in the required condition');
             const post = await this.postModel.findOne({
                 'tokenData.chain': token.chain,
                 'tokenData.contract': token.contract,
                 'tokenData.tokenId': token.tokenId
             });
             if (post) {
-                post_ID = post._id;
+                //post_ID = post._id;
             } else {
                 const {
                     name,
@@ -193,8 +192,8 @@ export class ReactionService {
                         collectionImage
                     }
                 });
-                post.save();
-                post_ID = post._id;
+                await post.save();
+                //post_ID = post._id;
             }
         }
         const postId = new Types.ObjectId(post_ID);
@@ -208,8 +207,8 @@ export class ReactionService {
         let reaction = await this.reactionModel
             .findOne({
                 user: userId,
-                post: postId,
-                emoji: emoji
+                post: postId
+                //emoji: emoji
             })
             .exec();
 
@@ -259,7 +258,7 @@ export class ReactionService {
         if (userId.toString() !== post.author?._id?.toString()) {
             if (post.inReplyToPost) {
                 this.notificationService.create({
-                    type: NotificationType.Like_COMMENT,
+                    type: NotificationType.LIKE_COMMENT,
                     sender: ENotificationFromType.USER,
                     from: userId,
                     receiver: post.author,
@@ -267,7 +266,7 @@ export class ReactionService {
                 });
             } else {
                 this.notificationService.create({
-                    type: NotificationType.Like,
+                    type: NotificationType.LIKE,
                     sender: ENotificationFromType.USER,
                     from: userId,
                     receiver: post.author,
@@ -443,7 +442,7 @@ export class ReactionService {
         // if (userId.toString() !== message.author.toString()) {
         //     /* Notification */
         //     this.notificationService.create({
-        //         type: NotificationType.Like,
+        //         type: NotificationType.LIKE,
         //         sender: ENotificationFromType.USER,
         //         from: userId,
         //         receiver: post.author,

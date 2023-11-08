@@ -8,7 +8,7 @@ import { User, UserDocument } from '../users/entities/user.entity';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { HighScoreResult, ScoresResult } from './scores.dto';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
-import { addDays, startOfWeek, endOfWeek } from 'date-fns';
+import { startOfWeek, endOfDay, addDays } from 'date-fns';
 
 @Injectable()
 export class ScoresService {
@@ -118,8 +118,10 @@ export class ScoresService {
         const startOfMonthDate = startOfMonth(new Date());
         const endOfMonthDate = endOfMonth(new Date());
 
-        const startOfLastWeek = startOfWeek(addDays(new Date(), -7));
-        const endOfLastWeek = endOfWeek(addDays(new Date(), -7));
+        const now = new Date();
+        const currentDay = now.getDay();
+        const startOfWeekDate = startOfWeek(now, { weekStartsOn: 1 }); // Monday (weekStartsOn: 1)
+        const endOfToday = endOfDay(addDays(now, 7 - currentDay));
 
         const res = await this.scoreModel
             .aggregate([
@@ -134,8 +136,8 @@ export class ScoresService {
                             },
                             {
                                 createdAt: {
-                                    $gte: startOfLastWeek,
-                                    $lte: endOfLastWeek
+                                    $gte: startOfWeekDate,
+                                    $lte: endOfToday
                                 }
                             }
                         ]
@@ -200,14 +202,11 @@ export class ScoresService {
                                             {
                                                 $gte: [
                                                     '$createdAt',
-                                                    startOfLastWeek
+                                                    startOfWeekDate
                                                 ]
                                             },
                                             {
-                                                $lte: [
-                                                    '$createdAt',
-                                                    endOfLastWeek
-                                                ]
+                                                $lte: ['$createdAt', endOfToday]
                                             }
                                         ]
                                     },
@@ -220,7 +219,7 @@ export class ScoresService {
                 },
                 {
                     $setWindowFields: {
-                        sortBy: { monthScore: -1 },
+                        sortBy: { weekScore: -1 },
                         output: {
                             rank: {
                                 $rank: {}

@@ -8,6 +8,10 @@ import { Model } from 'mongoose';
 import { Strategy, Profile } from 'passport-twitter';
 import { USERS } from 'src/constants/db.collections';
 import { jwtConstants } from 'src/constants/jwt.constant';
+import {
+    Referral,
+    ReferralDocument
+} from 'src/modules/referral/entities/referral.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 
 interface Info {
@@ -18,11 +22,14 @@ interface Info {
 export class TwitterStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
+        @InjectModel(Referral.name)
+        readonly referralModel: Model<ReferralDocument>,
         private readonly jwtService: JwtService
     ) {
         super({
-            consumerKey: process.env.TWITTER_CONSUMER_KEY,
-            consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+            consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            consumerSecret:
+                'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
             callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
             includeEmail: true,
             passReqToCallback: true
@@ -41,7 +48,6 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
             //@ts-ignore
             const tokenn = req.session.token;
             const { id: twitterId, displayName, username, _json } = profile;
-            console.log(tokenn, 'tokenn');
 
             if (tokenn) {
                 const decoded = await this.jwtService.verifyAsync(tokenn, {
@@ -71,26 +77,38 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                 // Check if user already exists in the database
                 let user = await this.userModel
                     .findOne({
-                        $or: [{ twitterId }, { email: _json?.email }]
+                        // $or: [{ twitterId }, { email: _json?.email }]
+                        email: _json?.email
                     })
                     .exec();
 
                 if (!user) {
                     const name = _json?.name?.split(' ');
+
+                    const isUsernameAvailable = await this.userModel.findOne({
+                        userName: username?.toLowerCase()
+                    });
                     // Create new user in the database if user doesn't exist
                     user = await this.userModel.create({
                         twitterId,
                         twitterAccessToken: accessToken,
                         twitterAccessSecret: refreshToken,
                         displayName,
-                        userName: username?.toLowerCase(),
-                        ...(_json.email && { email: _json.email }),
+                        userName: isUsernameAvailable
+                            ? username?.toLowerCase() +
+                              `${Math.floor(1000 + Math.random() * 9000)}`
+                            : username?.toLowerCase(),
+                        email: _json.email,
                         firstName: name[0],
                         lastName: name[1],
                         avatar: _json.profile_image_url
                     });
                     user.settings.isTwitterEnabled = true;
                     await user.save();
+                    await this.referralModel.create({
+                        user: user?._id,
+                        requested: true
+                    });
                 } else {
                     // Update user's access token and access secret if user already exists
                     user.twitterAccessToken = accessToken;
@@ -205,13 +223,20 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     points: user.points,
                     land_id: user.land_id,
                     scc_status: user.scc_status,
-                    invitation_code: user.invitation_code
+                    invitation_code: user.invitation_code,
+                    onesignal_keys: user.onesignal_keys
                 };
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                done(null, { user: userData, token });
+
+                done(null, {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    user: userData,
+                    token,
+                    isUserLogin: Boolean(tokenn)
+                });
             }
         } catch (error) {
+            console.log(error, 'error-=');
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             done(error);
