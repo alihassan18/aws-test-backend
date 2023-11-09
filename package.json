@@ -7,7 +7,6 @@
     "license": "UNLICENSED",
     "scripts": {
         "build": "nest build",
-        "build:digitalocean": "npm install --legacy-peer-deps --production=false && npm run build && npm ci",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "node dist/main.js",
         "start:dev": "nest start --watch",
@@ -41,7 +40,7 @@
         "@nestjs/swagger": "^6.3.0",
         "@nestjs/websockets": "^9.4.3",
         "@nextnm/nestjs-mailgun": "^3.0.1",
-        "@reservoir0x/reservoir-sdk": "^1.1.15",
+        "@reservoir0x/reservoir-sdk": "1.1.15",
         "@types/ioredis": "^5.0.0",
         "@types/socket.io": "^3.0.2",
         "amqp-connection-manager": "^4.1.13",
