@@ -7,6 +7,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "build": "nest build",
+        "build:digitalocean": "npm install --legacy-peer-deps --production=false && npm run build && npm ci",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "node dist/main.js",
         "start:dev": "nest start --watch",
