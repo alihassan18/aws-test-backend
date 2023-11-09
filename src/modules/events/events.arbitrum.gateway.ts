@@ -24,7 +24,7 @@ import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Sales, SalesDocument } from '../sales/entities/sales.entity';
 
-const chain = 'arbitrum';
+// const chain = 'arbitrum';
 
 @WebSocketGateway()
 // OnGatewayConnection,
@@ -162,9 +162,11 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             if (!collection) {
                 return null;
             }
+            console.log(data, 'data');
 
             const values = {
                 user: wallet?.userId,
+                price: data?.price,
                 nftCollection: collection?._id,
                 type: ActivityTypes.NFT_LISTED,
                 token: {
@@ -232,6 +234,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             const values = {
                 user: to?.userId,
                 nftCollection: collection?._id,
+                price: data?.price,
                 type:
                     data?.from === zeroAddress
                         ? ActivityTypes.NFT_MINTED
@@ -306,6 +309,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             }
 
             const values = {
+                price: data?.price,
                 user: wallet?.userId,
                 nftCollection: collection?._id,
                 type: ActivityTypes.BID_CREATED,

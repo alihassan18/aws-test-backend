@@ -526,6 +526,130 @@ type Referral {
   requested: Boolean!
 }
 
+type Currency {
+  contract: String
+  name: String
+  symbol: String
+  decimals: Float
+}
+
+type Amount {
+  raw: String
+  decimal: Float
+  usd: Float
+  native: Float
+}
+
+type FloorAskPrice {
+  currency: Currency!
+  amount: Amount!
+}
+
+type ReservoirSearchedCollection {
+  collectionId: String
+  name: String
+  slug: String
+  contract: String
+  image: String
+  allTimeVolume: Float
+  floorAskPrice: FloorAskPrice
+  openseaVerificationStatus: String
+  chainName: String
+  chainId: Float
+  lightChainIcon: String
+  darkChainIcon: String
+}
+
+type RoyaltyBreakdown {
+  bps: Int!
+  recipient: String
+}
+
+type Royalties {
+  recipient: String
+  bps: Int!
+  breakdown: [RoyaltyBreakdown!]!
+}
+
+type Price {
+  currency: Currency!
+  amount: Amount!
+  netAmount: Amount
+}
+
+type ReservoirToken {
+  contract: String
+  tokenId: String
+  name: String
+  image: String
+}
+
+type FloorAsk {
+  id: String
+  sourceDomain: String
+  price: Price!
+  maker: String
+  validFrom: Int!
+  validUntil: Int!
+  token: ReservoirToken!
+}
+
+type VolumeChange {
+  _1day: Int
+  _7day: Int
+  _30day: Int
+}
+
+type Rank {
+  _1day: Int!
+  _7day: Int!
+  _30day: Int
+  allTime: Int!
+}
+
+type Volume {
+  _1day: Float!
+  _7day: Float!
+  _30day: Float
+  allTime: Float!
+}
+
+type ReservoirCollection {
+  id: String
+  slug: String
+  createdAt: String
+  name: String
+  image: String
+  banner: String
+  discordUrl: String
+  externalUrl: String
+  twitterUsername: String
+  openseaVerificationStatus: String
+  description: String
+  sampleImages: [String!]!
+  tokenCount: String
+  onSaleCount: String
+  primaryContract: String
+  tokenSetId: String
+  royalties: Royalties!
+  floorAsk: FloorAsk!
+  rank: Rank!
+  volume: Volume!
+  volumeChange: VolumeChange
+  floorSale: VolumeChange
+  floorSaleChange: VolumeChange
+  collectionBidSupported: Boolean
+  ownerCount: Int!
+  contractKind: String
+  mintedTimestamp: String
+  mintStages: [String!]!
+}
+
+type ReservoirCollectionResults {
+  collections: [ReservoirCollection!]!
+  continuation: String
+}
+
 type ActTokenData {
   tokenId: String
   image: String
@@ -551,6 +675,7 @@ type Activity {
   """Name field (placeholder)"""
   token: ActTokenData
   createdAt: DateTime
+  price: Price
 }
 
 enum ActivityTypes {
@@ -678,130 +803,6 @@ enum ReactionType {
   smile
   angry
   sad
-}
-
-type Currency {
-  contract: String
-  name: String
-  symbol: String
-  decimals: Float
-}
-
-type Amount {
-  raw: String
-  decimal: Float
-  usd: Float
-  native: Float
-}
-
-type FloorAskPrice {
-  currency: Currency!
-  amount: Amount!
-}
-
-type ReservoirSearchedCollection {
-  collectionId: String
-  name: String
-  slug: String
-  contract: String
-  image: String
-  allTimeVolume: Float
-  floorAskPrice: FloorAskPrice
-  openseaVerificationStatus: String
-  chainName: String
-  chainId: Float
-  lightChainIcon: String
-  darkChainIcon: String
-}
-
-type RoyaltyBreakdown {
-  bps: Int!
-  recipient: String
-}
-
-type Royalties {
-  recipient: String
-  bps: Int!
-  breakdown: [RoyaltyBreakdown!]!
-}
-
-type Price {
-  currency: Currency!
-  amount: Amount!
-  netAmount: Amount
-}
-
-type ReservoirToken {
-  contract: String
-  tokenId: String
-  name: String
-  image: String
-}
-
-type FloorAsk {
-  id: String
-  sourceDomain: String
-  price: Price!
-  maker: String
-  validFrom: Int!
-  validUntil: Int!
-  token: ReservoirToken!
-}
-
-type VolumeChange {
-  _1day: Int
-  _7day: Int
-  _30day: Int
-}
-
-type Rank {
-  _1day: Int!
-  _7day: Int!
-  _30day: Int
-  allTime: Int!
-}
-
-type Volume {
-  _1day: Float!
-  _7day: Float!
-  _30day: Float
-  allTime: Float!
-}
-
-type ReservoirCollection {
-  id: String
-  slug: String
-  createdAt: String
-  name: String
-  image: String
-  banner: String
-  discordUrl: String
-  externalUrl: String
-  twitterUsername: String
-  openseaVerificationStatus: String
-  description: String
-  sampleImages: [String!]!
-  tokenCount: String
-  onSaleCount: String
-  primaryContract: String
-  tokenSetId: String
-  royalties: Royalties!
-  floorAsk: FloorAsk!
-  rank: Rank!
-  volume: Volume!
-  volumeChange: VolumeChange
-  floorSale: VolumeChange
-  floorSaleChange: VolumeChange
-  collectionBidSupported: Boolean
-  ownerCount: Int!
-  contractKind: String
-  mintedTimestamp: String
-  mintStages: [String!]!
-}
-
-type ReservoirCollectionResults {
-  collections: [ReservoirCollection!]!
-  continuation: String
 }
 
 type TokenData {
@@ -1479,6 +1480,13 @@ type SalesOrder {
   criteria: SalesCriteria
 }
 
+type WithdrawRequest {
+  userId: ID!
+  amount: Float!
+  status: String!
+  processed: Boolean!
+}
+
 type PageInfo {
   hasNextPage: Boolean
   endCursor: String
@@ -2077,6 +2085,7 @@ type Mutation {
   updateBid(updateBidInput: UpdateBidInput!): Bid!
   removeBid(id: Int!): Bid!
   createPost(createPostInput: CreatePostInput!, createCollectionPostInput: CreateCollectionPostInput): Post!
+  shareAirdropOnTwitter(data: ShareAirdropInput!): Boolean!
   createCustomPost(createPostInput: CreatePostInput!, type: String!, id: String!): Post!
   toggleFollowCollectionNew(postId: String!): Post
   updateFeed(updateFeedInput: UpdateFeedInput!): Post!
@@ -2092,6 +2101,7 @@ type Mutation {
   removeFeed(feedId: String!): Feed!
   follow(id: String!): User!
   createReferral: CreateReferralOutput!
+  requestWithdraw(amount: Float!): WithdrawRequest!
   markNotificationAsSeen(id: String!): Notification!
   markAllNotificationAsSeen: String!
   deleteNotification(id: String!): Notification!
@@ -2507,6 +2517,15 @@ input CreateCollectionPostInput {
   contract: String!
   chain: String!
   tokenId: String!
+}
+
+input ShareAirdropInput {
+  """Text field (placeholder)"""
+  text: String!
+
+  """Media field (placeholder)"""
+  media: [String!]
+  twitter: Boolean
 }
 
 input UpdateFeedInput {
