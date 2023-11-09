@@ -10,7 +10,9 @@ import {
     UserReferrals,
     UserRewards
 } from './dto/create-referral.input';
-import { UserDocument } from '../users/entities/user.entity';
+import { User, UserDocument } from '../users/entities/user.entity';
+import { WithdrawRequest } from './entities/withdraw.requests.entity';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 
 @Resolver(() => Referral)
 export class ReferralResolver {
@@ -47,5 +49,14 @@ export class ReferralResolver {
     userRewards(@Context() ctx: ContextProps): Promise<UserDocument[]> {
         const { _id: userId } = ctx.req.user;
         return this.referralService.userRewards(userId);
+    }
+
+    @Mutation(() => WithdrawRequest)
+    @UseGuards(AuthGuard)
+    async requestWithdraw(
+        @Args('amount') amount: number,
+        @CurrentUser() user: User
+    ): Promise<WithdrawRequest> {
+        return this.referralService.createWithdrawRequest(user.id, amount);
     }
 }

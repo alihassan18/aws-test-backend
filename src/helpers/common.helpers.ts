@@ -85,37 +85,38 @@ export const mintstargramScore = (action: MintstargramScoreAction) => {
             score = 3;
             break;
         case 'repostWithThought':
-            score = 5;
+            // score = 5;
+            score = 0;
             break;
         case 'follow':
-            score = 1;
+            score = 50;
             break;
         case 'unfollow':
             score = -1;
             break;
         case 'followers':
-            score = 5;
+            score = 50;
             break;
         case 'unfollowers':
             score = -5;
             break;
         case 'createCollection':
-            score = 10;
+            score = 1000;
             break;
         case 'mint':
-            score = 50;
+            score = 1000;
             break;
         case 'list':
-            score = 5;
+            score = 100;
             break;
         case 'bid':
-            score = 5;
+            score = 100;
             break;
         case 'buyNft':
-            score = 100;
+            score = 1000;
             break;
         case 'sellNft':
-            score = 100;
+            score = 1000;
             break;
         case 'profile':
             score = 50;

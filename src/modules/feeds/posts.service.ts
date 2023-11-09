@@ -595,7 +595,6 @@ export class PostService {
 
         //Add mintstargram score for creating post
         if (post) {
-            await this.scoresService.createScore(userId, 'post');
             if (
                 !post.originalPost &&
                 !post.inReplyToPost &&
@@ -608,6 +607,7 @@ export class PostService {
                     post._id,
                     post.text
                 );
+                await this.scoresService.createScore(userId, 'post');
             }
             if (post.tokenData) {
                 this.notificationService.alertFollowers4Mintpost(
@@ -618,6 +618,7 @@ export class PostService {
                     post._id,
                     post.tokenData.image
                 );
+                this.scoresService.createScore(userId, 'mint');
             }
         }
         return post;
@@ -1571,6 +1572,7 @@ export class PostService {
             console.log('Tweet posted successfully!');
         } catch (error) {
             console.error('Error posting tweet:', error);
+            throw new Error('Failed to share airdrop on Twitter.');
         }
     }
 

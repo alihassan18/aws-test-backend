@@ -200,3 +200,18 @@ export class AffiliateUsers {
     @Field(() => Int, { nullable: true })
     videoShared: number;
 }
+
+@InputType()
+export class ProfileInputAdmin {
+    @Field(() => Boolean, { nullable: true })
+    isVerified?: boolean;
+
+    @Field(() => Boolean, { nullable: true })
+    isSCC?: boolean;
+
+    @Field(() => String, { nullable: true })
+    verifyStatus?: string;
+
+    @Field(() => String, { nullable: true })
+    scc_status?: string;
+}

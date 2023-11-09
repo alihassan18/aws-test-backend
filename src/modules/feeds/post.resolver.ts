@@ -15,7 +15,8 @@ import {
     CreateTwitterPostInput,
     PaginatedResults,
     PostConnection,
-    PostFilterInput
+    PostFilterInput,
+    ShareAirdropInput
 } from './dto/create-feed.input';
 import {
     CollectionInput,
@@ -24,7 +25,7 @@ import {
     UpdateFeedInput,
     UpdateNftForPost
 } from './dto/update-feed.input';
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { FilterQuery, Types } from 'mongoose';
 import { ContextProps } from 'src/interfaces/common.interface';
@@ -163,6 +164,31 @@ export class PostResolver {
                 );
             }
             return post;
+        }
+    }
+
+    @UseGuards(AuthGuard)
+    @Mutation(() => Boolean)
+    async shareAirdropOnTwitter(
+        @Args('data') data: ShareAirdropInput,
+        @Context() context: ContextProps
+    ): Promise<boolean> {
+        const user = context.req.user;
+        if (!user.twitterAccessToken || !user.twitterAccessSecret) {
+            throw new UnauthorizedException('Twitter credentials not provided');
+        }
+
+        try {
+            await this.postService.postTweet(
+                data.text,
+                data.media,
+                user.twitterAccessToken,
+                user.twitterAccessSecret
+            );
+            return true;
+        } catch (error) {
+            console.error(error); // Log the error
+            throw new Error('Failed to share airdrop on Twitter.');
         }
     }
 

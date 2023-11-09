@@ -145,6 +145,21 @@ export class CreatePostInput {
     @Field(() => String, { nullable: true })
     _collection?: string;
 }
+
+@InputType()
+export class ShareAirdropInput {
+    @Field(() => String, { description: 'Text field (placeholder)' })
+    text: string;
+
+    @Field(() => [String], {
+        description: 'Media field (placeholder)',
+        nullable: true
+    })
+    media: string[];
+
+    @Field(() => Boolean, { nullable: true })
+    twitter?: boolean;
+}
 @InputType()
 export class CreateRePostInput {
     @Field(() => String, { description: 'Text field (placeholder)' })

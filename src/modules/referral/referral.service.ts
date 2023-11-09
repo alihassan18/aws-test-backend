@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Referral, ReferralDocument } from './entities/referral.entity';
 import { UsersService } from '../users/users.service';
+import { WithdrawRequest } from './entities/withdraw.requests.entity';
 
 @Injectable()
 export class ReferralService {
@@ -10,6 +11,8 @@ export class ReferralService {
         // eslint-disable-next-line no-unused-vars
         @InjectModel(Referral.name)
         readonly referralModel: Model<ReferralDocument>,
+        @InjectModel(WithdrawRequest.name)
+        private withdrawRequestModel: Model<WithdrawRequest>,
         readonly userService: UsersService
     ) {}
 
@@ -597,5 +600,33 @@ export class ReferralService {
 
         return rewards[0];
         // return this.userService.userModel.find({ referral: id });
+    }
+
+    async createWithdrawRequest(
+        userId: string,
+        amount: number
+    ): Promise<WithdrawRequest> {
+        // Check if there is an existing pending withdraw request for the user
+        const existingRequest = await this.withdrawRequestModel.findOne({
+            userId,
+            status: 'pending'
+        });
+
+        if (existingRequest) {
+            // If a pending request exists, throw an exception to prevent creating a new request
+            throw new BadRequestException(
+                'You already have a pending withdrawal request.'
+            );
+        }
+
+        // If no pending request exists, create a new withdraw request
+        const withdrawRequest = new this.withdrawRequestModel({
+            userId,
+            amount,
+            status: 'pending',
+            processed: false
+        });
+
+        return withdrawRequest.save();
     }
 }

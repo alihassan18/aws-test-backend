@@ -8,6 +8,7 @@ import { ActivityTypes } from '../activities.enums';
 import { Types } from 'mongoose';
 import { UserProfile } from '../dto/get-activities.dto';
 import { COLLECTIONS } from 'src/constants/db.collections';
+import { Price } from 'src/modules/reservoir/dto/reservoir.objecttypes';
 
 export type ActivityDocument = Activity & Document;
 
@@ -79,6 +80,10 @@ export class Activity extends Document {
 
     @Field(() => Date, { nullable: true })
     createdAt?: Date;
+
+    @Field(() => Price, { nullable: true })
+    @Prop()
+    price: Price;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);

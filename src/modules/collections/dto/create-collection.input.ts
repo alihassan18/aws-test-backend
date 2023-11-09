@@ -94,9 +94,6 @@ export class CreateCollectionInput {
     tiktok?: string;
 
     @Field(() => String, { nullable: true })
-    land_id?: string;
-
-    @Field(() => String, { nullable: true })
     youtube?: string;
 
     @Field(() => String, { nullable: true })

@@ -135,6 +135,10 @@ import {
     ActivitySchema
 } from '../activities/entities/activities.entity';
 import { Sales, SalesSchema } from '../sales/entities/sales.entity';
+import {
+    WithdrawRequest,
+    WithdrawRequestSchema
+} from '../referral/entities/withdraw.requests.entity';
 
 const models = [
     { name: USERS, schema: UsersSchema },
@@ -170,6 +174,7 @@ const models = [
     { name: InvitationCode.name, schema: InvitationCodeSchema },
     { name: Activity.name, schema: ActivitySchema },
     { name: Sales.name, schema: SalesSchema },
+    { name: WithdrawRequest.name, schema: WithdrawRequestSchema },
 
     //  --------------------------------------
     //          RUFFY WORLD COLLECTIONS
