@@ -24,7 +24,7 @@ import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Sales, SalesDocument } from '../sales/entities/sales.entity';
 
-const chain = 'arbitrum';
+// const chain = 'arbitrum';
 
 @WebSocketGateway()
 // OnGatewayConnection,

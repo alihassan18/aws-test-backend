@@ -332,3 +332,22 @@ export class Reactions {
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
+
+PostSchema.pre('save', function (this: PostDocument, next) {
+    // 'this' refers to the current document being saved
+    if (this.token && this.token.chain) {
+        this.token.chain = this.token.chain.toLowerCase(); // Mutate the value to lowercase
+    }
+    next();
+});
+
+PostSchema.post('find', function (result: PostDocument[] | null, next) {
+    if (result) {
+        result.forEach((doc) => {
+            if (doc.token && doc.token.chain) {
+                doc.token.chain = doc.token.chain.toLowerCase();
+            }
+        });
+    }
+    next();
+});
