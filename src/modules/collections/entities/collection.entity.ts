@@ -196,10 +196,6 @@ export class Collection extends Document {
 
     @Field(() => String, { nullable: true })
     @Prop()
-    land_id: string;
-
-    @Field(() => String, { nullable: true })
-    @Prop()
     discord: string;
 
     @Field(() => String, { nullable: true })

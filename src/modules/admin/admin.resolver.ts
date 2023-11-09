@@ -7,7 +7,8 @@ import {
     SuccessPayload,
     AffiliateStats,
     AffiliateUsers,
-    SingleUserGraphOutput
+    SingleUserGraphOutput,
+    ProfileInputAdmin
     // AffiliateStats
 } from './dto/create-admin.input';
 import { AdminGuard } from './admin.guard';
@@ -73,6 +74,16 @@ export class AdminResolver {
         @Args('status') status: boolean
     ): Promise<SuccessPayload> {
         return this.adminService.banUserByAdmin(id, status);
+    }
+
+    @UseGuards(AdminGuard)
+    @Role('admin')
+    @Mutation(() => SuccessPayload)
+    async editProfileByAdmin(
+        @Args('id') id: string,
+        @Args('data') data: ProfileInputAdmin
+    ): Promise<SuccessPayload> {
+        return this.adminService.editProfileAdmin(id, data);
     }
 
     // ------- Affiliate -------
