@@ -218,6 +218,7 @@ export class PostService {
                 }
             ]
         });
+        console.log(post, 'post', contract, chain, tokenId);
 
         if (!post) {
             const collection =
@@ -229,7 +230,7 @@ export class PostService {
                 author: collection?.creator,
                 tokenData: {
                     chain: chain,
-                    contract: contract,
+                    contract: contract?.toLowerCase(),
                     tokenId: tokenId
                     // name,
                     // image
@@ -1131,7 +1132,7 @@ export class PostService {
                             collectionOfToken: new Types.ObjectId(collectionID)
                         });
                         originalPost = post;
-                        post.save();
+                        await post.save();
                         await nftToken.updateOne({ post: post._id });
                     }
                 }
@@ -1197,10 +1198,14 @@ export class PostService {
                 collectionName,
                 collectionImage
             } = token;
-            console.log(token, 'token');
+
             const post = await this.postModel.findOne({
-                'tokenData.chain': token.chain,
-                'tokenData.contract': token.contract,
+                'tokenData.chain': {
+                    $regex: new RegExp(token.chain.toLocaleLowerCase(), 'i')
+                },
+                'tokenData.contract': {
+                    $regex: new RegExp(token.contract, 'i')
+                },
                 'tokenData.tokenId': token.tokenId
             });
             if (post) {
@@ -1229,6 +1234,7 @@ export class PostService {
                     }
                 });
                 post.save();
+
                 originalPost = post;
             }
         } else if (stage) {
@@ -1261,7 +1267,6 @@ export class PostService {
         const requiredIndex = originalPost?.repostedAtByUsers?.findIndex(
             (item) => String(item.user) === String(userId)
         );
-        console.log(originalPost, 'originalPost');
 
         if (requiredIndex !== -1) {
             // Checking if 24 hours completed or not.
@@ -1313,13 +1318,14 @@ export class PostService {
             repostCount: originalPostt?.repostCount
         });
 
-        await this.feedsService.createFeed({
+        const ot = await this.feedsService.createFeed({
             post: originalPost?._id,
             type: FeedTypes.REPOST,
             owner: userId,
             ...(collection_Id &&
                 !postId && { _collection: new Types.ObjectId(collection_Id) })
         });
+        console.log(ot);
 
         /* Notification */
         const receiver = await this.userModel.findById(originalPost.author);
