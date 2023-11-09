@@ -56,7 +56,7 @@ export class CollectionsResolver {
         @InjectModel(Post.name)
         public postModel: Model<PostDocument>,
         private readonly notifcationService: NotificationService,
-        private readonly scoresService:ScoresService
+        private readonly scoresService: ScoresService
     ) {}
 
     @ResolveField(() => Post)
@@ -88,10 +88,7 @@ export class CollectionsResolver {
                     String(response.supply || ''),
                     response?._id?.toString()
                 );
-                this.scoresService.createScore(
-                    user?._id,
-                    'createCollection'
-                );
+                this.scoresService.createScore(user?._id, 'createCollection');
             }
 
             return response;

@@ -76,7 +76,6 @@ export class AdminResolver {
         return this.adminService.banUserByAdmin(id, status);
     }
 
-
     @UseGuards(AdminGuard)
     @Role('admin')
     @Mutation(() => SuccessPayload)

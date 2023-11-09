@@ -214,5 +214,4 @@ export class ProfileInputAdmin {
 
     @Field(() => String, { nullable: true })
     scc_status?: string;
-    
 }
