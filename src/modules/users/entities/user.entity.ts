@@ -107,10 +107,6 @@ export class User extends Document {
     })
     roles: string[];
 
-    @Field(() => String, { nullable: true })
-    @Prop({ type: String })
-    land_id?: string;
-
     @Field(() => Boolean, { nullable: true })
     @Prop({
         type: Boolean,

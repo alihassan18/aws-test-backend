@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { USERS } from 'src/constants/db.collections';
 import { UserDocument } from '../users/entities/user.entity';
 import { Model } from 'mongoose';
-import { UsersDataOutput } from './dto/create-admin.input';
+import { ProfileInputAdmin, UsersDataOutput } from './dto/create-admin.input';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 @Injectable()
@@ -945,5 +945,18 @@ export class AdminService {
             }
         ]);
         return data;
+    }
+
+    async editProfileAdmin(id: string, data: ProfileInputAdmin) {
+        await this.userModel.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    ...data
+                }
+            },
+            { new: true }
+        );
+        return { success: true };
     }
 }

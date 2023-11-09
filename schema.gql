@@ -249,7 +249,6 @@ type Collection {
   email: String
   twitter: String
   twitch: String
-  land_id: String
   discord: String
   telegram: String
   github: String
@@ -438,7 +437,6 @@ type User {
   isActive: Boolean!
   hideWallet: Boolean!
   roles: [String!]!
-  land_id: String
   isVerified: Boolean
   isSCC: Boolean
   scc_status: String
@@ -2094,6 +2092,7 @@ type Mutation {
   updateUtility(updateUtilityInput: UpdateUtilityInput!): Utility!
   blockUserByAdmin(id: String!, status: Boolean!): SuccessPayload!
   banUserByAdmin(id: String!, status: Boolean!): SuccessPayload!
+  editProfileByAdmin(id: String!, data: ProfileInputAdmin!): SuccessPayload!
   createHistory(createHistoryInput: CreateHistoryInput!): History!
   updateHistory(updateHistoryInput: UpdateHistoryInput!): History!
   removeHistory(id: Int!): History!
@@ -2193,7 +2192,6 @@ input ProfileInput {
   bio: String
   country: String
   backgroundTheme: String
-  land_id: String
   onesignal_keys: [String!]
 }
 
@@ -2243,7 +2241,6 @@ input CreateCollectionInput {
   facebook: String
   twitch: String
   tiktok: String
-  land_id: String
   youtube: String
   discord: String
   telegram: String
@@ -2313,7 +2310,6 @@ input UpdateCollectionInput {
   facebook: String
   twitch: String
   tiktok: String
-  land_id: String
   youtube: String
   discord: String
   telegram: String
@@ -2718,6 +2714,13 @@ input UpdateUtilityInput {
   """Name of the staking collection"""
   name: String
   id: String!
+}
+
+input ProfileInputAdmin {
+  isVerified: Boolean
+  isSCC: Boolean
+  verifyStatus: String
+  scc_status: String
 }
 
 input CreateHistoryInput {

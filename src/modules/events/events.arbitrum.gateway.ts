@@ -22,6 +22,7 @@ import { ReservoirService } from '../shared/services/reservoir.service';
 import { zeroAddress } from 'viem';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ScoresService } from '../scores/scores.service';
 
 const chain = 'arbitrum';
 
@@ -47,7 +48,8 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
         private readonly reservoirService: ReservoirService,
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
         private readonly notifificationService: NotificationService,
-        private publicFeedsGateway: PublicFeedsGateway
+        private publicFeedsGateway: PublicFeedsGateway,
+        private readonly scoresService: ScoresService
     ) {
         this.wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
     }
@@ -266,6 +268,8 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                     ...data?.criteria?.data?.token,
                     contract: collection?.contract?.toLowerCase()
                 });
+
+                this.scoresService.createScore(wallet.userId, 'list');
             }
         } catch (error) {
             console.log(error);
@@ -329,6 +333,13 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             // }
 
             // NOTIFY
+
+            if (to?.userId) {
+                this.scoresService.createScore(to?.userId, 'buyNft');
+            }
+            if (from?.userId) {
+                this.scoresService.createScore(to?.userId, 'sellNft');
+            }
 
             if (to?.userId && from?.userId && data?.token) {
                 this.notifificationService.sendBoughtNftNotification(
@@ -399,6 +410,9 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                 console.log('This activity already exists.');
             }
 
+            if (wallet?.userId) {
+                this.scoresService.createScore(wallet.userId, 'bid');
+            }
             // NOTIFY
             if (
                 wallet?.userId &&
