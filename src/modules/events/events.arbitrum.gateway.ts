@@ -23,8 +23,9 @@ import { zeroAddress } from 'viem';
 import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ScoresService } from '../scores/scores.service';
+import { Sales, SalesDocument } from '../sales/entities/sales.entity';
 
-const chain = 'arbitrum';
+// const chain = 'arbitrum';
 
 @WebSocketGateway()
 // OnGatewayConnection,
@@ -41,6 +42,8 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
         // @InjectModel(Listing.name) private listingModel: Model<ListingDocument>,
         @InjectModel(COLLECTIONS)
         private collectionModel: Model<CollectionDocument>,
+        @InjectModel(Sales.name)
+        private salesModel: Model<SalesDocument>,
         @InjectModel(Activity.name)
         private activityModel: Model<ActivityDocument>,
         @InjectModel(Wallet.name)
@@ -52,58 +55,6 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
         private readonly scoresService: ScoresService
     ) {
         this.wssUrl = `wss://ws-arbitrum.reservoir.tools?api_key=${process.env.RESERVOIR_API_KEY}`;
-    }
-
-    private collectionChangeStream;
-
-    // Call this method in your gateway's initialization logic
-    watchForNewCollections() {
-        // Assuming collectionModel is a Mongoose model for your collections
-        this.collectionChangeStream = this.collectionModel.watch([
-            {
-                $match: {
-                    operationType: 'insert'
-                }
-            }
-        ]);
-
-        this.collectionChangeStream.on('change', (change) => {
-            console.log('New collection created:', change.fullDocument);
-            // Now that you have the new collection, you can send a subscription message to your WebSocket server
-            const newCollectionContract =
-                change.fullDocument.contract.toLowerCase();
-
-            const askSubscriptionMessage = JSON.stringify({
-                type: 'subscribe',
-                event: 'ask.created', // Replace with actual event name if different
-                status: 'success',
-                filters: {
-                    contract: newCollectionContract // The server might expect a single contract or an array
-                }
-            });
-            const saleSubscriptionMessage = JSON.stringify({
-                type: 'subscribe',
-                event: 'sale.created', // Replace with actual event name if different
-                status: 'success',
-                filters: {
-                    contract: newCollectionContract // The server might expect a single contract or an array
-                }
-            });
-            const bidSubscriptionMessage = JSON.stringify({
-                type: 'subscribe',
-                event: 'bid.created', // Replace with actual event name if different
-                status: 'success',
-                filters: {
-                    contract: newCollectionContract // The server might expect a single contract or an array
-                }
-            });
-
-            // Send the subscription message to the WebSocket server
-            // Assuming you have access to the WebSocket instance `wss` here, otherwise, you'll need to structure your code to allow for this
-            this.wss.send(askSubscriptionMessage);
-            this.wss.send(saleSubscriptionMessage);
-            this.wss.send(bidSubscriptionMessage);
-        });
     }
 
     onModuleInit() {
@@ -138,56 +89,38 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
 
             // When the connection is ready, subscribe to the top-bids event
             if (JSON.parse(data).status === 'ready') {
-                const collections = await this.collectionModel
-                    .find({
-                        chain: chain,
-                        is_content_creator: true
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'ask.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
                     })
-                    .select('contract')
-                    .exec();
+                );
 
-                if (collections.length) {
-                    this.wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'ask.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
-                if (collections.length) {
-                    this.wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'sale.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
-                if (collections.length) {
-                    this.wss.send(
-                        JSON.stringify({
-                            type: 'subscribe',
-                            event: 'bid.created',
-                            status: 'success',
-                            filters: {
-                                contract: collections?.map((c) =>
-                                    c.contract?.toLowerCase()
-                                )
-                            }
-                        })
-                    );
-                }
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'sale.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
+                    })
+                );
+
+                this.wss.send(
+                    JSON.stringify({
+                        type: 'subscribe',
+                        event: 'bid.created',
+                        status: 'success',
+                        filters: {
+                            source: 'mintstargram.tech'
+                        }
+                    })
+                );
             }
         });
 
@@ -231,9 +164,11 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             if (!collection) {
                 return null;
             }
+            console.log(data, 'data');
 
             const values = {
                 user: wallet?.userId,
+                price: data?.price,
                 nftCollection: collection?._id,
                 type: ActivityTypes.NFT_LISTED,
                 token: {
@@ -275,8 +210,12 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             console.log(error);
         }
     }
+
     async createSale(data) {
         try {
+            const sales = await this.salesModel.create(data);
+            console.log(sales, 'sales');
+
             // This means the user in minting the token and we are just listning for the buy transactions.
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
@@ -299,6 +238,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             const values = {
                 user: to?.userId,
                 nftCollection: collection?._id,
+                price: data?.price,
                 type:
                     data?.from === zeroAddress
                         ? ActivityTypes.NFT_MINTED
@@ -380,6 +320,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             }
 
             const values = {
+                price: data?.price,
                 user: wallet?.userId,
                 nftCollection: collection?._id,
                 type: ActivityTypes.BID_CREATED,

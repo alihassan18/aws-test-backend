@@ -1566,6 +1566,7 @@ export class PostService {
             console.log('Tweet posted successfully!');
         } catch (error) {
             console.error('Error posting tweet:', error);
+            throw new Error('Failed to share airdrop on Twitter.');
         }
     }
 
