@@ -416,7 +416,6 @@ export class AuthService extends CommonServices {
             blockedUsers: u.blockedUsers,
             affiliatedUser: u.affiliatedUser,
             points: u.points,
-            land_id: u.land_id,
             scc_status: u.scc_status,
             invitation_code: u.invitation_code,
             onesignal_keys: u.onesignal_keys

@@ -45,6 +45,7 @@ import { Post, PostDocument } from '../feeds/entities/post.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../users/entities/user.entity';
 import { NotificationService } from '../notifications/notification.service';
+import { ScoresService } from '../scores/scores.service';
 @Resolver(() => Collection)
 export class CollectionsResolver {
     // eslint-disable-next-line no-unused-vars
@@ -54,7 +55,8 @@ export class CollectionsResolver {
         private readonly reservoirService: ReservoirService,
         @InjectModel(Post.name)
         public postModel: Model<PostDocument>,
-        private readonly notifcationService: NotificationService
+        private readonly notifcationService: NotificationService,
+        private readonly scoresService: ScoresService
     ) {}
 
     @ResolveField(() => Post)
@@ -86,6 +88,7 @@ export class CollectionsResolver {
                     String(response.supply || ''),
                     response?._id?.toString()
                 );
+                this.scoresService.createScore(user?._id, 'createCollection');
             }
 
             return response;
