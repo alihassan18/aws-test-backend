@@ -1325,7 +1325,7 @@ export class PostService {
                 !postId && { _collection: new Types.ObjectId(collection_Id) })
         });
         console.log(ot);
-        
+
         /* Notification */
         const receiver = await this.userModel.findById(originalPost.author);
 
