@@ -51,7 +51,7 @@ async function bootstrap() {
     //     .addTag('Mintstargram-v2')
     //     .build();
     // const document = SwaggerModule.createDocument(app, config);
-    app.enableCors();
+    //app.enableCors();
     // SwaggerModule.setup('api', app, document);
 
     await app.listen(process.env.PORT || 3000);

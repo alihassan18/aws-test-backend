@@ -13,7 +13,7 @@ lerna-debug.log*
 
 # .env
 .env.development
-.package-lock.json
+#.package-lock.json
 .env.development
 .env.production
 .env.local
