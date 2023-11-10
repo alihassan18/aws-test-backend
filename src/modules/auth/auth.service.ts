@@ -605,7 +605,7 @@ export class AuthService extends CommonServices {
             const verification = await this.verificationService.findByUserId(
                 user._id
             );
-                
+
             const isVerified = await this.verificationModel.findOne({
                 _id: verification._id,
                 isVerified: true,
