@@ -76,6 +76,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
 
         this.wss.on('message', async (data) => {
             const parsedData = JSON.parse(data);
+            // console.log(parsedData, 'parsedData');
 
             if (parsedData?.event === 'ask.created') {
                 this.createListings(parsedData.data);
@@ -106,7 +107,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                         event: 'sale.created',
                         status: 'success',
                         filters: {
-                            fillSource: 'mintstargram.tech'
+                            // fillSource: 'mintstargram.tech'
                         }
                     })
                 );
@@ -215,13 +216,6 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
         try {
             console.log(data, 'data');
 
-            const sales = await this.salesModel.findOneAndUpdate(
-                { id: data?.id },
-                data,
-                { upsert: true, new: true, setDefaultsOnInsert: true }
-            );
-            console.log(sales, 'sales');
-
             // This means the user in minting the token and we are just listning for the buy transactions.
             const [collection, to, from] = await Promise.all([
                 this.collectionModel.findOne({
@@ -237,6 +231,19 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                     address: { $regex: new RegExp(`^${data?.from}$`, 'i') }
                 })
             ]);
+
+            if (!collection) {
+                console.log('This collection is not exists');
+
+                return;
+            }
+
+            const sales = await this.salesModel.findOneAndUpdate(
+                { id: data?.id },
+                data,
+                { upsert: true, new: true, setDefaultsOnInsert: true }
+            );
+            console.log(sales, 'sales');
 
             const values = {
                 user: to?.userId,
