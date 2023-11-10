@@ -214,7 +214,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
 
     async createSale(data) {
         try {
-            console.log(data, 'data');
+            // console.log(data, 'data');
 
             // This means the user in minting the token and we are just listning for the buy transactions.
             const [collection, to, from] = await Promise.all([

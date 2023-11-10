@@ -12,7 +12,7 @@ export class ReferralService {
         @InjectModel(Referral.name)
         readonly referralModel: Model<ReferralDocument>,
         @InjectModel(WithdrawRequest.name)
-        private withdrawRequestModel: Model<WithdrawRequest>,
+        public withdrawRequestModel: Model<WithdrawRequest>,
         readonly userService: UsersService
     ) {}
 
@@ -604,6 +604,7 @@ export class ReferralService {
 
     async createWithdrawRequest(
         userId: string,
+        address: string,
         amount: number
     ): Promise<WithdrawRequest> {
         // Check if there is an existing pending withdraw request for the user
@@ -624,9 +625,30 @@ export class ReferralService {
             userId,
             amount,
             status: 'pending',
-            processed: false
+            processed: false,
+            address
         });
 
         return withdrawRequest.save();
+    }
+
+    async getAllWithdrawRequests(): Promise<WithdrawRequest[]> {
+        return this.withdrawRequestModel.find();
+    }
+
+    async updateStatus(
+        requestId: Types.ObjectId,
+        newStatus: string
+    ): Promise<WithdrawRequest> {
+        const updatedRequest =
+            await this.withdrawRequestModel.findByIdAndUpdate(
+                requestId,
+                { status: newStatus },
+                { new: true }
+            );
+        if (!updatedRequest) {
+            throw new Error('WithdrawRequest not found');
+        }
+        return updatedRequest;
     }
 }

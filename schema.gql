@@ -522,6 +522,7 @@ type Referral {
   totalRedeemed: Float!
   referralVolumeTraded: Float!
   requested: Boolean!
+  userId: WithdrawRequest!
 }
 
 type Currency {
@@ -1479,10 +1480,12 @@ type SalesOrder {
 }
 
 type WithdrawRequest {
-  userId: ID!
-  amount: Float!
-  status: String!
-  processed: Boolean!
+  _id: String!
+  userId: User!
+  address: String
+  amount: Float
+  status: String
+  processed: Boolean
 }
 
 type PageInfo {
@@ -1811,6 +1814,7 @@ type Query {
   getTopHashtagsByDays: [Last24HrsHashtagCount!]!
   usersUseHashtag(hashtag: String!): [Post!]
   hashtagFollowersUsers(hashtag: String!): [User!]!
+  getAllWithdrawRequests: [WithdrawRequest!]!
   affiliatedData(duration: String!): ReferralsOutput!
   userReferrals: [UserReferrals!]!
   userRewards: UserRewards!
@@ -2098,8 +2102,9 @@ type Mutation {
   postOnTwitter(createTwitterPostInput: CreateTwitterPostInput!): VerifyEmailOutput!
   removeFeed(feedId: String!): Feed!
   follow(id: String!): User!
+  requestWithdraw(amount: Float!, address: String!): WithdrawRequest!
+  updateWithdrawRequestStatus(updateWithdrawRequestStatusData: UpdateWithdrawRequestStatusInput!): WithdrawRequest!
   createReferral: CreateReferralOutput!
-  requestWithdraw(amount: Float!): WithdrawRequest!
   markNotificationAsSeen(id: String!): Notification!
   markAllNotificationAsSeen: String!
   deleteNotification(id: String!): Notification!
@@ -2597,6 +2602,11 @@ input CreateTwitterPostInput {
 
   """Media field (placeholder)"""
   media: [String!]
+}
+
+input UpdateWithdrawRequestStatusInput {
+  requestId: String!
+  newStatus: String!
 }
 
 input CreateGroupMessageInput {

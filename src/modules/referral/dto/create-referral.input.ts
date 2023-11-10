@@ -67,3 +67,12 @@ export class UserRewards {
     @Field(() => Float, { nullable: true })
     volume: number;
 }
+
+@InputType()
+export class UpdateWithdrawRequestStatusInput {
+    @Field(() => String)
+    requestId: string;
+
+    @Field()
+    newStatus: string;
+}
