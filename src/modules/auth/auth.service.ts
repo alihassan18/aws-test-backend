@@ -605,13 +605,14 @@ export class AuthService extends CommonServices {
             const verification = await this.verificationService.findByUserId(
                 user._id
             );
-
+                
             const isVerified = await this.verificationModel.findOne({
                 _id: verification._id,
                 isVerified: true,
                 code
             });
-            if (verification?.attempts > 2 && !verification?.isVerified) {
+            if (verification?.attempts > 2) {
+                // && !verification?.isVerified
                 throw new Error(
                     'You have already made 3 attempts please retry after 24 hours'
                 );
