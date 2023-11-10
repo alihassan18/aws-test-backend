@@ -106,7 +106,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                         event: 'sale.created',
                         status: 'success',
                         filters: {
-                            source: 'mintstargram.tech'
+                            fillSource: 'mintstargram.tech'
                         }
                     })
                 );
