@@ -1,26 +1,31 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @ObjectType()
 @Schema()
 export class WithdrawRequest {
-    // @Field(() => ID)
-    // id: mongoose.Schema.Types.ObjectId;
+    @Field(() => String)
+    _id: mongoose.Schema.Types.ObjectId;
 
-    @Field(() => ID)
+    @Field(() => User)
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
     userId: mongoose.Schema.Types.ObjectId;
 
-    @Field()
+    @Field({ nullable: true })
+    @Prop()
+    address: string;
+
+    @Field({ nullable: true })
     @Prop()
     amount: number;
 
-    @Field()
+    @Field({ nullable: true })
     @Prop({ default: 'pending' })
     status: string;
 
-    @Field(() => Boolean)
+    @Field(() => Boolean, { nullable: true })
     @Prop({ default: false })
     processed: boolean;
 }

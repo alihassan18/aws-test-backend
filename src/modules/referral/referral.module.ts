@@ -15,10 +15,12 @@ import { ReservoirService } from '../shared/services/reservoir.service';
 import { RedisPubSubService } from '../redis-pubsub/redis-pubsub.service';
 import { sharedEmitterProvider } from '../shared/providers/shared-emitter.provider';
 import { NftsService } from '../nfts/nfts.service';
+import { WithdrawRequestResolver } from './requests.resolver';
 
 @Module({
     imports: [CommonModule],
     providers: [
+        WithdrawRequestResolver,
         ReferralResolver,
         ReferralService,
         UsersService,

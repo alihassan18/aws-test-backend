@@ -2,73 +2,31 @@ import {
     Resolver,
     Query,
     Mutation,
-    Context,
     Args,
     ResolveField,
     Parent
 } from '@nestjs/graphql';
 import { ReferralService } from './referral.service';
-import { Referral } from './entities/referral.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
-import { ContextProps } from 'src/interfaces/common.interface';
-import {
-    CreateReferralOutput,
-    ReferralsOutput,
-    UpdateWithdrawRequestStatusInput,
-    UserReferrals,
-    UserRewards
-} from './dto/create-referral.input';
-import { User, UserDocument } from '../users/entities/user.entity';
+import { UpdateWithdrawRequestStatusInput } from './dto/create-referral.input';
+import { User } from '../users/entities/user.entity';
 import { WithdrawRequest } from './entities/withdraw.requests.entity';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { AdminGuard } from '../admin/admin.guard';
 import { Types } from 'mongoose';
 
-@Resolver(() => Referral)
-export class ReferralResolver {
+@Resolver(() => WithdrawRequest)
+export class WithdrawRequestResolver {
     constructor(private readonly referralService: ReferralService) {}
 
     @ResolveField(() => WithdrawRequest)
     async userId(@Parent() request: WithdrawRequest) {
         console.log(request, 'request');
 
-        return this.referralService.withdrawRequestModel.findById(
+        return this.referralService.userService.userModel.findById(
             request?.userId
         );
-    }
-
-    @Mutation(() => CreateReferralOutput)
-    @UseGuards(AuthGuard)
-    createReferral(
-        @Context() ctx: ContextProps
-    ): Promise<CreateReferralOutput> {
-        const { _id: userId } = ctx.req.user;
-        return this.referralService.create(userId);
-    }
-
-    @Query(() => ReferralsOutput)
-    @UseGuards(AuthGuard)
-    affiliatedData(
-        @Args('duration') duration: string,
-        @Context() ctx: ContextProps
-    ): Promise<ReferralsOutput> {
-        const { _id: userId } = ctx.req.user;
-        return this.referralService.get(userId, duration);
-    }
-
-    @Query(() => [UserReferrals])
-    @UseGuards(AuthGuard)
-    userReferrals(@Context() ctx: ContextProps): Promise<UserDocument[]> {
-        const { _id: userId } = ctx.req.user;
-        return this.referralService.userReferrals(userId);
-    }
-
-    @Query(() => UserRewards)
-    @UseGuards(AuthGuard)
-    userRewards(@Context() ctx: ContextProps): Promise<UserDocument[]> {
-        const { _id: userId } = ctx.req.user;
-        return this.referralService.userRewards(userId);
     }
 
     @Query(() => [WithdrawRequest])

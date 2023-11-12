@@ -76,6 +76,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
 
         this.wss.on('message', async (data) => {
             const parsedData = JSON.parse(data);
+            // console.log(parsedData, 'parsedData');
 
             if (parsedData?.event === 'ask.created') {
                 this.createListings(parsedData.data);
@@ -106,7 +107,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                         event: 'sale.created',
                         status: 'success',
                         filters: {
-                            source: 'mintstargram.tech'
+                            // fillSource: 'mintstargram.tech'
                         }
                     })
                 );
@@ -213,8 +214,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
 
     async createSale(data) {
         try {
-            const sales = await this.salesModel.create(data);
-            console.log(sales, 'sales');
+            // console.log(data, 'data');
 
             // This means the user in minting the token and we are just listning for the buy transactions.
             const [collection, to, from] = await Promise.all([
@@ -231,9 +231,19 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                     address: { $regex: new RegExp(`^${data?.from}$`, 'i') }
                 })
             ]);
+
             if (!collection) {
-                return null;
+                console.log('This collection is not exists');
+
+                return;
             }
+
+            const sales = await this.salesModel.findOneAndUpdate(
+                { id: data?.id },
+                data,
+                { upsert: true, new: true, setDefaultsOnInsert: true }
+            );
+            console.log(sales, 'sales');
 
             const values = {
                 user: to?.userId,
@@ -248,10 +258,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                     contract: collection?.contract?.toLowerCase()
                 }
             };
-            // const activity = await this.activityModel
-            //     .findOne(values)
-            //     .exec();
-            // if (!activity) {
+
             this.activityModel
                 .create(values)
                 .then(async (activity) => {
@@ -268,9 +275,6 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                 .catch((error) => {
                     console.error('Error creating activity:', error);
                 });
-            // } else {
-            //     console.log('This activity already exists.');
-            // }
 
             // NOTIFY
 
