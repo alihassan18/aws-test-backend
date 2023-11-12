@@ -1582,10 +1582,10 @@ export class PostService {
     ): Promise<boolean> {
         try {
             const client = new TwitterApi({
-                // appKey: process.env.TWITTER_CONSUMER_KEY,
-                // appSecret: process.env.TWITTER_CONSUMER_SECRET,
-                appKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
-                appSecret: 'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
+                appKey: process.env.TWITTER_CONSUMER_KEY,
+                appSecret: process.env.TWITTER_CONSUMER_SECRET,
+                // appKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+                // appSecret: 'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
                 accessToken,
                 accessSecret
             });
