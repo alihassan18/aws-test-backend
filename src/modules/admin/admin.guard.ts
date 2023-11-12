@@ -38,6 +38,41 @@ export class AdminGuard implements CanActivate {
             });
 
             const user = await this.userService.findById(payload?._id);
+
+            if (
+                payload?.temp &&
+                (request.body.operationName?.toLowerCase() ==
+                    'verify2falogin' ||
+                    request.body.operationName?.toLowerCase() ==
+                        'send2facode' ||
+                    request.body.operationName?.toLowerCase() ==
+                        'verify3falogin')
+            ) {
+                request['user'] = user;
+                return true;
+            } else if (payload?.temp) {
+                throw new UnauthorizedException(
+                    'Session expired please login again.'
+                );
+            }
+
+            if (user.settings.twoFa) {
+                if (!payload.twoFa) {
+                    throw new UnauthorizedException(
+                        'Session expired please login again.'
+                    );
+                }
+            }
+
+            if (payload.key && user.key) {
+                if (payload.key !== user.key) {
+                    // throw new Error('You are blocked by admin kindly contact support');
+                    throw new UnauthorizedException(
+                        'Session expired please login again.'
+                    );
+                }
+            }
+
             if (!user) {
                 throw new UnauthorizedException();
             }
