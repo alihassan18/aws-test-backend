@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate {
         private jwtService: JwtService,
         private userService: UsersService,
         private reflector: Reflector
-    ) { }
+    ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const ctx = GqlExecutionContext.create(context);
@@ -44,9 +44,9 @@ export class AdminGuard implements CanActivate {
                 (request.body.operationName?.toLowerCase() ==
                     'verify2falogin' ||
                     request.body.operationName?.toLowerCase() ==
-                    'send2facode' ||
+                        'send2facode' ||
                     request.body.operationName?.toLowerCase() ==
-                    'verify3falogin')
+                        'verify3falogin')
             ) {
                 request['user'] = user;
                 return true;
@@ -72,7 +72,7 @@ export class AdminGuard implements CanActivate {
                     );
                 }
             }
-            
+
             if (!user) {
                 throw new UnauthorizedException();
             }
