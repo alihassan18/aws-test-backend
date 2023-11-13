@@ -27,8 +27,8 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
         private readonly jwtService: JwtService
     ) {
         super({
-            appKey: process.env.TWITTER_CONSUMER_KEY,
-            appSecret: process.env.TWITTER_CONSUMER_SECRET,
+            consumerKey: process.env.TWITTER_CONSUMER_KEY,
+            consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
             // consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
             // consumerSecret:
             //     'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
