@@ -30,11 +30,11 @@ export class CreateCollectionInput {
     })
     contract: string;
 
-    @Field(() => String, {
+    @Field(() => Int, {
         description: 'Contract address field (placeholder)',
         nullable: true
     })
-    deploy_block_number: string;
+    deploy_block_number: number;
 
     @Field(() => String, {
         description: 'Currency name field',

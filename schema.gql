@@ -2276,7 +2276,7 @@ input CreateCollectionInput {
   contract: String!
 
   """Contract address field (placeholder)"""
-  deploy_block_number: String
+  deploy_block_number: Int
 
   """Currency name field"""
   currency: String
@@ -2345,7 +2345,7 @@ input UpdateCollectionInput {
   contract: String
 
   """Contract address field (placeholder)"""
-  deploy_block_number: String
+  deploy_block_number: Int
 
   """Currency name field"""
   currency: String
