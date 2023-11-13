@@ -27,11 +27,11 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
         private readonly jwtService: JwtService
     ) {
         super({
-            consumerKey: process.env.TWITTER_CONSUMER_KEY,
-            consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-            // consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
-            // consumerSecret:
-            //     'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
+            // consumerKey: process.env.TWITTER_CONSUMER_KEY,
+            // consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+            consumerKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
+            consumerSecret:
+                'IZhfVaIT9PfeRMXo8Nv8L4ZociO3g0UuFimYn4MaoZlv19ZT2F',
             callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
             includeEmail: true,
             passReqToCallback: true
