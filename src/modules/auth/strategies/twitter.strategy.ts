@@ -98,7 +98,7 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                         displayName,
                         userName: isUsernameAvailable
                             ? username?.toLowerCase() +
-                            `${Math.floor(1000 + Math.random() * 9000)}`
+                              `${Math.floor(1000 + Math.random() * 9000)}`
                             : username?.toLowerCase(),
                         email: _json.email,
                         firstName: name[0],
