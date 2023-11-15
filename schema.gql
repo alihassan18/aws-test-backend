@@ -1633,7 +1633,7 @@ type Query {
   validateTwitterAccessToken: Boolean!
   posts(query: PostFilterInput, limit: Int! = 10, cursor: String): PostConnection!
   post(id: String!): Post!
-  postOfCollection(contract: String!, chain: String!, name: String, image: String): Post
+  postOfCollection(contract: String!, chain: String!): Post
   postOfNft(contract: String!, chain: String!, tokenId: String!): Post
   getFollowedContracts(chain: String!): [ContractsData!]
   replies(id: String!, limit: Float! = 10, cursor: String, loggedUserId: String): PaginatedResults!
