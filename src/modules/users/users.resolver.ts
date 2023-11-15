@@ -317,34 +317,6 @@ export class UsersResolver {
         return this.usersService.ownBlockedUsers(loggedUserId);
     }
 
-    // ------------ RUFFY WORLD ------------
-
-    @Mutation(() => User)
-    @UseGuards(AdminGuard)
-    @Role('admin')
-    async rw_toComedian(
-        @Args('status') status: boolean,
-        @Args('id', { type: () => String }) id: Types.ObjectId
-    ): Promise<UserDocument> {
-        return this.usersService.findOneAndUpdate(
-            { _id: id },
-            { $set: { isComedian: status } }
-        );
-    }
-
-    @Mutation(() => User)
-    @UseGuards(AdminGuard)
-    @Role('admin')
-    async rw_toTeacher(
-        @Args('status') status: boolean,
-        @Args('id', { type: () => String }) id: Types.ObjectId
-    ): Promise<UserDocument> {
-        return this.usersService.findOneAndUpdate(
-            { _id: id },
-            { $set: { isTeacher: status } }
-        );
-    }
-    // ------------ ------------
     // ------------ CONETNT CREATER ------------
 
     @Query(() => ContentCreatorStats)

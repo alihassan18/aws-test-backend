@@ -355,11 +355,6 @@ type LoginResult {
   notAffiliated: Boolean
 }
 
-type RWLoginResult {
-  user: User
-  access_token: String
-}
-
 type SignOutResult {
   message: String
   access_token: String
@@ -480,9 +475,6 @@ type User {
   soldNFTs: Float
   listedNFTs: Float
   createdAt: DateTime
-  isTeacher: Boolean!
-  isComedian: Boolean!
-  isRuffyWorldUser: Boolean!
   recentFollowersCount: Float
   invitation_code: String
   login_attempts: Float
@@ -1266,164 +1258,6 @@ type Nft {
   onMintstargram: Boolean
 }
 
-type RwEvent {
-  _id: String!
-  event_name: String!
-  event_description: String
-  start_date: DateTime!
-  end_date: DateTime!
-  cover_image: String!
-  EventTicketType: String!
-  Standard_Price: Float
-  Premium_Price: Float
-  vipPass_Price: Float
-  Max_Tickets: Float
-  Available_Tickets_for_Standard: Float
-  Available_Tickets_for_Premium: Float
-  Available_Tickets_for_VIP: Float
-  Genre: String
-  Location: String
-  Blockchain: String
-  ArrangedPersonName: String
-  Remaining_Days: Float
-}
-
-type RwTutorials {
-  title: String!
-  description: String
-  video: String!
-}
-
-type RwBuilding {
-  title: String!
-  desc: String!
-  title_images: [String!]!
-  nft_images: [String!]!
-  ubindex: String!
-}
-
-type RwBuildingTypes {
-  name: String!
-  index: String!
-  bigImages: Float!
-  smallImages: Float!
-  assigned: Boolean!
-}
-
-type RwLand {
-  LandID: Float!
-  Data: String!
-}
-
-type RWMessageNotification {
-  _msgFreindRequest: Boolean
-  _msgNewEvent: Boolean
-  _msgRecieveingGift: Boolean
-  _msgTerrainGridInvisible: Boolean
-}
-
-type RWPhoneNotification {
-  _phoneFreindRequest: Boolean
-  _phoneNewEvent: Boolean
-  _phoneRecieveingGift: Boolean
-  _phoneTerrainGridInvisible: Boolean
-}
-
-type RWMailNotification {
-  _mailFreindRequest: Boolean
-  _mailNewEvent: Boolean
-  _mailRecieveingGift: Boolean
-  _mailTerrainGridInvisible: Boolean
-}
-
-type RwSettings {
-  user: User!
-  MouseScrollSensitivity: Float!
-  GraphicsQuality: Float!
-  mapPlotPhoto: Boolean!
-  MessageNotification: RWMessageNotification!
-  PhoneNotification: RWPhoneNotification!
-  MailNotification: RWMailNotification!
-}
-
-type RwUsersMedia {
-  _id: String!
-  user: User!
-  media: [String!]!
-  isSS: Boolean
-  isSR: Boolean
-  isFavourite: Boolean
-  isReport: Boolean
-  isRepost: Boolean
-}
-
-type RwReport {
-  _id: String!
-  reporter: User!
-  reported: User
-  mediaId: RwUsersMedia
-  media: String
-  content: String
-  type: String
-  resolved: Boolean
-  user: RwUsersMedia!
-}
-
-type RwFightLb {
-  _id: String!
-  email: String!
-  name: String!
-  damage: Float!
-  deathTime: Float!
-  updateTime: Float!
-}
-
-type RwRaceLb {
-  _id: String!
-  email: String!
-  name: String!
-  laptime: Float!
-  updateTime: Float!
-}
-
-type AnimationChr {
-  animation: String!
-  slot: String!
-}
-
-type TicketsChr {
-  ticket: String!
-  slot: String!
-}
-
-type RwCharacter {
-  user: User!
-  skinColor: String!
-  Hat: String!
-  Torso: String!
-  Pant: String!
-  Shoes: String!
-  Glasses: String!
-  Golves: String!
-  Belt: String!
-  gender: String!
-  backpack: String!
-  AnimationSlots: [AnimationChr!]
-  Tickets: [TicketsChr!]
-}
-
-type RwBillBoard {
-  media: [String!]!
-  location: String!
-}
-
-type RwGameFlower {
-  user: User!
-  flowerValue: Float!
-  openAt: DateTime!
-  createdAt: DateTime
-}
-
 type HiddenTokens {
   _id: String!
   contract: String
@@ -1867,31 +1701,6 @@ type Query {
   affiliateUsers(search: String): [AffiliateUsers!]!
   histories(query: FindHistoryQuery!): HistoryResponse!
   history(id: Int!): History!
-  rw_events: [RwEvent!]!
-  rw_tutorials: String!
-  rw_character: RwCharacter!
-  rw_buildings(title: String): String!
-  rw_buildingTypes: String!
-  rw_lands: String!
-  rw_landById(id: String!): RwLand!
-  rw_settings: RwSettings!
-  rw_uMedias: [RwUsersMedia!]!
-  rw_uMediasSS: [RwUsersMedia!]!
-  rw_uMediasSR: [RwUsersMedia!]!
-  rw_uMediasFvrts: [RwUsersMedia!]!
-  rw_uMediasReports: [RwUsersMedia!]!
-  rw_uMediasReposts: [RwUsersMedia!]!
-  rw_reports: [RwReport!]!
-  rw_reportsUsers: RwReport!
-  rw_fightsLB(count: Float): [RwFightLb!]!
-  rw_fightsLBYesterdayRank: RwFightLb!
-  rw_fightsLBWeeklyRank: RwRaceLb!
-  rw_racesLB(count: Float): [RwRaceLb!]!
-  rw_racesLBYesterdayRank: RwRaceLb!
-  rw_billboards: [RwBillBoard!]!
-  rw_billboard(id: String!): RwBillBoard!
-  rw_billboardByLocation(location: String!): RwBillBoard!
-  rw_gameFlower: RwGameFlower!
   invitationCodes: [InvitationCode!]!
   invitationCode(id: Int!): InvitationCode!
   recentSearches: [RecentSearch!]!
@@ -2050,8 +1859,6 @@ type Mutation {
   blockUser(targetUserId: String!): User!
   unblockUser(targetUserId: String!): User!
   adddWallet(signature: String!): Wallet!
-  rw_toComedian(status: Boolean!, id: String!): User!
-  rw_toTeacher(status: Boolean!, id: String!): User!
   applyForSCCApprovel: SuccessPayload!
   SCCApprovel(userId: String!): SuccessPayload!
   createCollection(createCollectionInput: CreateCollectionInput!): Collection!
@@ -2074,7 +1881,6 @@ type Mutation {
   deleteUserAccount: VerifyEmailOutput!
   updatePassword(currentPassword: String!, newPassword: String!): String!
   adminLogin(user: LoginUserInput!): LoginResult!
-  rw_loginById(id: String!): RWLoginResult!
   invitationCodeVerify(code: String!): LoginResult!
   createListing(createListingInput: CreateListingInput!): Listing!
   updateListing(updateListingInput: UpdateListingInput!): Listing!
@@ -2160,35 +1966,6 @@ type Mutation {
   createHistory(createHistoryInput: CreateHistoryInput!): History!
   updateHistory(updateHistoryInput: UpdateHistoryInput!): History!
   removeHistory(id: Int!): History!
-  rw_createEvent(createRwEventInput: CreateRwEventInput!): RwEvent!
-  rw_updateEvent(updateRwEventInput: UpdateRwEventInput!): String!
-  rw_removeEvent(id: String!): String!
-  rw_createTutorial(createRwTutorialsInput: CreateRwTutorialsInput!): RwTutorials!
-  rw_updateTutorial(updateRwTutorialsInput: UpdateRwTutorialsInput!): String!
-  rw_removeTutorial(id: String!): String!
-  rw_characterCreate(createRwCharacterInput: CreateRwCharacterInput!): RwCharacter!
-  rw_characterUpdate(updateRwCharacterInput: UpdateRwCharacterInput!): RwCharacter!
-  rw_chracterRemove: RwCharacter!
-  rw_buildingCreate(createRwBuildingInput: CreateRwBuildingInput!): RwBuilding!
-  rw_buildingUpdate(updateRwBuildingInput: UpdateRwBuildingInput!): RwBuilding!
-  rw_buildingRemove(id: String!, bIndex: String!): String!
-  rw_buildingTypeCreate(createRwBuildingTypesInput: CreateRwBuildingTypesInput!): RwBuildingTypes!
-  rw_landCreate(createRwLandInput: CreateRwLandInput!): RwLand!
-  rw_landRemove(id: String!): RwLand!
-  rw_settingsUpdate(updateRwSettingInput: UpdateRwSettingInput!): RwSettings!
-  rw_uMediaCreate(createRwUsersMediaInput: CreateRwUsersMediaInput!): RwUsersMedia!
-  rw_uMediaCreateFvrt(id: String!, status: Boolean!): RwUsersMedia!
-  rw_uMediaCreateReport(id: String!): RwUsersMedia!
-  rw_uMediaCreateRepost(id: String!): RwUsersMedia!
-  removeRwUsersMedia(id: String!): String!
-  rw_reportCreate(createRwReportInput: CreateRwReportInput!): RwReport!
-  rw_reportResolve(id: String!): RwReport!
-  rw_requestFightLB(createRwFightLbInput: CreateRwFightLbInput!): RwFightLb!
-  rw_requestRaceLB(createRwRaceLbInput: CreateRwRaceLbInput!): RwRaceLb!
-  rw_createBillboard(createRwBillboardInput: CreateRwBillboardInput!): RwBillBoard!
-  rw_removebillboard(id: String!): RwBillBoard!
-  rw_gameFlowerCreate(createRwGameFlowerInput: CreateRwGameFlowerInput!): RwGameFlower!
-  removeRwGameFlower: RwGameFlower!
   createInvitationCode(createInvitationCodeInput: CreateInvitationCodeInput!): InvitationCode!
   updateInvitationCode(updateInvitationCodeInput: UpdateInvitationCodeInput!): InvitationCode!
   removeInvitationCode(id: Int!): InvitationCode!
@@ -2404,9 +2181,6 @@ input SignInInput {
   phoneNumber: String
   avatar: String
   referral: String
-  isRuffyWorldUser: Boolean
-  isComedian: Boolean
-  isTeacher: Boolean
 }
 
 input LoginGoogleInput {
@@ -2810,205 +2584,6 @@ input UpdateHistoryInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
-}
-
-input CreateRwEventInput {
-  event_name: String!
-  event_description: String
-  start_date: DateTime!
-  end_date: DateTime!
-  cover_image: String!
-  EventTicketType: String!
-  Standard_Price: Float
-  Premium_Price: Float
-  vipPass_Price: Float
-  Max_Tickets: Float
-  Available_Tickets_for_Standard: Float
-  Available_Tickets_for_Premium: Float
-  Available_Tickets_for_VIP: Float
-  Genre: String
-  Location: String
-  Blockchain: String
-  ArrangedPersonName: String
-}
-
-input UpdateRwEventInput {
-  event_name: String
-  event_description: String
-  start_date: DateTime
-  end_date: DateTime
-  cover_image: String
-  EventTicketType: String
-  Standard_Price: Float
-  Premium_Price: Float
-  vipPass_Price: Float
-  Max_Tickets: Float
-  Available_Tickets_for_Standard: Float
-  Available_Tickets_for_Premium: Float
-  Available_Tickets_for_VIP: Float
-  Genre: String
-  Location: String
-  Blockchain: String
-  ArrangedPersonName: String
-  id: String!
-}
-
-input CreateRwTutorialsInput {
-  title: String!
-  description: String
-  video: String!
-}
-
-input UpdateRwTutorialsInput {
-  title: String
-  description: String
-  video: String
-  id: String!
-}
-
-input CreateRwCharacterInput {
-  skinColor: String
-  gender: String
-  backpack: String!
-  Hat: String
-  Torso: String
-  Pant: String
-  Shoes: String
-  Glasses: String
-  Golves: String
-  Belt: String
-  AnimationSlots: [AnimationChrObject!]
-  Tickets: [TicketsChrObject!]
-}
-
-input AnimationChrObject {
-  animation: String!
-  slot: String!
-}
-
-input TicketsChrObject {
-  ticket: String!
-  slot: String!
-}
-
-input UpdateRwCharacterInput {
-  skinColor: String
-  gender: String
-  backpack: String
-  Hat: String
-  Torso: String
-  Pant: String
-  Shoes: String
-  Glasses: String
-  Golves: String
-  Belt: String
-  AnimationSlots: [AnimationChrObject!]
-  Tickets: [TicketsChrObject!]
-}
-
-input CreateRwBuildingInput {
-  title: String!
-  desc: String!
-  title_images: [String!]!
-  nft_images: [String!]
-  ubindex: String!
-}
-
-input UpdateRwBuildingInput {
-  title: String
-  desc: String
-  title_images: [String!]
-  nft_images: [String!]
-  ubindex: String
-  id: String!
-}
-
-input CreateRwBuildingTypesInput {
-  id: String
-  name: String!
-  index: String!
-  bigImages: Float!
-  smallImages: Float!
-  assigned: Boolean!
-}
-
-input CreateRwLandInput {
-  id: String
-  LandID: Float!
-  Data: String!
-}
-
-input UpdateRwSettingInput {
-  MouseScrollSensitivity: Float
-  GraphicsQuality: Float
-  mapPlotPhoto: Boolean
-  MessageNotification: RWMessageNotificationInput
-  PhoneNotification: RWPhoneNotificationInput
-  MailNotification: RWMailNotificationInput
-}
-
-input RWMessageNotificationInput {
-  _msgFreindRequest: Boolean
-  _msgNewEvent: Boolean
-  _msgRecieveingGift: Boolean
-  _msgTerrainGridInvisible: Boolean
-}
-
-input RWPhoneNotificationInput {
-  _phoneFreindRequest: Boolean
-  _phoneNewEvent: Boolean
-  _phoneRecieveingGift: Boolean
-  _phoneTerrainGridInvisible: Boolean
-}
-
-input RWMailNotificationInput {
-  _mailFreindRequest: Boolean
-  _mailNewEvent: Boolean
-  _mailRecieveingGift: Boolean
-  _mailTerrainGridInvisible: Boolean
-}
-
-input CreateRwUsersMediaInput {
-  media: [String!]
-  isSS: Boolean
-  isSR: Boolean
-  isFavourite: Boolean
-  isReport: Boolean
-  isRepost: Boolean
-}
-
-input CreateRwReportInput {
-  reported: String
-  mediaId: String
-  media: String
-  content: String!
-  type: String
-}
-
-input CreateRwFightLbInput {
-  email: String!
-  name: String!
-  damage: Float!
-  deathTime: Float!
-  updateTime: Float!
-}
-
-input CreateRwRaceLbInput {
-  email: String!
-  name: String!
-  laptime: Float!
-  updateTime: Float!
-}
-
-input CreateRwBillboardInput {
-  id: String
-  media: [String!]!
-  location: String!
-}
-
-input CreateRwGameFlowerInput {
-  flowerValue: String!
-  isDaily: Boolean
 }
 
 input CreateInvitationCodeInput {

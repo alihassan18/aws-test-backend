@@ -68,56 +68,11 @@ import { Listing, ListingSchema } from '../listings/entities/listing.entity';
 import { Bid, BidSchema } from '../bids/entities/bid.entity';
 import { History, HistorySchema } from '../history/entities/history.entity';
 import { Nft, NftSchema } from '../nfts/entities/nft.entity';
-import { RwEvent, RwEventSchema } from '../rw_events/entities/rw_event.entity';
-import {
-    RwTutorials,
-    RwTutorialsSchema
-} from '../rw_tutorials/entities/rw_tutorials.entity';
-import {
-    RwBuilding,
-    RwBuildingSchema
-} from '../rw_buildings/entities/rw_building.entity';
-import {
-    RwBuildingTypes,
-    RwBuildingTypesSchema
-} from '../rw_buildings/entities/rw_buildingTypes.entity';
-import { RwLand, RwLandSchema } from '../rw_land/entities/rw_land.entity';
-import {
-    RwSettings,
-    RwSettingsSchema
-} from '../rw_settings/entities/rw_setting.entity';
-import {
-    RwUsersMedia,
-    RwUsersMediaSchema
-} from '../rw_users_media/entities/rw_users_media.entity';
-import {
-    RwReport,
-    RwReportSchema
-} from '../rw_report/entities/rw_report.entity';
-import {
-    RwFightLBSchema,
-    RwFightLb
-} from '../rw_fight-lb/entities/rw_fight-lb.entity';
-import {
-    RwRaceLb,
-    RwRaceLbSchema
-} from '../rw_race-lb/entities/rw_race-lb.entity';
 import {
     IPAddress,
     IPAddressSchema
 } from '../ip-address/entities/ip-address.entity';
-import {
-    RwCharacter,
-    RwCharacterSchema
-} from '../rw_character/entities/rw_character.entity';
-import {
-    RwBillBoard,
-    RwBillBoardSchema
-} from '../rw_billboard/entities/rw_billboard.entity';
-import {
-    RwGameFlower,
-    RwGameFlowerSchema
-} from '../rw_game_flower/entities/rw_game_flower.entity';
+
 import {
     HiddenTokens,
     HiddenTokensSchema
@@ -175,26 +130,7 @@ const models = [
     { name: Activity.name, schema: ActivitySchema },
     { name: Sales.name, schema: SalesSchema },
     { name: WithdrawRequest.name, schema: WithdrawRequestSchema },
-
-    //  --------------------------------------
-    //          RUFFY WORLD COLLECTIONS
-    //  --------------------------------------
-
-    { name: RwEvent.name, schema: RwEventSchema },
-    { name: RwTutorials.name, schema: RwTutorialsSchema },
-    { name: RwCharacter.name, schema: RwCharacterSchema },
-    { name: RwBuilding.name, schema: RwBuildingSchema },
-    { name: RwBuildingTypes.name, schema: RwBuildingTypesSchema },
-    { name: RwLand.name, schema: RwLandSchema },
-    { name: RwSettings.name, schema: RwSettingsSchema },
-    { name: RwUsersMedia.name, schema: RwUsersMediaSchema },
-    { name: RwReport.name, schema: RwReportSchema },
-    { name: RwFightLb.name, schema: RwFightLBSchema },
-    { name: RwRaceLb.name, schema: RwRaceLbSchema },
-    { name: RwBillBoard.name, schema: RwBillBoardSchema },
-    { name: RwGameFlower.name, schema: RwGameFlowerSchema },
-    { name: RecentSearch.name, schema: RecentSearchSchema }
-
+    { name: RecentSearch.name, schema: RecentSearchSchema },
     // { name: Admin.name, schema: AdminSchema },
 ];
 @Module({

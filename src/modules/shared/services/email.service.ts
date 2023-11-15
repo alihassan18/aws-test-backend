@@ -127,28 +127,6 @@ export class EmailService {
         return this.MAIL_GUN(mailOptions);
     }
 
-    async sendRWVerifyEmail(email, userId, token, firstName) {
-        console.log(email, userId, token, firstName);
-
-        // return new Promise((resolve, reject) => {
-        //     const domain = process.env.FRONT_BASE_URL;
-        //     const mailOptions = {
-        //         from: 'Notifications | MintStargram.tech <notifications@mail.mintstargram.tech>',
-        //         to: email,
-        //         subject: 'Ruffy World Email Verification',
-        //         html: rwConfirmationEmail(userId, token, domain, firstName)
-        //     };
-        //     transporter.sendMail(mailOptions, function (error, info) {
-        //         if (error) {
-        //             reject(error);
-        //         } else {
-        //             console.log(info);
-        //             resolve(info);
-        //         }
-        //     });
-        // });
-    }
-
     async sendDeleteAccountMail(name, email) {
         console.log(name, email);
 
