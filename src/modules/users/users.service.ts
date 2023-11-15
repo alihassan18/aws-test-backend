@@ -1054,8 +1054,6 @@ export class UsersService {
                 );
                 nftsLast7DaysVar = nftsLast7Days;
                 isNFTs = isNFTPresentForLast7Days;
-
-               
             })
             .catch((err) => {
                 console.error('Error occurred:', err);

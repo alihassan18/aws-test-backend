@@ -370,8 +370,6 @@ export class CollectionsService {
             }
             const t = await this.tradeModel.insertMany(trades);
             console.log(t);
-            
-           
         } catch (error) {
             console.log(error);
         }
@@ -1459,7 +1457,6 @@ export class CollectionsService {
         contract: string,
         chain: string
     ): Promise<CommonAssetResponse[]> {
-
         try {
             const tokens: CommonAssetResponse[] = [];
             let cursor: string | null = null;
@@ -1656,8 +1653,6 @@ export class CollectionsService {
         chain: string,
         retryAttempts = 2
     ): Promise<ListingResults['orders'][]> {
-        
-
         let attempt = 0;
 
         while (attempt < retryAttempts) {

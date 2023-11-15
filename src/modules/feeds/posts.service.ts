@@ -172,7 +172,7 @@ export class PostService {
 
     async findCollectionPost(
         contract: string,
-        chain,
+        chain
         // name?: string,
         // image?: string
     ) {
