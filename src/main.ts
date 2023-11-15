@@ -6,6 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import { SocketIOAdapter } from './socket.gateway';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { LanguageMiddleware } from './modules/auth/language.middleware';
 // import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 // import { ErrorMiddleware } from './middlewares/error.middleware';
 //ignore-typescript
@@ -44,6 +45,7 @@ async function bootstrap() {
             saveUninitialized: false
         })
     );
+    app.use(new LanguageMiddleware().use);
     // const config = new DocumentBuilder()
     //     .setTitle('Mintstargram V2 API')
     //     .setDescription('The v2 API description')

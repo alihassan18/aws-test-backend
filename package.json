@@ -65,6 +65,7 @@
         "google-auth-library": "^8.7.0",
         "graphql": "^16.6.0",
         "graphql-scalars": "^1.21.3",
+        "i18n": "^0.15.1",
         "ioredis": "^5.3.2",
         "mime": "^1.6.0",
         "mime-types": "^2.1.35",
