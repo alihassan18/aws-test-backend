@@ -46,7 +46,6 @@ import * as speakeasy from 'speakeasy';
 import * as base32 from 'thirty-two';
 import * as i18n from 'i18n';
 
-
 @Injectable()
 export class AuthService extends CommonServices {
     constructor(
@@ -246,9 +245,7 @@ export class AuthService extends CommonServices {
             const currentTime = new Date();
             const lockedAtTime = new Date(userToAttempt.lockedAt);
             if (currentTime < lockedAtTime) {
-                throw new Error(
-                    i18n.__('auth.account_locked_1hour')
-                );
+                throw new Error(i18n.__('auth.account_locked_1hour'));
             } else {
                 userToAttempt =
                     await this.userService.userModel.findOneAndUpdate(
@@ -344,9 +341,7 @@ export class AuthService extends CommonServices {
                             }
                         }
                     );
-                    throw new Error(
-                        i18n.__('auth.account_locked')
-                    );
+                    throw new Error(i18n.__('auth.account_locked'));
                 }
             }
         }
@@ -515,9 +510,7 @@ export class AuthService extends CommonServices {
                         new Date(verification.updatedAt).getTime()
                 ) / 36e5;
             if (verification.attempts > 2 && hours < 24) {
-                throw new Error(
-                    i18n.__('auth.code_3attemptes')
-                );
+                throw new Error(i18n.__('auth.code_3attemptes'));
             }
 
             if (hours < 1) {
@@ -553,9 +546,7 @@ export class AuthService extends CommonServices {
             user._id
         );
         if (verification.attempts > 2) {
-            throw new Error(
-                i18n.__('auth.code_3attemptes')
-            );
+            throw new Error(i18n.__('auth.code_3attemptes'));
         } else {
             if (verification.code === code) {
                 await this.verificationModel.findOneAndUpdate(
@@ -605,9 +596,7 @@ export class AuthService extends CommonServices {
             });
             if (verification?.attempts > 2) {
                 // && !verification?.isVerified
-                throw new Error(
-                    i18n.__('auth.code_3attemptes')
-                );
+                throw new Error(i18n.__('auth.code_3attemptes'));
             }
 
             if (isVerified) {

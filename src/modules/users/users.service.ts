@@ -304,7 +304,8 @@ export class UsersService {
                 settings: data,
                 // base32_secret: data?.base32_secret == "null" ? "" : data?.base32_secret
                 ...(data?.base32_secret && {
-                    base32_secret: data?.base32_secret == "null" ? "" : data?.base32_secret
+                    base32_secret:
+                        data?.base32_secret == 'null' ? '' : data?.base32_secret
                 })
             },
             {
