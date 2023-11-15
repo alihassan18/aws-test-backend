@@ -1,3 +1,13 @@
 {
-	"Hello": "Hello"
+	"auth": {
+		"code_3attemptes": "You have already made 3 attempts please retry after 24 hours",
+		"blocked": "You are blocked from administrative",
+		"banned": "You are banned from administrative",
+		"account_locked_1hour": "Your account is currently locked for 1 hour. Please try again later.",
+		"account_locked":"Your account has been temporarily locked due to login attempts",
+		"already_registered": "User already registered, Please Login",
+		"incorrect_pin":"Incorrect pin entered",
+		"confirm_password":"Confirm Password didn't match",
+		"password_changed":"Your Password has been changed successfully"
+	}
 }

@@ -44,6 +44,8 @@ import {
 import { ScoresService } from '../scores/scores.service';
 import * as speakeasy from 'speakeasy';
 import * as base32 from 'thirty-two';
+import * as i18n from 'i18n';
+
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -233,11 +235,11 @@ export class AuthService extends CommonServices {
         if (!userToAttempt) return undefined;
 
         if (userToAttempt.isBlocked) {
-            throw new Error('You are blocked from administrative');
+            throw new Error(i18n.__('auth.blocked'));
         }
 
         if (userToAttempt.isBanned) {
-            throw new Error('You are banned from administrative');
+            throw new Error(i18n.__('auth.banned'));
         }
 
         if (userToAttempt.lockedAt) {
@@ -245,7 +247,7 @@ export class AuthService extends CommonServices {
             const lockedAtTime = new Date(userToAttempt.lockedAt);
             if (currentTime < lockedAtTime) {
                 throw new Error(
-                    'Your account is currently locked for 1 hour. Please try again later.'
+                    i18n.__('auth.account_locked_1hour')
                 );
             } else {
                 userToAttempt =
@@ -343,7 +345,7 @@ export class AuthService extends CommonServices {
                         }
                     );
                     throw new Error(
-                        'Your account has been temporarily locked due to login attempts'
+                        i18n.__('auth.account_locked')
                     );
                 }
             }
@@ -438,7 +440,7 @@ export class AuthService extends CommonServices {
             });
 
             if (isAlreadyUser) {
-                return { message: 'User already registered, Please Login' };
+                return { message: i18n.__('auth.already_registered') };
             }
 
             // ------- REFRRAL -------
@@ -514,7 +516,7 @@ export class AuthService extends CommonServices {
                 ) / 36e5;
             if (verification.attempts > 2 && hours < 24) {
                 throw new Error(
-                    'You have already made 3 attempts please retry after 24 hours'
+                    i18n.__('auth.code_3attemptes')
                 );
             }
 
@@ -552,7 +554,7 @@ export class AuthService extends CommonServices {
         );
         if (verification.attempts > 2) {
             throw new Error(
-                'You have already made 3 attempts please retry after 24 hours'
+                i18n.__('auth.code_3attemptes')
             );
         } else {
             if (verification.code === code) {
@@ -567,7 +569,7 @@ export class AuthService extends CommonServices {
             } else {
                 verification.attempts = verification.attempts + 1;
                 await verification.save();
-                throw new Error('Incorrect pin entered');
+                throw new Error(i18n.__('auth.incorrect_pin'));
             }
         }
     }
@@ -580,7 +582,7 @@ export class AuthService extends CommonServices {
     }) {
         const { email, code, password, confirmPassword } = body;
         if (password !== confirmPassword) {
-            throw new Error(`Confirm Password didn't match`);
+            throw new Error(i18n.__('auth.confirm_password'));
         }
         // if (
         //     !/(?=^.{8,}$)(?=.*\d)(?=.*[!$%^&()_+|~=`{}\[\]:";'<>?,.#@*-\/\\]*)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(
@@ -604,7 +606,7 @@ export class AuthService extends CommonServices {
             if (verification?.attempts > 2) {
                 // && !verification?.isVerified
                 throw new Error(
-                    'You have already made 3 attempts please retry after 24 hours'
+                    i18n.__('auth.code_3attemptes')
                 );
             }
 
@@ -619,7 +621,7 @@ export class AuthService extends CommonServices {
                 await this.notificationModel.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: `Your Password has been changed successfully`,
+                    message: i18n.__('auth.password_changed'),
                     receiver: user._id
                 });
 
@@ -629,7 +631,7 @@ export class AuthService extends CommonServices {
                     verification.attempts = verification.attempts + 1;
                     await verification.save();
                 }
-                throw new Error('Incorrect pin entered');
+                throw new Error(i18n.__('auth.incorrect_pin'));
             }
         } else {
             throw new Error('No user found on that email');

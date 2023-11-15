@@ -245,9 +245,9 @@ export class NotificationService {
         //     .catch((error) => {
         //         console.error('Notification failed:', error);
         //     });
-        console.log(i18n.__('Hello'), 'i18ni18ni18n');
+        console.log(i18n.__('auth.code_3attemptes'), 'i18ni18ni18n');
 
-        return i18n.__('Hello');
+        return i18n.__('auth.code_3attemptes');
         // return 'ok';
     }
 
