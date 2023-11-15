@@ -120,7 +120,6 @@ export class AuthController {
         // This will depend on your specific application requirements
         req.session.token = '';
         const { user, token, isUserLogin } = req.user;
-        console.log(user && !token);
 
         if (user && !token) {
             // Redirect to the frontend site

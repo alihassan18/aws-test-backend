@@ -270,7 +270,6 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                         .exec();
 
                     this.publicFeedsGateway.emitRecentActivities(data);
-                    console.log('Activity created:', activity);
                 })
                 .catch((error) => {
                     console.error('Error creating activity:', error);
@@ -346,7 +345,6 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                             .exec();
 
                         this.publicFeedsGateway.emitRecentActivities(data);
-                        console.log('Activity created:', activity);
                     })
                     .catch((error) => {
                         console.error('Error creating activity:', error);
@@ -425,12 +423,10 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
                         });
                     }
                 }
-                console.log('tokenInfo', to_id);
             } else if (data.criteria.kind == 'collection') {
                 to_id = ownerWallet.userId.toString();
             }
 
-            console.log('to_id', to_id);
             if (to_id) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const dataPost: any = {
