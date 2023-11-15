@@ -329,7 +329,7 @@ export class FeedsService {
 
     async linkPreview(link: string): Promise<LinkPreviewResult> {
         const checkUrl = link.includes('https://') ? link : 'https://' + link;
-        console.log(checkUrl, 'url');
+
         let title = '';
         let description = '';
         let imageUrl = '';

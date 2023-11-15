@@ -253,14 +253,14 @@ export class PostResolver {
     findCollectionPost(
         @Args('contract', { type: () => String }) contract: string,
         @Args('chain', { type: () => String }) chain: string,
-        @Args('name', { type: () => String, nullable: true }) name: string,
-        @Args('image', { type: () => String, nullable: true }) image: string
+        // @Args('name', { type: () => String, nullable: true }) name: string,
+        // @Args('image', { type: () => String, nullable: true }) image: string
     ) {
         return this.postService.findCollectionPost(
             contract,
-            chain,
-            name,
-            image
+            chain
+            // name,
+            // image
         );
     }
 

@@ -344,7 +344,6 @@ export class UsersService {
             }
         }
         const searchedUsers = await this.userModel.find(filter).limit(5).exec();
-        console.log(searchedUsers, filter, 'filterfilterfilter');
 
         return searchedUsers;
     }
@@ -476,7 +475,6 @@ export class UsersService {
         }
 
         if (isfollower || isfollowing) {
-            console.log('targetUser user if runs');
             await this.userModel.findByIdAndUpdate(targetUser, {
                 ...(isfollowing && {
                     $pull: { followers: userId },
@@ -914,7 +912,6 @@ export class UsersService {
         // .populate('address');
 
         const userAddress = wallets.map((x) => x.address);
-        console.log(userAddress, 'userAddress', wallets, 'wallets');
 
         const collections = await this.collectionModel.find({
             owner: { $in: userAddress }
@@ -1057,12 +1054,6 @@ export class UsersService {
                 );
                 nftsLast7DaysVar = nftsLast7Days;
                 isNFTs = isNFTPresentForLast7Days;
-
-                console.log('Posts in the last 7 days:', nftsLast7Days);
-                console.log(
-                    'Posts present for each day:',
-                    isNFTPresentForLast7Days
-                );
             })
             .catch((err) => {
                 console.error('Error occurred:', err);

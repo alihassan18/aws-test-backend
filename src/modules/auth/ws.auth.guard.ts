@@ -4,8 +4,6 @@ import { WsException } from '@nestjs/websockets';
 @Injectable()
 export class WSJwtAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        console.log('calle');
-
         const client = context.switchToWs().getClient();
         const { handshake } = client;
 

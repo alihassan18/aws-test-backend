@@ -262,8 +262,6 @@ export class ReservoirService {
         let allCollections: SearchCollectionResults['collections'] = [];
 
         for (const chainName in chains) {
-            console.log(chainName);
-
             try {
                 const chain = chains[chainName];
 

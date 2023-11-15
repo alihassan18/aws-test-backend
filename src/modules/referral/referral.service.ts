@@ -596,7 +596,6 @@ export class ReferralService {
                 }
             }
         ]);
-        console.log(rewards, 'rewards');
 
         return rewards[0];
         // return this.userService.userModel.find({ referral: id });
