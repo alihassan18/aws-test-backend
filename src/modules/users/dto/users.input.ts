@@ -64,15 +64,6 @@ export class SignInInput {
 
     @Field(() => String, { nullable: true })
     referral?: mongoose.Types.ObjectId;
-
-    @Field(() => Boolean, { nullable: true })
-    isRuffyWorldUser?: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isComedian?: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isTeacher?: boolean;
 }
 
 @InputType()
@@ -109,14 +100,6 @@ export class LoginResult {
     // password protection
     @Field(() => Boolean, { nullable: true })
     notAffiliated?: boolean;
-}
-
-@ObjectType()
-export class RWLoginResult {
-    @Field(() => User, { nullable: true })
-    user: User;
-    @Field(() => String, { nullable: true })
-    access_token: string;
 }
 
 @ObjectType()

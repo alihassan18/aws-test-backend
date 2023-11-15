@@ -356,28 +356,6 @@ export class User extends Document {
     @Prop()
     createdAt?: Date;
 
-    // ---------------- for ruffy world ----------------
-
-    @Field(() => Boolean, { defaultValue: false })
-    @Prop({ type: Boolean, default: false })
-    isTeacher?: boolean;
-
-    @Field(() => Boolean, { defaultValue: false })
-    @Prop({ type: Boolean, default: false })
-    isComedian?: boolean;
-
-    @Field(() => Boolean, { defaultValue: false })
-    @Prop({ type: Boolean, default: false })
-    isRuffyWorldUser?: boolean;
-
-    // @Field(() => Boolean, { nullable: true })
-    // @Prop({ type: Boolean, default:false})
-    // isTeaccher?: boolean;
-
-    // @Field(() => Boolean, { nullable: true })
-    // @Prop({ type: Boolean, default:false})
-    // isTeaccher?: boolean;
-
     @Field(() => Number, { nullable: true })
     @Prop({
         type: Number,

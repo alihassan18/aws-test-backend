@@ -34,21 +34,9 @@ import { AdminModule } from './modules/admin/admin.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HistoryModule } from './modules/history/history.module';
-import { RwEventsModule } from './modules/rw_events/rw_events.module';
-import { RwTutorialModule } from './modules/rw_tutorials/rw_tutorials.module';
-import { RwCharacterModule } from './modules/rw_character/rw_character.module';
-import { RwBuildingsModule } from './modules/rw_buildings/rw_buildings.module';
-import { RwLandModule } from './modules/rw_land/rw_land.module';
-import { RwSettingsModule } from './modules/rw_settings/rw_settings.module';
 import { EventsModule } from './modules/events/events.module';
-import { RwUsersMediaModule } from './modules/rw_users_media/rw_users_media.module';
 // import { ContractEventsModule } from './modules/contract-events/contract-events.module';
-import { RwReportModule } from './modules/rw_report/rw_report.module';
-import { RwFightLbModule } from './modules/rw_fight-lb/rw_fight-lb.module';
-import { RwRaceLbModule } from './modules/rw_race-lb/rw_race-lb.module';
 import { IpAddressModule } from './modules/ip-address/ip-address.module';
-import { RwBillboardModule } from './modules/rw_billboard/rw_billboard.module';
-import { RwGameFlowerModule } from './modules/rw_game_flower/rw_game_flower.module';
 import { InvitationCodesModule } from './modules/invitation_codes/invitation_codes.module';
 import { RecentSearchesModule } from './modules/recent_searches/recent_searches.module';
 import { ActivityModule } from './modules/activities/activities.module';
@@ -85,21 +73,9 @@ import { ActivityModule } from './modules/activities/activities.module';
         UtilityModule,
         AdminModule,
         HistoryModule,
-        RwEventsModule,
-        RwTutorialModule,
-        RwCharacterModule,
-        RwBuildingsModule,
-        RwLandModule,
-        RwSettingsModule,
         EventsModule,
         // ContractEventsModule
-        RwUsersMediaModule,
-        RwReportModule,
-        RwFightLbModule,
-        RwRaceLbModule,
         IpAddressModule,
-        RwBillboardModule,
-        RwGameFlowerModule,
         InvitationCodesModule,
         RecentSearchesModule,
         ActivityModule

@@ -13,7 +13,6 @@ import {
     VerifyCodeOutput,
     ResetPasswordInput,
     VerifyEmailOutput,
-    RWLoginResult,
     Verify2FAOutput
 } from 'src/modules/users/dto/users.input';
 import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
@@ -244,22 +243,6 @@ export class AuthResolver extends CommonServices {
         );
         if (result) return result;
         throw new BadRequestException('Incorrect email or password');
-    }
-
-    // ---------- ruffy world ----------
-
-    @Mutation(() => RWLoginResult)
-    async rw_loginById(
-        @Args('id', { type: () => String }) id: string,
-        @IpAddress() IpAddress
-    ): Promise<RWLoginResult | undefined> {
-        const decode = await this.authService.validateToken(id);
-        const result = await this.authService.rw_loginById(
-            decode._id,
-            IpAddress
-        );
-        if (result) return result;
-        throw new BadRequestException('User not found');
     }
 
     // ---------- PASSWORD PROTECTION ----------

@@ -4,7 +4,6 @@ import {
     LoginGoogleOutput,
     LoginResult,
     LoginUserInput,
-    RWLoginResult,
     SignOutResult,
     VerifyEmailOutput,
     bannedUsernames
@@ -462,20 +461,11 @@ export class AuthService extends CommonServices {
 
             const loggedIn = await this.createJwt(createUser, IpAddress);
 
-            if (body?.isRuffyWorldUser) {
-                this.emailService.sendRWVerifyEmail(
-                    body.email,
-                    createUser._id,
-                    loggedIn.access_token,
-                    createUser.firstName
-                );
-            } else {
-                this.emailService.sendVerifyEmail(
-                    body.email,
-                    createUser._id,
-                    loggedIn.access_token
-                );
-            }
+            this.emailService.sendVerifyEmail(
+                body.email,
+                createUser._id,
+                loggedIn.access_token
+            );
 
             // password protection
 
@@ -1085,38 +1075,6 @@ export class AuthService extends CommonServices {
         }
 
         return undefined;
-    }
-
-    async rw_loginById(id: Types.ObjectId, IpAddress): Promise<RWLoginResult> {
-        const user = await this.userService.userModel.findOne({
-            _id: id
-        });
-        if (!user) {
-            throw new Error('User does not exists.');
-        }
-
-        await this.userService.findOneAndUpdate(
-            { _id: user._id },
-            { lastLogin: new Date() }
-        );
-
-        await this.ipAddressService.create(user._id, IpAddress);
-
-        const jwt = await this.jwtService.signAsync(
-            {
-                email: user.email,
-                _id: user._id
-            },
-            {
-                secret: jwtConstants.secret,
-                expiresIn: jwtConstants.expire
-            }
-        );
-
-        return {
-            user: user,
-            access_token: jwt
-        };
     }
 
     // password protection
