@@ -150,7 +150,9 @@ export class EmailService {
     }
 
     async sendDeleteAccountMail(name, email) {
-        console.log(name, email);
+        console.log(name,email);
+        
+       
 
         // return new Promise((resolve, reject) => {
         //     const mailOptions = {

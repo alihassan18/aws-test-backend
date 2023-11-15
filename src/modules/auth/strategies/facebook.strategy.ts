@@ -33,7 +33,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
         done: (err: Error | null, user?: UserDocument) => void
     ): Promise<void> {
         const { email, first_name, last_name, id } = profile._json;
-        console.log(profile);
 
         // const user = await this.userService.userModel.findOrCreate({
         //     email,

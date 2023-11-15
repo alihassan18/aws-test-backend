@@ -173,8 +173,8 @@ export class PostService {
     async findCollectionPost(
         contract: string,
         chain,
-        name?: string,
-        image?: string
+        // name?: string,
+        // image?: string
     ) {
         let post = await this.postModel
             .findOne({
@@ -198,7 +198,6 @@ export class PostService {
                     banner: collection?.banner
                 }
             });
-            console.log({ name, image });
         }
         return post;
     }
@@ -1318,14 +1317,14 @@ export class PostService {
             repostCount: originalPostt?.repostCount
         });
 
-        const ot = await this.feedsService.createFeed({
-            post: originalPost?._id,
-            type: FeedTypes.REPOST,
-            owner: userId,
-            ...(collection_Id &&
-                !postId && { _collection: new Types.ObjectId(collection_Id) })
-        });
-        console.log(ot);
+        // const ot = await this.feedsService.createFeed({
+        //     post: originalPost?._id,
+        //     type: FeedTypes.REPOST,
+        //     owner: userId,
+        //     ...(collection_Id &&
+        //         !postId && { _collection: new Types.ObjectId(collection_Id) })
+        // });
+        // console.log(ot);
 
         /* Notification */
         const receiver = await this.userModel.findById(originalPost.author);

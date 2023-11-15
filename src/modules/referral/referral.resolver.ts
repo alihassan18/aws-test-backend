@@ -31,8 +31,6 @@ export class ReferralResolver {
 
     @ResolveField(() => WithdrawRequest)
     async userId(@Parent() request: WithdrawRequest) {
-        console.log(request, 'request');
-
         return this.referralService.withdrawRequestModel.findById(
             request?.userId
         );

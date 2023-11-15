@@ -22,8 +22,6 @@ export class WithdrawRequestResolver {
 
     @ResolveField(() => WithdrawRequest)
     async userId(@Parent() request: WithdrawRequest) {
-        console.log(request, 'request');
-
         return this.referralService.userService.userModel.findById(
             request?.userId
         );

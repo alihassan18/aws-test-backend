@@ -370,6 +370,8 @@ export class CollectionsService {
             }
             const t = await this.tradeModel.insertMany(trades);
             console.log(t);
+            
+           
         } catch (error) {
             console.log(error);
         }
@@ -1072,7 +1074,6 @@ export class CollectionsService {
                 updateCollectionInput,
                 { new: true }
             );
-            console.log(clause, updateCollectionInput, 'clause');
             return a;
         } catch (error) {
             console.log(error, 'error');
@@ -1293,7 +1294,6 @@ export class CollectionsService {
         userId: Types.ObjectId,
         collectionId: string
     ): Promise<CollectionDocument> {
-        console.log('call');
         try {
             const collection = await this.collectionModel
                 .findById(collectionId)
@@ -1306,7 +1306,6 @@ export class CollectionsService {
             //delete user.followingTimestamps;
             //delete user.followersTimestamps;
 
-            console.log('user', user);
             const index = collection.followers.findIndex(
                 (id) => id.toString() === userId.toString()
             );
@@ -1460,7 +1459,6 @@ export class CollectionsService {
         contract: string,
         chain: string
     ): Promise<CommonAssetResponse[]> {
-        console.log('Fetching tokens process started');
 
         try {
             const tokens: CommonAssetResponse[] = [];
@@ -1658,7 +1656,7 @@ export class CollectionsService {
         chain: string,
         retryAttempts = 2
     ): Promise<ListingResults['orders'][]> {
-        console.log('Fetching listings process started');
+        
 
         let attempt = 0;
 

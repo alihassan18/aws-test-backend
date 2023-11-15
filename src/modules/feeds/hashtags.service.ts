@@ -388,7 +388,6 @@ export class HashtagsService {
                     }
             }
         ]);
-        console.log(posts, 'postspostsposts', hashtag);
 
         return posts;
     }
