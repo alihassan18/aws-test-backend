@@ -4,15 +4,15 @@ import * as i18n from 'i18n';
 
 @Injectable()
 export class LanguageMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: NextFunction) {
-    const userLanguage = req.headers['accept-language'] || 'en';
-    i18n.configure({
-      locales: ['en', 'es'],
-      defaultLocale: 'en',
-      directory: `${__dirname}/../locales`,
-      objectNotation: true,
-    });
-    i18n.setLocale(userLanguage);
-    next();
-  }
+    use(req: Request, res: Response, next: NextFunction) {
+        const userLanguage = req.headers['accept-language'] || 'en';
+        i18n.configure({
+            locales: ['en', 'es'],
+            defaultLocale: 'en',
+            directory: `${__dirname}/../locales`,
+            objectNotation: true
+        });
+        i18n.setLocale(userLanguage);
+        next();
+    }
 }
