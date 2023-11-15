@@ -102,7 +102,6 @@ export class LoginResult {
     notAffiliated?: boolean;
 }
 
-
 @ObjectType()
 export class SignOutResult {
     // @Field(() => LoginResult, { nullable: true })

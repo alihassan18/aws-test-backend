@@ -130,7 +130,7 @@ const models = [
     { name: Activity.name, schema: ActivitySchema },
     { name: Sales.name, schema: SalesSchema },
     { name: WithdrawRequest.name, schema: WithdrawRequestSchema },
-    { name: RecentSearch.name, schema: RecentSearchSchema },
+    { name: RecentSearch.name, schema: RecentSearchSchema }
     // { name: Admin.name, schema: AdminSchema },
 ];
 @Module({
