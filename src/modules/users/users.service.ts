@@ -43,6 +43,8 @@ import {
     NotificationType
 } from '../notifications/notifications.enum';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
+import * as i18n from 'i18n';
+
 // import {
 //     ENotificationFromType,
 //     NotificationType
@@ -80,7 +82,7 @@ export class UsersService {
     ) {}
 
     public hideFields =
-        '-email -roles -phoneNumber -lastLogin -invitation_code -login_attempts -lockedAt';
+        '-email -roles -phoneNumber -lastLogin -invitation_code -login_attempts -lockedAt -onesignal_keys';
 
     create(data) {
         return this.userModel.create(data);
@@ -357,7 +359,7 @@ export class UsersService {
                 /^(?![^\s]*https?|www\.)(?=[^\d\s]{1,10}$)[A-Za-z\s]*$/;
 
             if (!nameExp.test(data.firstName) || !nameExp.test(data.lastName)) {
-                throw new Error('Name must be valid ');
+                throw new Error('Name must be valid');
             }
         }
         if (data?.bio?.length >= 300) {
@@ -387,7 +389,7 @@ export class UsersService {
             data?.userName &&
             bannedUsernames.includes(data?.userName?.toLowerCase())
         ) {
-            throw new Error('This username is not allowed.');
+            throw new Error(i18n.__('user.username_not_allowed'));
         }
 
         if (
@@ -399,7 +401,7 @@ export class UsersService {
                 userName: data.userName
             });
             if (isUserNameExist) {
-                throw new Error('Username already in use!');
+                throw new Error(i18n.__('user.username_use'));
             }
             const currentDate = new Date();
             const userNameUpdatedAt = new Date(_user.userNameUpdateAt);
@@ -414,7 +416,7 @@ export class UsersService {
                     { new: true }
                 );
             } else {
-                throw new Error('Username can only be changed once in 7 days');
+                throw new Error(i18n.__('user.username_use'));
             }
         } else {
             if (data?.onesignal_keys) {

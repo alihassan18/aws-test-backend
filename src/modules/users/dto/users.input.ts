@@ -381,8 +381,8 @@ export class ProfileInput {
 
 @ObjectType()
 export class SearchResult {
-    @Field(() => [User], { nullable: true })
-    users?: [User];
+    @Field(() => [UserProfile], { nullable: true })
+    users?: [UserProfile];
 
     @Field(() => [Hashtag], { nullable: true })
     hashtags?: [Hashtag];

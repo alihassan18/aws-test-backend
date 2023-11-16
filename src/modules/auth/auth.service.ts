@@ -142,7 +142,7 @@ export class AuthService extends CommonServices {
             _id
         });
         if (!user) {
-            throw new Error('User does not exists.');
+            throw new Error(i18n.__('auth.no_email_found'));
         }
         if (user?.isEmailVerified) {
             throw new Error('Email already verified, Please login');
@@ -315,6 +315,15 @@ export class AuthService extends CommonServices {
                         access_token: result.access_token
                     };
                 }
+                if (!result.user?.isEmailVerified) {
+                    await this.emailService.sendVerifyEmail(
+                        result.user.email,
+                        result.user._id,
+                        result.access_token
+                    );
+                    throw new Error('We have sent a verification email. Please verify your email');
+                }
+
                 return { ...result, notAffiliated: false };
             }
         } else {
@@ -495,7 +504,7 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(i18n.__('auth.no_email_found'));
         }
         const { _id } = user;
         const verification = await this.verificationModel.findOne({
@@ -539,7 +548,7 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email: email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(i18n.__('auth.no_email_found'));
         }
 
         const verification = await this.verificationService.findByUserId(
@@ -623,7 +632,7 @@ export class AuthService extends CommonServices {
                 throw new Error(i18n.__('auth.incorrect_pin'));
             }
         } else {
-            throw new Error('No user found on that email');
+            throw new Error(i18n.__('auth.no_email_found'));
         }
     }
 
@@ -632,7 +641,7 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email: email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(i18n.__('auth.no_email_found'));
         }
         const payload = {
             userId: user._id,
@@ -827,8 +836,8 @@ export class AuthService extends CommonServices {
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
                     message: updated.settings.twoFa
-                        ? this.messages.faSuccessfully
-                        : this.messages.faSuccessfullyRemove,
+                        ? i18n.__('auth.fa_successfully')
+                        : i18n.__('auth.fa_successfully_remove'),
                     receiver: user._id
                 });
 
@@ -838,8 +847,8 @@ export class AuthService extends CommonServices {
                     success: true,
                     token: result.access_token,
                     message: updated.settings.twoFa
-                        ? this.messages.faSuccessfully
-                        : this.messages.faSuccessfullyRemove,
+                        ? i18n.__('auth.fa_successfully')
+                        : i18n.__('auth.fa_successfully_remove'),
                     status: updated.settings.twoFa
                 };
             }
@@ -906,14 +915,14 @@ export class AuthService extends CommonServices {
                     );
                     return result;
                 } else {
-                    throw new Error('Code is not valid. Please try again');
+                    throw new Error(i18n.__('auth.code_unvalid'));
                 }
             } else {
                 throw new Error('Base32 secret is not valid. Please try again');
             }
         } catch (error) {
             console.log(error, 'error in 3fa  validate');
-            throw new Error('Code is not valid. Please try again');
+            throw new Error(i18n.__('auth.code_unvalid'));
         }
     }
 
@@ -950,7 +959,7 @@ export class AuthService extends CommonServices {
         );
 
         if (!passwordsMatch) {
-            throw new Error('Current password is incorrect');
+            throw new Error(i18n.__('auth.current_password_incorrect'));
         }
 
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -971,25 +980,25 @@ export class AuthService extends CommonServices {
 
     async isUsernameAvailable(userName: string) {
         if (bannedUsernames.includes(userName?.toLowerCase())) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: i18n.__('auth.available') };
         }
 
         const isAvailable = await this.userService.findOne({
             userName: { $regex: `^${userName}$`, $options: 'i' }
         });
         if (isAvailable) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: i18n.__('auth.available') };
         } else {
-            return { success: false, message: 'Not available' };
+            return { success: false, message: i18n.__('auth.not_available') };
         }
     }
 
     async isEmailAvailable(email: string) {
         const isAvailable = await this.userService.findOne({ email });
         if (isAvailable) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: i18n.__('auth.available') };
         } else {
-            return { success: false, message: 'Not available' };
+            return { success: false, message: i18n.__('auth.not_available') };
         }
     }
 
@@ -1118,9 +1127,13 @@ export class AuthService extends CommonServices {
                 });
             }
 
+            if (!result.user?.isEmailVerified) {
+                throw new Error('We have sent a verification email. Please verify your email');
+            }
+
             return result;
         } else {
-            throw new Error('This code is not valid');
+            throw new Error(i18n.__('auth.unvalid'));
         }
     }
 }
