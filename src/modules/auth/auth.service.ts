@@ -469,11 +469,11 @@ export class AuthService extends CommonServices {
 
             const loggedIn = await this.createJwt(createUser, IpAddress);
 
-            this.emailService.sendVerifyEmail(
-                body.email,
-                createUser._id,
-                loggedIn.access_token
-            );
+            // this.emailService.sendVerifyEmail(
+            //     body.email,
+            //     createUser._id,
+            //     loggedIn.access_token
+            // );
 
             // password protection
 
@@ -494,7 +494,7 @@ export class AuthService extends CommonServices {
 
             return {
                 // user: loggedIn,
-                message: this.messages.verificationEmail,
+                // message: this.messages.verificationEmail,
                 access_token: loggedIn.access_token
             };
         } catch (error) {
@@ -1130,6 +1130,11 @@ export class AuthService extends CommonServices {
             }
 
             if (!result.user?.isEmailVerified) {
+                await this.emailService.sendVerifyEmail(
+                    result.user.email,
+                    result.user._id,
+                    result.access_token
+                );
                 throw new Error(
                     'We have sent a verification email. Please verify your email'
                 );
