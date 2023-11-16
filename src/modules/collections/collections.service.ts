@@ -2026,4 +2026,17 @@ export class CollectionsService {
             console.log(error);
         }
     }
+
+    async checkIfCollectionCreated(userId: Types.ObjectId): Promise<boolean> {
+        try {
+            const collection = await this.collectionModel
+                .findOne({ creator: userId })
+                .exec();
+
+            return !!collection; // Using double negation to convert to boolean
+        } catch (error) {
+            console.error('Error occurred in checkIfCollectionCreated:', error);
+            return false;
+        }
+    }
 }
