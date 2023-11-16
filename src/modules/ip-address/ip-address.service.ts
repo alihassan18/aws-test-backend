@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IPAddress, IPAddressDocument } from './entities/ip-address.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class IpAddressService {
@@ -10,7 +10,7 @@ export class IpAddressService {
         readonly IPAddressModel: Model<IPAddressDocument>
     ) {}
 
-    async create(user: string, ipAddress?: string) {
+    async create(user: Types.ObjectId, ipAddress?: string) {
         try {
             if (!ipAddress) return;
 
