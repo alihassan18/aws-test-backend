@@ -36,6 +36,10 @@ export class Collection extends Document {
     @Prop()
     onSaleCount: number;
 
+    @Field(() => String, { nullable: true })
+    @Prop()
+    currency: string;
+
     @Field(() => Float, { nullable: true })
     @Prop()
     token_count: number;

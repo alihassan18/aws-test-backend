@@ -20,6 +20,12 @@ export class CreateCollectionInput {
     image: string;
 
     @Field(() => String, {
+        description: 'Currency name field',
+        nullable: true
+    })
+    currency: string;
+
+    @Field(() => String, {
         description: 'Name field (placeholder)',
         nullable: true
     })
