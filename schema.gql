@@ -2046,6 +2046,9 @@ input CreateCollectionInput {
   """Name field (placeholder)"""
   image: String
 
+  """Currency name field"""
+  currency: String
+
   """Name field (placeholder)"""
   banner: String
 
@@ -2054,9 +2057,6 @@ input CreateCollectionInput {
 
   """Contract address field (placeholder)"""
   deploy_block_number: Int
-
-  """Currency name field"""
-  currency: String
 
   """Chain name field (placeholder)"""
   chain: String!
@@ -2115,6 +2115,9 @@ input UpdateCollectionInput {
   """Name field (placeholder)"""
   image: String
 
+  """Currency name field"""
+  currency: String
+
   """Name field (placeholder)"""
   banner: String
 
@@ -2123,9 +2126,6 @@ input UpdateCollectionInput {
 
   """Contract address field (placeholder)"""
   deploy_block_number: Int
-
-  """Currency name field"""
-  currency: String
 
   """Chain name field (placeholder)"""
   chain: String

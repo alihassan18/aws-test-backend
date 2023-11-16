@@ -404,33 +404,74 @@ export class ReferralService {
                     ourCommission: '$salesInfo.ourCommission' // This should be calculated based on actual data
                 }
             },
+            // {
+            //   $group: {
+            //     _id: null,
+            //     allReferral: {
+            //       $push: {
+            //         user: "$user",
+            //         wallets: "$wallets",
+            //         buys: "$buys",
+            //         totalBuyVolume: "$totalBuyVolume",
+            //         ourCommission: "$ourCommission",
+            //         affiliateLevel: "$affiliateLevel",
+            //         yourCommission: "$yourCommission",
+            //         referral: "$referral",
+            //         volume: "$volume",
+            //       },
+            //     },
+            //   },
+            // },
+            //  {
+            //   $project: {
+            //     _id: 0,
+            //     allReferral: 1,
+            //   },
+            // }
             {
                 $group: {
-                    _id: null,
-                    allReferral: {
-                        $push: {
-                            user: '$user',
-                            wallets: '$wallets',
-                            buys: '$buys',
-                            totalBuyVolume: '$totalBuyVolume',
-                            ourCommission: '$ourCommission',
-                            affiliateLevel: '$affiliateLevel',
-                            yourCommission: '$yourCommission',
-                            referral: '$referral',
-                            volume: '$volume'
-                        }
+                    _id: '$user._id',
+                    user: {
+                        $first: '$user'
+                    },
+                    wallets: {
+                        $push: '$wallets'
+                    },
+                    buys: {
+                        $sum: '$buys'
+                    },
+                    totalBuyVolume: {
+                        $sum: '$volume'
+                    },
+                    ourCommission: {
+                        $sum: '$ourCommission'
+                    },
+                    affiliateLevel: {
+                        $first: '$affiliateLevel'
+                    },
+                    yourCommission: {
+                        $sum: '$yourCommission'
+                    },
+                    referral: {
+                        $first: '$referral'
                     }
                 }
             },
             {
                 $project: {
-                    _id: 0,
-                    allReferral: 1
+                    user: 1,
+                    wallets: 1,
+                    buys: 1,
+                    totalBuyVolume: 1,
+                    ourCommission: 1,
+                    affiliateLevel: 1,
+                    yourCommission: 1,
+                    referral: 1
                 }
             }
         ]);
 
-        return allReferral[0]?.allReferral || [];
+        return allReferral;
         // return this.userService.userModel.find({ referral: id });
     }
     async userRewards(id: Types.ObjectId) {
