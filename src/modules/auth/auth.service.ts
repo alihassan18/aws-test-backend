@@ -321,7 +321,9 @@ export class AuthService extends CommonServices {
                         result.user._id,
                         result.access_token
                     );
-                    throw new Error('We have sent a verification email. Please verify your email');
+                    throw new Error(
+                        'We have sent a verification email. Please verify your email'
+                    );
                 }
 
                 return { ...result, notAffiliated: false };
@@ -1128,7 +1130,9 @@ export class AuthService extends CommonServices {
             }
 
             if (!result.user?.isEmailVerified) {
-                throw new Error('We have sent a verification email. Please verify your email');
+                throw new Error(
+                    'We have sent a verification email. Please verify your email'
+                );
             }
 
             return result;

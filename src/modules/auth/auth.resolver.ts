@@ -23,7 +23,6 @@ import { ContextProps } from 'src/interfaces/common.interface';
 import { IpAddress } from './dto/create-auth.input';
 import * as i18n from 'i18n';
 
-
 @Resolver(() => Auth)
 export class AuthResolver extends CommonServices {
     constructor(private readonly authService: AuthService) {
@@ -248,7 +247,7 @@ export class AuthResolver extends CommonServices {
     }
 
     // ---------- PASSWORD PROTECTION ----------
-    
+
     @Mutation(() => LoginResult)
     @UseGuards(AuthGuard)
     async invitationCodeVerify(
