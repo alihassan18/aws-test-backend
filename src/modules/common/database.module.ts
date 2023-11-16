@@ -78,10 +78,6 @@ import {
     HiddenTokensSchema
 } from '../nfts/entities/nft.hidden.entity';
 import {
-    InvitationCode,
-    InvitationCodeSchema
-} from '../invitation_codes/entities/invitation_code.entity';
-import {
     RecentSearch,
     RecentSearchSchema
 } from '../recent_searches/entities/recent_search.entity';
@@ -126,7 +122,6 @@ const models = [
     { name: Nft.name, schema: NftSchema },
     { name: IPAddress.name, schema: IPAddressSchema },
     { name: HiddenTokens.name, schema: HiddenTokensSchema },
-    { name: InvitationCode.name, schema: InvitationCodeSchema },
     { name: Activity.name, schema: ActivitySchema },
     { name: Sales.name, schema: SalesSchema },
     { name: WithdrawRequest.name, schema: WithdrawRequestSchema },

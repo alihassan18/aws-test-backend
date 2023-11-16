@@ -37,7 +37,6 @@ import { HistoryModule } from './modules/history/history.module';
 import { EventsModule } from './modules/events/events.module';
 // import { ContractEventsModule } from './modules/contract-events/contract-events.module';
 import { IpAddressModule } from './modules/ip-address/ip-address.module';
-import { InvitationCodesModule } from './modules/invitation_codes/invitation_codes.module';
 import { RecentSearchesModule } from './modules/recent_searches/recent_searches.module';
 import { ActivityModule } from './modules/activities/activities.module';
 
@@ -76,7 +75,6 @@ import { ActivityModule } from './modules/activities/activities.module';
         EventsModule,
         // ContractEventsModule
         IpAddressModule,
-        InvitationCodesModule,
         RecentSearchesModule,
         ActivityModule
     ],

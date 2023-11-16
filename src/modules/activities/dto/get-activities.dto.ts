@@ -22,4 +22,10 @@ export class UserProfile {
 
     @Field(() => Boolean, { nullable: true })
     isSCC: boolean;
+
+    @Field(() => Number, { nullable: true })
+    followersCount: number;
+
+    @Field(() => Number, { nullable: true })
+    recentFollowersCount: number;
 }
