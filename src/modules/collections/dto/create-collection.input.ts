@@ -36,12 +36,6 @@ export class CreateCollectionInput {
     })
     deploy_block_number: number;
 
-    @Field(() => String, {
-        description: 'Currency name field',
-        nullable: true
-    })
-    currency: string;
-
     @Field(() => String, { description: 'Chain name field (placeholder)' })
     chain: string;
 
