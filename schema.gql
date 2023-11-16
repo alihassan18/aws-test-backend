@@ -1615,6 +1615,7 @@ type Query {
 
   """Search users who have created a collection"""
   getMostViewedCollections: [Collection!]
+  checkIfCollectionCreated: Boolean
   isUsernameAvailable(userName: String!): VerifyEmailOutput!
   isEmailAvailable(email: String!): VerifyEmailOutput!
   listings(query: FindListingsQuery!): ListingsResponse!
