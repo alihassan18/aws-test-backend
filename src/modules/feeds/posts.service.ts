@@ -1522,7 +1522,7 @@ export class PostService {
         accessToken: string,
         accessSecret: string
     ): Promise<void> {
-        const client = new TwitterApi({
+        let client = new TwitterApi({
             appKey: process.env.TWITTER_CONSUMER_KEY,
             appSecret: process.env.TWITTER_CONSUMER_SECRET,
             // appKey: 'RdKeJZgn21yOyP5aKt8piFvWg',
@@ -1532,6 +1532,27 @@ export class PostService {
         });
 
         try {
+
+            const expired = await this.validateTwitterAccessToken(
+                accessToken,
+                accessSecret
+            );
+
+            if(expired) { // If access token is expired.
+                const { client: refreshedClient, accessToken: newAccessToken, refreshToken: newRefreshToken } = await client.refreshOAuth2Token(accessSecret);
+                
+                /* Update user collection */
+                await this.userService.findOneAndUpdate({twitterAccessToken: accessToken} , {
+                    twitterAccessToken: newAccessToken,
+                    twitterAccessSecret: newRefreshToken
+                });
+                
+                client = refreshedClient;
+                accessToken = newAccessToken;
+                accessSecret = newRefreshToken;
+                
+            }
+
             const mediaIds: string[] = [];
 
             // Upload each image using the uploadMedia() method
