@@ -233,7 +233,7 @@ export class EventsArbitrumGateway implements OnModuleInit, OnModuleDestroy {
             ]);
 
             if (!collection) {
-                console.log('This collection is not exists');
+                /* console.log('This collection is not exists'); */
 
                 return;
             }
