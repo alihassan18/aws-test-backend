@@ -21,7 +21,7 @@ import { AuthGuard } from './auth.guard';
 import { ContextProps } from 'src/interfaces/common.interface';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IpAddress } from './dto/create-auth.input';
-import * as i18n from 'i18n';
+import { translate } from 'src/common/translations';
 
 @Resolver(() => Auth)
 export class AuthResolver extends CommonServices {
@@ -144,7 +144,7 @@ export class AuthResolver extends CommonServices {
             userId: ctx.req.user._id
         });
         if (response?.success) return response;
-        throw new BadRequestException(i18n.__('auth.code_unvalid'));
+        throw new BadRequestException(translate('auth.code_unvalid'));
     }
 
     // --------- 2FA LOGIN -------------
@@ -186,7 +186,7 @@ export class AuthResolver extends CommonServices {
         );
 
         if (response) return response;
-        throw new BadRequestException(i18n.__('auth.code_unvalid'));
+        throw new BadRequestException(translate('auth.code_unvalid'));
     }
 
     // --------- DELETE ACCOUNT -------------
@@ -261,7 +261,7 @@ export class AuthResolver extends CommonServices {
             IpAddress
         );
         if (response) return response;
-        throw new BadRequestException(i18n.__('auth.unvalid'));
+        throw new BadRequestException(translate('auth.unvalid'));
     }
 }
 console.log(IpAddress);
