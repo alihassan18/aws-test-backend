@@ -424,8 +424,7 @@ export class AuthService extends CommonServices {
             scc_status: u.scc_status,
             invitation_code: u.invitation_code,
             onesignal_keys: u.onesignal_keys,
-            userNameUpdateAt:u.userNameUpdateAt
-
+            userNameUpdateAt: u.userNameUpdateAt
         };
 
         return {
@@ -1141,9 +1140,7 @@ export class AuthService extends CommonServices {
                     result.user._id,
                     result.access_token
                 );
-                throw new Error(
-                    translate('auth.verification_email_sent')
-                );
+                throw new Error(translate('auth.verification_email_sent'));
             }
 
             return result;
