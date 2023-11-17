@@ -1081,6 +1081,15 @@ export class AuthService extends CommonServices {
 
     // password protection
     async invitationCodeVerify(id, code, IpAddress) {
+        let IsAffiliatedUser = await this.userService.findOne({
+            _id: id,
+            affiliatedUser: true
+        });
+        if (IsAffiliatedUser) {
+            throw new Error(
+                'We have already sent a verification email. Please verify your email'
+            );
+        }
         const referral = await this.userService.findOne({
             invitation_code: code
         });
