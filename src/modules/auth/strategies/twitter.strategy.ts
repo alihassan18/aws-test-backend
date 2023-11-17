@@ -204,7 +204,12 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     isVerified: user.isVerified,
                     isBlocked: user.isBlocked,
                     isBanned: user.isBanned,
-                    settings: user.settings,
+                    settings: {
+                        ...user.settings,
+                        isLinkedInEnabled: user?.linkedAccessToken
+                            ? true
+                            : false
+                    },
                     isSCC: user.isSCC,
                     verifyStatus: user.verifyStatus,
                     key: user.key,

@@ -44,6 +44,7 @@ import {
 } from '../notifications/notifications.enum';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
 import { translate } from 'src/common/translations';
+// import { AuthService } from '../auth/auth.service';
 
 // import {
 //     ENotificationFromType,
@@ -75,6 +76,7 @@ export class UsersService {
         private readonly scoresService: ScoresService,
         private readonly collectionsService: CollectionsService,
         private readonly nftService: NftsService,
+        // private readonly authService: AuthService,
         @InjectModel(Notification.name)
         private readonly notificationModel: Model<NotificationDocument>,
         @InjectModel(Post.name)
@@ -437,11 +439,6 @@ export class UsersService {
                 );
             }
         }
-    }
-
-    async refetchUser(id: Types.ObjectId) {
-        const refetch = await this.userModel.findById(id);
-        return { user: refetch };
     }
 
     async blockUser(

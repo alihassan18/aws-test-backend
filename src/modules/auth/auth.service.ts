@@ -405,7 +405,10 @@ export class AuthService extends CommonServices {
             isVerified: u.isVerified,
             isBlocked: u.isBlocked,
             isBanned: u.isBanned,
-            settings: u.settings,
+            settings: {
+                ...u.settings,
+                isLinkedInEnabled: u?.linkedAccessToken ? true : false
+            },
             isSCC: u.isSCC,
             verifyStatus: u.verifyStatus,
             key: u.key,
@@ -1149,5 +1152,11 @@ export class AuthService extends CommonServices {
         } else {
             throw new Error(translate('auth.unvalid'));
         }
+    }
+
+    async refetchUser(id: Types.ObjectId) {
+        const refetch = await this.userService.findById(id);
+        const loggedIn = await this.createJwt(refetch);
+        return { user: loggedIn?.user };
     }
 }
