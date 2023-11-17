@@ -43,7 +43,7 @@ import {
     NotificationType
 } from '../notifications/notifications.enum';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
-import * as i18n from 'i18n';
+import { translate } from 'src/common/translations';
 
 // import {
 //     ENotificationFromType,
@@ -292,11 +292,7 @@ export class UsersService {
             verificationTypes.TWO_FA
         );
 
-        return await this.emailService.sendVerificationCode(
-            email,
-            code,
-            firstName
-        );
+        return this.emailService.sendVerificationCode(email, code, firstName);
     }
 
     async changeSettings(userId: Types.ObjectId, data: SettingsInput) {
@@ -362,7 +358,7 @@ export class UsersService {
                 throw new Error('Name must be valid');
             }
         }
-        if (data?.bio?.length >= 300) {
+        if (data?.bio?.length > 301) {
             throw new Error('Bio must be at least 300 characters');
         }
         if (
@@ -389,7 +385,7 @@ export class UsersService {
             data?.userName &&
             bannedUsernames.includes(data?.userName?.toLowerCase())
         ) {
-            throw new Error(i18n.__('user.username_not_allowed'));
+            throw new Error(translate('user.username_not_allowed'));
         }
 
         if (
@@ -401,7 +397,7 @@ export class UsersService {
                 userName: data.userName
             });
             if (isUserNameExist) {
-                throw new Error(i18n.__('user.username_use'));
+                throw new Error(translate('user.username_use'));
             }
             const currentDate = new Date();
             const userNameUpdatedAt = new Date(_user.userNameUpdateAt);
@@ -412,11 +408,11 @@ export class UsersService {
             if (daysDifference >= 7) {
                 return this.userModel.findByIdAndUpdate(
                     id,
-                    { $set: { ...data } },
+                    { $set: { ...data, userNameUpdateAt: new Date() } },
                     { new: true }
                 );
             } else {
-                throw new Error(i18n.__('user.username_use'));
+                throw new Error(translate('user.username_7daychange'));
             }
         } else {
             if (data?.onesignal_keys) {
@@ -434,10 +430,7 @@ export class UsersService {
                     id,
                     {
                         $set: {
-                            ...data,
-                            ...(data.userName && {
-                                userNameUpdateAt: new Date()
-                            })
+                            ...data
                         }
                     },
                     { new: true }
@@ -923,8 +916,7 @@ export class UsersService {
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        const SevenDaysAgoInSeconds = Math.floor(sevenDaysAgo.getTime() / 1000);
-        console.log(SevenDaysAgoInSeconds, 'SevenDaysAgoInSeconds');
+        // const SevenDaysAgoInSeconds = Math.floor(sevenDaysAgo.getTime() / 1000);
 
         // await this.tokenModel
         //     .aggregate([
