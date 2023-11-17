@@ -1081,7 +1081,7 @@ export class AuthService extends CommonServices {
 
     // password protection
     async invitationCodeVerify(id, code, IpAddress) {
-        let IsAffiliatedUser = await this.userService.findOne({
+        const IsAffiliatedUser = await this.userService.findOne({
             _id: id,
             affiliatedUser: true
         });
