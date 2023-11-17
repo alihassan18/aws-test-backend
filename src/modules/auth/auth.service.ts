@@ -415,7 +415,7 @@ export class AuthService extends CommonServices {
             country: u.country,
             followingHashtags: u.followingHashtags,
             twitterId: u.twitterId,
-            isLinkedInConnected: u.isLinkedInConnected,
+            isLinkedInConnected: u.linkedAccessToken ? true : false /* u.isLinkedInConnected */,
             followingCollections: u.followingCollections,
             backgroundTheme: u.backgroundTheme,
             blockedUsers: u.blockedUsers,
