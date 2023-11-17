@@ -1532,25 +1532,31 @@ export class PostService {
         });
 
         try {
-
             const expired = await this.validateTwitterAccessToken(
                 accessToken,
                 accessSecret
             );
 
-            if(expired) { // If access token is expired.
-                const { client: refreshedClient, accessToken: newAccessToken, refreshToken: newRefreshToken } = await client.refreshOAuth2Token(accessSecret);
-                
+            if (expired) {
+                // If access token is expired.
+                const {
+                    client: refreshedClient,
+                    accessToken: newAccessToken,
+                    refreshToken: newRefreshToken
+                } = await client.refreshOAuth2Token(accessSecret);
+
                 /* Update user collection */
-                await this.userService.findOneAndUpdate({twitterAccessToken: accessToken} , {
-                    twitterAccessToken: newAccessToken,
-                    twitterAccessSecret: newRefreshToken
-                });
-                
+                await this.userService.findOneAndUpdate(
+                    { twitterAccessToken: accessToken },
+                    {
+                        twitterAccessToken: newAccessToken,
+                        twitterAccessSecret: newRefreshToken
+                    }
+                );
+
                 client = refreshedClient;
                 accessToken = newAccessToken;
                 accessSecret = newRefreshToken;
-                
             }
 
             const mediaIds: string[] = [];
