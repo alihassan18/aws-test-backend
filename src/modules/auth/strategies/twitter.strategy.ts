@@ -222,7 +222,8 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     points: user.points,
                     scc_status: user.scc_status,
                     invitation_code: user.invitation_code,
-                    onesignal_keys: user.onesignal_keys
+                    onesignal_keys: user.onesignal_keys,
+                    userNameUpdateAt:user.userNameUpdateAt
                 };
 
                 done(null, {

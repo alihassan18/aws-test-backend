@@ -17,11 +17,16 @@
 		"fa_successfully": "Your two-factor authentication code has been successfully verified",
 		"fa_successfully_remove": "Your two-factor authentication code has been successfully removed",
 		"no_email_found": "No user found with this email",
-		"current_password_incorrect": "Current password is incorrect"
+		"current_password_incorrect": "Current password is incorrect",
+		"email_verified": "Email already verified, Please login",
+		"successfully_verified": "Email successfully verified",
+		"verification_email_sent": "We have sent a verification email. Please verify your email",
+		"verification_email_already_sent": "We have already sent a verification email. Please verify your email"
 	},
 	"user": {
 		"username_use": "Username already in use!",
 		"username_not_allowed": "This username is not allowed",
 		"username_7daychange": "Username can only be changed once in 7 days"
-	}
+	},
+	"notification": {}
 }
