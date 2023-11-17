@@ -214,7 +214,9 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     country: user.country,
                     followingHashtags: user.followingHashtags,
                     twitterId: user.twitterId,
-                    isLinkedInConnected: user.isLinkedInConnected,
+                    isLinkedInConnected: user.linkedAccessToken
+                        ? true
+                        : false /* user.isLinkedInConnected */,
                     followingCollections: user.followingCollections,
                     backgroundTheme: user.backgroundTheme,
                     blockedUsers: user.blockedUsers,
