@@ -26,7 +26,7 @@ import {
     Reaction,
     ReactionDocument
 } from '../reactions/entities/reaction.entity';
-import { countries } from 'src/constants/country.contants';
+// import { countries } from 'src/constants/country.contants';
 import { HashtagCount } from '../feeds/entities/hashcount.entity';
 import { CollectionDocument } from '../collections/entities/collection.entity';
 import { Nft, NftDocument } from '../nfts/entities/nft.entity';
@@ -833,29 +833,34 @@ export class UsersService {
         }
     }
 
-    async kycVerifyCompleted(email: string, status, document) {
+    async kycVerifyCompleted(email: string, status) {
         const checkResult = await this.userModel
             .findOne({ email: email })
             .select('userName isVerified verifyStatus email');
         if (checkResult?.isVerified) {
+            console.log(checkResult, 'checkResult 1');
+
             return checkResult;
         } else {
-            if (status == 9001) {
-                let data;
+            console.log(status, 'status & email', email);
 
-                if (document.country) {
-                    data = countries.filter((c) => {
-                        if (c.code == document.country) return c;
-                    });
-                }
-                if (data[0]) {
-                    await this.userModel.findOneAndUpdate(
-                        { email: email },
-                        {
-                            country: data[0]
-                        }
-                    );
-                }
+            if (status == 9001) {
+                // let data;
+
+                // if (document.country) {
+                //     data = countries.filter((c) => {
+                //         if (c.code == document.country) return c;
+                //     });
+                // }
+                // if (data[0]) {
+                //     await this.userModel.findOneAndUpdate(
+                //         { email: email },
+                //         {
+                //             country: data[0]
+                //         }
+                //     );
+                // }
+                console.log(checkResult, 'checkResult 2');
 
                 const results = await this.userModel
                     .findOneAndUpdate(
@@ -879,6 +884,8 @@ export class UsersService {
 
                 return results;
             } else {
+                console.log('failed result of veriff');
+
                 const results = await this.userModel
                     .findOneAndUpdate(
                         { email: email },

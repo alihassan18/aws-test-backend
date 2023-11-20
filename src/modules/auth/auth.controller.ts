@@ -354,17 +354,18 @@ export class AuthController {
 
             const verification = updateBody.verification;
 
-            const user = await this.userService.kycVerifyCompleted(
+            await this.userService.kycVerifyCompleted(
                 verification.vendorData,
-                verification.code,
-                verification?.document
+                verification.code
+                // verification?.document
             );
-            return res.json({
-                message: 'user status changed.',
-                user,
-                status: HttpStatus.OK,
-                res
-            });
+            return res.status(200).send();
+            //  res.json({
+            //     message: 'user status changed.',
+            //     user,
+            //     status: HttpStatus.OK,
+            //     res
+            // });
         } catch (error) {
             return res.json({
                 message: 'Internal server Error.',
