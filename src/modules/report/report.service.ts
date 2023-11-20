@@ -41,7 +41,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error(translate("report.already_reported_post"));
+                throw new Error(translate('report.already_reported_post'));
             }
         }
 
@@ -52,7 +52,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error(translate("report.already_reported_user"));
+                throw new Error(translate('report.already_reported_user'));
             }
         }
 
@@ -67,7 +67,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error(translate("report.already_reported_nft"));
+                throw new Error(translate('report.already_reported_nft'));
             }
         }
 
@@ -98,7 +98,9 @@ export class ReportService {
             console.log({ alreadyReported }, data?._collection?.contract);
 
             if (alreadyReported) {
-                throw new Error(translate("report.already_reported_collection"));
+                throw new Error(
+                    translate('report.already_reported_collection')
+                );
             }
         }
 
