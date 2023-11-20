@@ -1536,7 +1536,7 @@ export class PostService {
                 accessToken,
                 accessSecret
             );
-            
+
             if (!valid) {
                 // If access token is expired.
                 const {
