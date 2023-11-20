@@ -838,12 +838,8 @@ export class UsersService {
             .findOne({ email: email })
             .select('userName isVerified verifyStatus email');
         if (checkResult?.isVerified) {
-            console.log(checkResult, 'checkResult 1');
-
             return checkResult;
         } else {
-            console.log(status, 'status & email', email);
-
             if (status == 9001) {
                 // let data;
 
@@ -860,8 +856,6 @@ export class UsersService {
                 //         }
                 //     );
                 // }
-                console.log(checkResult, 'checkResult 2');
-
                 const results = await this.userModel
                     .findOneAndUpdate(
                         { email: email },
@@ -880,12 +874,8 @@ export class UsersService {
                     message: 'Your account has been KYC Verified',
                     receiver: results._id
                 });
-                console.log(results, 'result of veriff');
-
                 return results;
             } else {
-                console.log('failed result of veriff');
-
                 const results = await this.userModel
                     .findOneAndUpdate(
                         { email: email },
