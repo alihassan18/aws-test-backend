@@ -1088,7 +1088,7 @@ export class UsersService {
                         scc_status: 'PENDING'
                     }
                 });
-                return { message: 'Applied successfully', success: true };
+                return { message: translate("messages.applied"), success: true };
             } else {
                 return null;
             }
@@ -1119,7 +1119,7 @@ export class UsersService {
                     message: 'You have become a Content Creater Badge!',
                     receiver: result[0]?._id
                 });
-                return { message: 'Applied successfully', success: true };
+                return { message: translate("messages.applied"), success: true };
             } else {
                 return null;
             }

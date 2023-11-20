@@ -57,6 +57,7 @@ import {
     StakingCollectionDocument
 } from '../staking/entities/collection.staking.entity';
 import { EmailService } from '../shared/services/email.service';
+import axios from 'axios';
 
 @Injectable()
 export class PostService {
@@ -1619,6 +1620,48 @@ export class PostService {
             return !!user; // If the request succeeds, the token is still valid
         } catch (error) {
             return false; // If there's an error, the token has likely expired
+        }
+    }
+
+    async refreshTwitterTokens(
+        refreshToken: string
+    ): Promise<{ newAccessToken: string; newAccessSecret: string }> {
+        console.log(refreshToken);
+
+        try {
+            const encodedCredentials = Buffer.from(
+                `${process.env.TWITTER_CONSUMER_KEY}:${process.env.TWITTER_CONSUMER_SECRET}`
+            ).toString('base64');
+
+            const response = await axios.post(
+                'https://api.twitter.com/oauth2/token',
+                new URLSearchParams({
+                    refresh_token: refreshToken,
+                    grant_type: 'refresh_token'
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        Authorization: `Basic ${encodedCredentials}`
+                    }
+                }
+            );
+
+            const {
+                access_token: newAccessToken,
+                refresh_token: newAccessSecret
+            } = response.data;
+            console.log(response.data);
+
+            return { newAccessToken, newAccessSecret };
+        } catch (error) {
+            console.error(
+                'Error refreshing Twitter tokens:',
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                JSON.stringify(error.response.data)
+            );
+            // throw error; // Handle the error appropriately for your application
         }
     }
 
