@@ -875,6 +875,8 @@ export class UsersService {
                     message: 'Your account has been KYC Verified',
                     receiver: results._id
                 });
+                console.log(results, 'result of veriff');
+
                 return results;
             } else {
                 const results = await this.userModel
