@@ -350,8 +350,8 @@ export class AuthController {
     @Post('kyc-verify-completion')
     async verifyCompletion(@Body() updateBody, @Res() res) {
         try {
-            console.log(updateBody,'response from veriff');
-            
+            console.log(updateBody, 'response from veriff');
+
             const verification = updateBody.verification;
 
             const user = await this.userService.kycVerifyCompleted(
