@@ -1532,12 +1532,12 @@ export class PostService {
         });
 
         try {
-            const expired = await this.validateTwitterAccessToken(
+            const valid = await this.validateTwitterAccessToken(
                 accessToken,
                 accessSecret
             );
-
-            if (expired) {
+            
+            if (!valid) {
                 // If access token is expired.
                 const {
                     client: refreshedClient,
