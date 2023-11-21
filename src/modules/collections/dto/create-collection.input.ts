@@ -20,6 +20,12 @@ export class CreateCollectionInput {
     image: string;
 
     @Field(() => String, {
+        description: 'Currency name field',
+        nullable: true
+    })
+    currency: string;
+
+    @Field(() => String, {
         description: 'Name field (placeholder)',
         nullable: true
     })
@@ -35,12 +41,6 @@ export class CreateCollectionInput {
         nullable: true
     })
     deploy_block_number: number;
-
-    @Field(() => String, {
-        description: 'Currency name field',
-        nullable: true
-    })
-    currency: string;
 
     @Field(() => String, { description: 'Chain name field (placeholder)' })
     chain: string;

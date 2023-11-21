@@ -252,7 +252,7 @@ export class PostResolver {
     @Query(() => Post, { name: 'postOfCollection', nullable: true })
     findCollectionPost(
         @Args('contract', { type: () => String }) contract: string,
-        @Args('chain', { type: () => String }) chain: string,
+        @Args('chain', { type: () => String }) chain: string
         // @Args('name', { type: () => String, nullable: true }) name: string,
         // @Args('image', { type: () => String, nullable: true }) image: string
     ) {

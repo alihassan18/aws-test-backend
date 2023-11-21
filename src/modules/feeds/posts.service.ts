@@ -1387,7 +1387,7 @@ export class PostService {
                     originalPost._id,
                     originalPost.text,
                     [receiver.email],
-                    [receiver._id]
+                    [receiver._id?.toString()]
                 );
         }
 
@@ -1571,7 +1571,7 @@ export class PostService {
             console.log('Tweet posted successfully!');
         } catch (error) {
             console.error('Error posting tweet:', error);
-            throw new Error('Failed to share airdrop on Twitter.');
+            // throw new Error('Failed to share airdrop on Twitter.');
         }
     }
 
