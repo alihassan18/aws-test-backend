@@ -1319,14 +1319,13 @@ export class PostService {
             repostCount: originalPostt?.repostCount
         });
 
-        // const ot = await this.feedsService.createFeed({
-        //     post: originalPost?._id,
-        //     type: FeedTypes.REPOST,
-        //     owner: userId,
-        //     ...(collection_Id &&
-        //         !postId && { _collection: new Types.ObjectId(collection_Id) })
-        // });
-        // console.log(ot);
+        await this.feedsService.createFeed({
+            post: originalPost?._id,
+            type: FeedTypes.REPOST,
+            owner: userId,
+            ...(collection_Id &&
+                !postId && { _collection: new Types.ObjectId(collection_Id) })
+        });
 
         /* Notification */
         const receiver = await this.userModel.findById(originalPost.author);
@@ -1389,7 +1388,7 @@ export class PostService {
                     originalPost._id,
                     originalPost.text,
                     [receiver.email],
-                    [receiver._id]
+                    [receiver._id?.toString()]
                 );
         }
 
@@ -1600,7 +1599,7 @@ export class PostService {
             console.log('Tweet posted successfully!');
         } catch (error) {
             console.error('Error posting tweet:', error);
-            throw new Error('Failed to share airdrop on Twitter.');
+            // throw new Error('Failed to share airdrop on Twitter.');
         }
     }
 

@@ -24,7 +24,7 @@ export type UserDocument = User &
 @ObjectType()
 export class User extends Document {
     @Field(() => ID)
-    _id: string;
+    _id: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ required: true, validate: { validator: validateName } })

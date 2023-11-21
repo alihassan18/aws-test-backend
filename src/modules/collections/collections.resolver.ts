@@ -46,6 +46,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../users/entities/user.entity';
 import { NotificationService } from '../notifications/notification.service';
 import { ScoresService } from '../scores/scores.service';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 @Resolver(() => Collection)
 export class CollectionsResolver {
     // eslint-disable-next-line no-unused-vars
@@ -427,6 +428,16 @@ export class CollectionsResolver {
     async getMostViewedCollections(): Promise<CollectionDocument[]> {
         // Use your collectionsService to find the collections based on the creatorName
         return this.collectionsService.getMostViewedCollections();
+    }
+
+    @UseGuards(AuthGuard)
+    @Query(() => Boolean, {
+        nullable: true
+    })
+    async checkIfCollectionCreated(
+        @CurrentUser() user: User
+    ): Promise<boolean> {
+        return this.collectionsService.checkIfCollectionCreated(user?._id);
     }
 
     // @Query(() => User, {
