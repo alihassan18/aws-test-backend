@@ -26,7 +26,7 @@ import {
     Reaction,
     ReactionDocument
 } from '../reactions/entities/reaction.entity';
-import { countries } from 'src/constants/country.contants';
+// import { countries } from 'src/constants/country.contants';
 import { HashtagCount } from '../feeds/entities/hashcount.entity';
 import { CollectionDocument } from '../collections/entities/collection.entity';
 import { Nft, NftDocument } from '../nfts/entities/nft.entity';
@@ -833,7 +833,7 @@ export class UsersService {
         }
     }
 
-    async kycVerifyCompleted(email: string, status, document) {
+    async kycVerifyCompleted(email: string, status) {
         const checkResult = await this.userModel
             .findOne({ email: email })
             .select('userName isVerified verifyStatus email');
@@ -841,22 +841,21 @@ export class UsersService {
             return checkResult;
         } else {
             if (status == 9001) {
-                let data;
+                // let data;
 
-                if (document.country) {
-                    data = countries.filter((c) => {
-                        if (c.code == document.country) return c;
-                    });
-                }
-                if (data[0]) {
-                    await this.userModel.findOneAndUpdate(
-                        { email: email },
-                        {
-                            country: data[0]
-                        }
-                    );
-                }
-
+                // if (document.country) {
+                //     data = countries.filter((c) => {
+                //         if (c.code == document.country) return c;
+                //     });
+                // }
+                // if (data[0]) {
+                //     await this.userModel.findOneAndUpdate(
+                //         { email: email },
+                //         {
+                //             country: data[0]
+                //         }
+                //     );
+                // }
                 const results = await this.userModel
                     .findOneAndUpdate(
                         { email: email },
@@ -1089,7 +1088,10 @@ export class UsersService {
                         scc_status: 'PENDING'
                     }
                 });
-                return { message: 'Applied successfully', success: true };
+                return {
+                    message: translate('messages.applied'),
+                    success: true
+                };
             } else {
                 return null;
             }
@@ -1120,7 +1122,10 @@ export class UsersService {
                     message: 'You have become a Content Creater Badge!',
                     receiver: result[0]?._id
                 });
-                return { message: 'Applied successfully', success: true };
+                return {
+                    message: translate('messages.applied'),
+                    success: true
+                };
             } else {
                 return null;
             }

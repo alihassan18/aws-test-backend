@@ -28,5 +28,15 @@
 		"username_not_allowed": "This username is not allowed",
 		"username_7daychange": "Username can only be changed once in 7 days"
 	},
-	"notification": {}
+	"notification": {},
+	"feeds": {},
+	"report": {
+		"already_reported_post": "You have already reported this post",
+		"already_reported_user": "You have already reported this user",
+		"already_reported_nft": "You have already reported this nft",
+		"already_reported_collection": "You have already reported this collection"
+	},
+	"messages":{
+		"applied":"Applied successfully"
+	}
 }

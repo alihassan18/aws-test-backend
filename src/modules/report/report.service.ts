@@ -9,6 +9,7 @@ import {
     NotificationType
 } from '../notifications/notifications.enum';
 import { CreateReportDto } from './report.dto';
+import { translate } from 'src/common/translations';
 
 @Injectable()
 export class ReportService {
@@ -40,7 +41,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error('You have already reported this post');
+                throw new Error(translate('report.already_reported_post'));
             }
         }
 
@@ -51,7 +52,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error('You have already reported this user');
+                throw new Error(translate('report.already_reported_user'));
             }
         }
 
@@ -66,7 +67,7 @@ export class ReportService {
             });
 
             if (alreadyReported) {
-                throw new Error('You have already reported this nft');
+                throw new Error(translate('report.already_reported_nft'));
             }
         }
 
@@ -97,7 +98,9 @@ export class ReportService {
             console.log({ alreadyReported }, data?._collection?.contract);
 
             if (alreadyReported) {
-                throw new Error('You have already reported this collection');
+                throw new Error(
+                    translate('report.already_reported_collection')
+                );
             }
         }
 
