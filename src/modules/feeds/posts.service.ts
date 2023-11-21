@@ -58,6 +58,7 @@ import {
 } from '../staking/entities/collection.staking.entity';
 import { EmailService } from '../shared/services/email.service';
 import axios from 'axios';
+import { SystemMessages } from '../notifications/entities/notifications.functions';
 
 @Injectable()
 export class PostService {
@@ -928,7 +929,7 @@ export class PostService {
                 this.notificationService.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: `We have removed your post due to malicious activity`,
+                    message: SystemMessages.removed_post,
                     receiver: post.author
                 });
             }

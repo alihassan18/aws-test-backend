@@ -10,6 +10,7 @@ import {
 } from '../notifications/notifications.enum';
 import { CreateReportDto } from './report.dto';
 import { translate } from 'src/common/translations';
+import { SystemMessages } from '../notifications/entities/notifications.functions';
 
 @Injectable()
 export class ReportService {
@@ -128,7 +129,7 @@ export class ReportService {
         this.notificationService.create({
             type: NotificationType.SYSTEM,
             sender: ENotificationFromType.APP,
-            message: 'We have received your report',
+            message: SystemMessages.received_post,
             receiver: reportBy
         });
         return newReport.save();

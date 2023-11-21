@@ -45,6 +45,7 @@ import { ScoresService } from '../scores/scores.service';
 import * as speakeasy from 'speakeasy';
 import * as base32 from 'thirty-two';
 import { translate } from 'src/common/translations';
+import { SystemMessages } from '../notifications/entities/notifications.functions';
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -526,9 +527,7 @@ export class AuthService extends CommonServices {
             }
 
             if (hours < 1) {
-                throw new Error(
-                    'Email already sent, kindly retry after 1 hour.'
-                );
+                throw new Error(translate('auth.email_retry_1hour'));
             }
         }
 
@@ -622,7 +621,8 @@ export class AuthService extends CommonServices {
                 await this.notificationModel.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: translate('auth.password_changed'),
+                    // message: translate('auth.password_changed'),
+                    message: SystemMessages.password_changed,
                     receiver: user._id
                 });
 
@@ -839,8 +839,8 @@ export class AuthService extends CommonServices {
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
                     message: updated.settings.twoFa
-                        ? translate('auth.fa_successfully')
-                        : translate('auth.fa_successfully_remove'),
+                        ? SystemMessages.fa_successfully
+                        : SystemMessages.fa_successfully_remove,
                     receiver: user._id
                 });
 

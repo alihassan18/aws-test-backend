@@ -44,6 +44,7 @@ import {
 } from '../notifications/notifications.enum';
 import { Post, PostDocument } from '../feeds/entities/post.entity';
 import { translate } from 'src/common/translations';
+import { SystemMessages } from '../notifications/entities/notifications.functions';
 // import { AuthService } from '../auth/auth.service';
 
 // import {
@@ -871,7 +872,7 @@ export class UsersService {
                 await this.notificationModel.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: 'Your account has been KYC Verified',
+                    message: SystemMessages.kyc_approved,
                     receiver: results._id
                 });
                 return results;
@@ -1119,7 +1120,7 @@ export class UsersService {
                 await this.notificationModel.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: 'You have become a Content Creater Badge!',
+                    message: SystemMessages.scc_approved,
                     receiver: result[0]?._id
                 });
                 return {
