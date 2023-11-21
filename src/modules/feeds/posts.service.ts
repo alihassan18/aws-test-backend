@@ -1317,15 +1317,14 @@ export class PostService {
             repostCount: originalPostt?.repostCount
         });
 
-        // const ot = await this.feedsService.createFeed({
-        //     post: originalPost?._id,
-        //     type: FeedTypes.REPOST,
-        //     owner: userId,
-        //     ...(collection_Id &&
-        //         !postId && { _collection: new Types.ObjectId(collection_Id) })
-        // });
-        // console.log(ot);
-
+        await this.feedsService.createFeed({
+             post: originalPost?._id,
+             type: FeedTypes.REPOST,
+             owner: userId,
+             ...(collection_Id &&
+                 !postId && { _collection: new Types.ObjectId(collection_Id) })
+        });
+        
         /* Notification */
         const receiver = await this.userModel.findById(originalPost.author);
 
