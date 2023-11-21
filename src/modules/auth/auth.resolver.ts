@@ -21,6 +21,7 @@ import { AuthGuard } from './auth.guard';
 import { ContextProps } from 'src/interfaces/common.interface';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IpAddress } from './dto/create-auth.input';
+import { translate } from 'src/common/translations';
 
 @Resolver(() => Auth)
 export class AuthResolver extends CommonServices {
@@ -143,7 +144,7 @@ export class AuthResolver extends CommonServices {
             userId: ctx.req.user._id
         });
         if (response?.success) return response;
-        throw new BadRequestException('Wrong authentication code');
+        throw new BadRequestException(translate('auth.code_unvalid'));
     }
 
     // --------- 2FA LOGIN -------------
@@ -185,7 +186,7 @@ export class AuthResolver extends CommonServices {
         );
 
         if (response) return response;
-        throw new BadRequestException('Code is not valid. Please try again');
+        throw new BadRequestException(translate('auth.code_unvalid'));
     }
 
     // --------- DELETE ACCOUNT -------------
@@ -246,6 +247,7 @@ export class AuthResolver extends CommonServices {
     }
 
     // ---------- PASSWORD PROTECTION ----------
+
     @Mutation(() => LoginResult)
     @UseGuards(AuthGuard)
     async invitationCodeVerify(
@@ -259,7 +261,7 @@ export class AuthResolver extends CommonServices {
             IpAddress
         );
         if (response) return response;
-        throw new BadRequestException('This code is not valid');
+        throw new BadRequestException(translate('auth.unvalid'));
     }
 }
 console.log(IpAddress);

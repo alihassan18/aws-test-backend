@@ -345,6 +345,8 @@ type UserProfile {
   _id: String
   isVerified: Boolean
   isSCC: Boolean
+  followersCount: Float
+  recentFollowersCount: Float
 }
 
 type LoginResult {
@@ -393,7 +395,7 @@ type Verify2FAOutput {
 }
 
 type SearchResult {
-  users: [User!]
+  users: [UserProfile!]
   hashtags: [Hashtag!]
   hashtagCount: [HashtagCount!]
   collections: [Collection!]
@@ -1266,12 +1268,6 @@ type HiddenTokens {
   tokenId: String
 }
 
-type InvitationCode {
-  user: User!
-  code: String!
-  email: String!
-}
-
 type RecentSearch {
   _id: String
   _collection: Collection
@@ -1702,8 +1698,6 @@ type Query {
   affiliateUsers(search: String): [AffiliateUsers!]!
   histories(query: FindHistoryQuery!): HistoryResponse!
   history(id: Int!): History!
-  invitationCodes: [InvitationCode!]!
-  invitationCode(id: Int!): InvitationCode!
   recentSearches: [RecentSearch!]!
   activities(query: ActivityFilterInput): [Activity!]!
   activity(id: Int!): Activity!
@@ -1967,9 +1961,6 @@ type Mutation {
   createHistory(createHistoryInput: CreateHistoryInput!): History!
   updateHistory(updateHistoryInput: UpdateHistoryInput!): History!
   removeHistory(id: Int!): History!
-  createInvitationCode(createInvitationCodeInput: CreateInvitationCodeInput!): InvitationCode!
-  updateInvitationCode(updateInvitationCodeInput: UpdateInvitationCodeInput!): InvitationCode!
-  removeInvitationCode(id: Int!): InvitationCode!
   createRecentSearch(createRecentSearchInput: CreateRecentSearchInput!): RecentSearch!
   removeRecentSearch(id: String!): RecentSearch!
   removeAllRecentSearch: RecentSearch!
@@ -2584,17 +2575,6 @@ input CreateHistoryInput {
 input UpdateHistoryInput {
   """Example field (placeholder)"""
   exampleField: Int
-  id: Int!
-}
-
-input CreateInvitationCodeInput {
-  code: String!
-  email: String!
-}
-
-input UpdateInvitationCodeInput {
-  code: String
-  email: String
   id: Int!
 }
 

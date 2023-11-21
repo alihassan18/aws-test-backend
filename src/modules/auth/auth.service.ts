@@ -44,7 +44,7 @@ import {
 import { ScoresService } from '../scores/scores.service';
 import * as speakeasy from 'speakeasy';
 import * as base32 from 'thirty-two';
-import * as i18n from 'i18n';
+import { translate } from 'src/common/translations';
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -142,10 +142,10 @@ export class AuthService extends CommonServices {
             _id
         });
         if (!user) {
-            throw new Error('User does not exists.');
+            throw new Error(translate('auth.no_email_found'));
         }
         if (user?.isEmailVerified) {
-            throw new Error('Email already verified, Please login');
+            throw new Error(translate('auth.email_verified'));
         }
         user.isEmailVerified = true;
         await user.save();
@@ -153,7 +153,7 @@ export class AuthService extends CommonServices {
         const result: LoginResult = await this.createJwt(user, IpAddress);
 
         return {
-            message: `Email successfully verified`,
+            message: translate('auth.successfully_verified'),
             success: true,
             loginResult: result
         };
@@ -234,18 +234,18 @@ export class AuthService extends CommonServices {
         if (!userToAttempt) return undefined;
 
         if (userToAttempt.isBlocked) {
-            throw new Error(i18n.__('auth.blocked'));
+            throw new Error(translate('auth.blocked'));
         }
 
         if (userToAttempt.isBanned) {
-            throw new Error(i18n.__('auth.banned'));
+            throw new Error(translate('auth.banned'));
         }
 
         if (userToAttempt.lockedAt) {
             const currentTime = new Date();
             const lockedAtTime = new Date(userToAttempt.lockedAt);
             if (currentTime < lockedAtTime) {
-                throw new Error(i18n.__('auth.account_locked_1hour'));
+                throw new Error(translate('auth.account_locked_1hour'));
             } else {
                 userToAttempt =
                     await this.userService.userModel.findOneAndUpdate(
@@ -315,6 +315,15 @@ export class AuthService extends CommonServices {
                         access_token: result.access_token
                     };
                 }
+                if (!result.user?.isEmailVerified) {
+                    await this.emailService.sendVerifyEmail(
+                        result.user.email,
+                        result.user._id,
+                        result.access_token
+                    );
+                    throw new Error(translate('auth.verification_email_sent'));
+                }
+
                 return { ...result, notAffiliated: false };
             }
         } else {
@@ -341,7 +350,7 @@ export class AuthService extends CommonServices {
                             }
                         }
                     );
-                    throw new Error(i18n.__('auth.account_locked'));
+                    throw new Error(translate('auth.account_locked'));
                 }
             }
         }
@@ -406,7 +415,9 @@ export class AuthService extends CommonServices {
             country: u.country,
             followingHashtags: u.followingHashtags,
             twitterId: u.twitterId,
-            isLinkedInConnected: u.isLinkedInConnected,
+            isLinkedInConnected: u.linkedAccessToken
+                ? true
+                : false /* u.isLinkedInConnected */,
             followingCollections: u.followingCollections,
             backgroundTheme: u.backgroundTheme,
             blockedUsers: u.blockedUsers,
@@ -414,7 +425,8 @@ export class AuthService extends CommonServices {
             points: u.points,
             scc_status: u.scc_status,
             invitation_code: u.invitation_code,
-            onesignal_keys: u.onesignal_keys
+            onesignal_keys: u.onesignal_keys,
+            userNameUpdateAt: u.userNameUpdateAt
         };
 
         return {
@@ -435,7 +447,7 @@ export class AuthService extends CommonServices {
             });
 
             if (isAlreadyUser) {
-                return { message: i18n.__('auth.already_registered') };
+                return { message: translate('auth.already_registered') };
             }
 
             // ------- REFRRAL -------
@@ -458,11 +470,11 @@ export class AuthService extends CommonServices {
 
             const loggedIn = await this.createJwt(createUser, IpAddress);
 
-            this.emailService.sendVerifyEmail(
-                body.email,
-                createUser._id,
-                loggedIn.access_token
-            );
+            // this.emailService.sendVerifyEmail(
+            //     body.email,
+            //     createUser._id,
+            //     loggedIn.access_token
+            // );
 
             // password protection
 
@@ -483,7 +495,7 @@ export class AuthService extends CommonServices {
 
             return {
                 // user: loggedIn,
-                message: this.messages.verificationEmail,
+                // message: this.messages.verificationEmail,
                 access_token: loggedIn.access_token
             };
         } catch (error) {
@@ -495,7 +507,7 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(translate('auth.no_email_found'));
         }
         const { _id } = user;
         const verification = await this.verificationModel.findOne({
@@ -510,7 +522,7 @@ export class AuthService extends CommonServices {
                         new Date(verification.updatedAt).getTime()
                 ) / 36e5;
             if (verification.attempts > 2 && hours < 24) {
-                throw new Error(i18n.__('auth.code_3attemptes'));
+                throw new Error(translate('auth.code_3attemptes'));
             }
 
             if (hours < 1) {
@@ -539,14 +551,14 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email: email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(translate('auth.no_email_found'));
         }
 
         const verification = await this.verificationService.findByUserId(
             user._id
         );
         if (verification.attempts > 2) {
-            throw new Error(i18n.__('auth.code_3attemptes'));
+            throw new Error(translate('auth.code_3attemptes'));
         } else {
             if (verification.code === code) {
                 await this.verificationModel.findOneAndUpdate(
@@ -560,7 +572,7 @@ export class AuthService extends CommonServices {
             } else {
                 verification.attempts = verification.attempts + 1;
                 await verification.save();
-                throw new Error(i18n.__('auth.incorrect_pin'));
+                throw new Error(translate('auth.incorrect_pin'));
             }
         }
     }
@@ -573,7 +585,7 @@ export class AuthService extends CommonServices {
     }) {
         const { email, code, password, confirmPassword } = body;
         if (password !== confirmPassword) {
-            throw new Error(i18n.__('auth.confirm_password'));
+            throw new Error(translate('auth.confirm_password'));
         }
         // if (
         //     !/(?=^.{8,}$)(?=.*\d)(?=.*[!$%^&()_+|~=`{}\[\]:";'<>?,.#@*-\/\\]*)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(
@@ -596,7 +608,7 @@ export class AuthService extends CommonServices {
             });
             if (verification?.attempts > 2) {
                 // && !verification?.isVerified
-                throw new Error(i18n.__('auth.code_3attemptes'));
+                throw new Error(translate('auth.code_3attemptes'));
             }
 
             if (isVerified) {
@@ -610,7 +622,7 @@ export class AuthService extends CommonServices {
                 await this.notificationModel.create({
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
-                    message: i18n.__('auth.password_changed'),
+                    message: translate('auth.password_changed'),
                     receiver: user._id
                 });
 
@@ -620,10 +632,10 @@ export class AuthService extends CommonServices {
                     verification.attempts = verification.attempts + 1;
                     await verification.save();
                 }
-                throw new Error(i18n.__('auth.incorrect_pin'));
+                throw new Error(translate('auth.incorrect_pin'));
             }
         } else {
-            throw new Error('No user found on that email');
+            throw new Error(translate('auth.no_email_found'));
         }
     }
 
@@ -632,7 +644,7 @@ export class AuthService extends CommonServices {
         const user = await this.userService.findOne({ email: email });
 
         if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error(translate('auth.no_email_found'));
         }
         const payload = {
             userId: user._id,
@@ -827,8 +839,8 @@ export class AuthService extends CommonServices {
                     type: NotificationType.SYSTEM,
                     sender: ENotificationFromType.APP,
                     message: updated.settings.twoFa
-                        ? this.messages.faSuccessfully
-                        : this.messages.faSuccessfullyRemove,
+                        ? translate('auth.fa_successfully')
+                        : translate('auth.fa_successfully_remove'),
                     receiver: user._id
                 });
 
@@ -838,8 +850,8 @@ export class AuthService extends CommonServices {
                     success: true,
                     token: result.access_token,
                     message: updated.settings.twoFa
-                        ? this.messages.faSuccessfully
-                        : this.messages.faSuccessfullyRemove,
+                        ? translate('auth.fa_successfully')
+                        : translate('auth.fa_successfully_remove'),
                     status: updated.settings.twoFa
                 };
             }
@@ -906,14 +918,13 @@ export class AuthService extends CommonServices {
                     );
                     return result;
                 } else {
-                    throw new Error('Code is not valid. Please try again');
+                    throw new Error(translate('auth.code_unvalid'));
                 }
             } else {
                 throw new Error('Base32 secret is not valid. Please try again');
             }
         } catch (error) {
-            console.log(error, 'error in 3fa  validate');
-            throw new Error('Code is not valid. Please try again');
+            throw new Error(translate('auth.code_unvalid'));
         }
     }
 
@@ -950,7 +961,7 @@ export class AuthService extends CommonServices {
         );
 
         if (!passwordsMatch) {
-            throw new Error('Current password is incorrect');
+            throw new Error(translate('auth.current_password_incorrect'));
         }
 
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -971,25 +982,25 @@ export class AuthService extends CommonServices {
 
     async isUsernameAvailable(userName: string) {
         if (bannedUsernames.includes(userName?.toLowerCase())) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: translate('auth.available') };
         }
 
         const isAvailable = await this.userService.findOne({
             userName: { $regex: `^${userName}$`, $options: 'i' }
         });
         if (isAvailable) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: translate('auth.available') };
         } else {
-            return { success: false, message: 'Not available' };
+            return { success: false, message: translate('auth.not_available') };
         }
     }
 
     async isEmailAvailable(email: string) {
         const isAvailable = await this.userService.findOne({ email });
         if (isAvailable) {
-            return { success: true, message: 'Already available' };
+            return { success: true, message: translate('auth.available') };
         } else {
-            return { success: false, message: 'Not available' };
+            return { success: false, message: translate('auth.not_available') };
         }
     }
 
@@ -1070,6 +1081,13 @@ export class AuthService extends CommonServices {
 
     // password protection
     async invitationCodeVerify(id, code, IpAddress) {
+        const IsAffiliatedUser = await this.userService.findOne({
+            _id: id,
+            affiliatedUser: true
+        });
+        if (IsAffiliatedUser) {
+            throw new Error(translate('auth.verification_email_already_sent'));
+        }
         const referral = await this.userService.findOne({
             invitation_code: code
         });
@@ -1118,9 +1136,24 @@ export class AuthService extends CommonServices {
                 });
             }
 
+            if (!result.user?.isEmailVerified) {
+                await this.emailService.sendVerifyEmail(
+                    result.user.email,
+                    result.user._id,
+                    result.access_token
+                );
+                throw new Error(translate('auth.verification_email_sent'));
+            }
+
             return result;
         } else {
-            throw new Error('This code is not valid');
+            throw new Error(translate('auth.unvalid'));
         }
+    }
+
+    async refetchUser(id: Types.ObjectId) {
+        const refetch = await this.userService.findById(id);
+        const loggedIn = await this.createJwt(refetch);
+        return { user: loggedIn?.user };
     }
 }

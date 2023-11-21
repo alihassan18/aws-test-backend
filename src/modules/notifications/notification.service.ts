@@ -20,7 +20,7 @@ import {
     generateOnesignalMessage,
     generateOnesignalURL
 } from './entities/notifications.functions';
-import * as i18n from 'i18n';
+import { translate } from 'src/common/translations';
 
 @Injectable()
 export class NotificationService {
@@ -245,9 +245,9 @@ export class NotificationService {
         //     .catch((error) => {
         //         console.error('Notification failed:', error);
         //     });
-        console.log(i18n.__('auth.code_3attemptes'), 'i18ni18ni18n');
+        console.log(translate('auth.code_3attemptes'), 'i18ni18ni18n');
 
-        return i18n.__('auth.code_3attemptes');
+        return translate('auth.code_3attemptes');
         // return 'ok';
     }
 

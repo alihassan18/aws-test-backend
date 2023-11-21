@@ -42,6 +42,7 @@ import {
     CollectionDocument,
     LinkPreview
 } from '../collections/entities/collection.entity';
+import { AuthService } from '../auth/auth.service';
 // import { RestrictGuard } from 'src/helpers/restrict.fields.guard';
 
 @ApiTags('users')
@@ -49,6 +50,7 @@ import {
 export class UsersResolver {
     constructor(
         private readonly usersService: UsersService,
+        private readonly authService: AuthService,
         private readonly hashtagsService: HashtagsService
     ) {}
 
@@ -250,7 +252,7 @@ export class UsersResolver {
         @Context() ctx: ContextProps
     ): Promise<UserRefetchResult> {
         const { _id: userId } = ctx.req.user;
-        return this.usersService.refetchUser(userId);
+        return this.authService.refetchUser(userId);
     }
 
     @Mutation(() => User)
