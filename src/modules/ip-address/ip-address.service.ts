@@ -10,7 +10,7 @@ export class IpAddressService {
         readonly IPAddressModel: Model<IPAddressDocument>
     ) {}
 
-    async create(user: Types.ObjectId, ipAddress?: string) {
+    async create(user: Types.ObjectId | string, ipAddress?: string) {
         try {
             if (!ipAddress) return;
 

@@ -275,3 +275,16 @@ export function hasImageExtension(text) {
 
 export const NotFoundCollectioin =
     'https://res.cloudinary.com/mintstar/image/upload/v1698399995/mintstar/dttttxoezzjglulafecq.png';
+
+export const SystemMessages = {
+    password_changed: 'Your Password has been changed successfully',
+    fa_successfully:
+        'Your two-factor authentication code has been successfully verified',
+    fa_successfully_remove:
+        'Your two-factor authentication code has been successfully removed',
+    joined_via_code: 'has joined via invite code',
+    removed_post: 'We have removed your post due to malicious activity',
+    kyc_approved: 'Your account has been KYC Verified',
+    scc_approved: 'You have become a Content Creater Badge!',
+    received_post: 'We have received your report'
+};

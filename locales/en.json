@@ -21,7 +21,8 @@
 		"email_verified": "Email already verified, Please login",
 		"successfully_verified": "Email successfully verified",
 		"verification_email_sent": "We have sent a verification email. Please verify your email",
-		"verification_email_already_sent": "We have already sent a verification email. Please verify your email"
+		"verification_email_already_sent": "We have already sent a verification email. Please verify your email",
+		"email_retry_1hour": "Email already sent, kindly retry after 1 hour."
 	},
 	"user": {
 		"username_use": "Username already in use!",
@@ -36,7 +37,21 @@
 		"already_reported_nft": "You have already reported this nft",
 		"already_reported_collection": "You have already reported this collection"
 	},
-	"messages":{
-		"applied":"Applied successfully"
+	"notifications": {
+		"reposted_your_post": "has reposted your post",
+		"voted": "has voted on your poll",
+		"mentioned": "has mentioned you in the post",
+		"commented": "has commented on your post",
+		"reacted": "has reacted on your post",
+		"liked": "has liked to your post",
+		"reacted_comment": "has reacted to your comment",
+		"comment_reply": "has replied on your comment",
+		"hashtag": "someone added new post in hashtag",
+		"stage": "is live. Join now!",
+		"following": "has started following you",
+		"followed_created_post":"you followed has created a new post"
+	},
+	"messages": {
+		"applied": "Applied successfully"
 	}
 }
