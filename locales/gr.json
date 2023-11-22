@@ -1,0 +1,57 @@
+{
+	"auth": {
+		"method": "i18n.__('auth.account_locked_1hour')",
+		"code_3attemptes": "Sie haben bereits 3 Versuche unternommen. Bitte versuchen Sie es nach 24 Stunden erneut",
+		"blocked": "Sie sind von der Verwaltung gesperrt",
+		"banned": "Sie sind von der Verwaltung verbannt",
+		"account_locked_1hour": "Ihr Konto ist derzeit für 1 Stunde gesperrt. Bitte versuchen Sie es später erneut.",
+		"account_locked": "Ihr Konto wurde vorübergehend gesperrt aufgrund von Login-Versuchen",
+		"already_registered": "Benutzer bereits registriert, bitte einloggen",
+		"incorrect_pin": "Falscher PIN eingegeben",
+		"confirm_password": "Das Passwort stimmt nicht überein",
+		"password_changed": "Ihr Passwort wurde erfolgreich geändert",
+		"code_unvalid": "Der Code ist nicht gültig. Bitte versuchen Sie es erneut",
+		"unvalid": "Der Code ist nicht gültig",
+		"available": "Bereits verfügbar",
+		"not_available": "Nicht verfügbar",
+		"fa_successfully": "Ihr Zwei-Faktor-Authentifizierungscode wurde erfolgreich überprüft",
+		"fa_successfully_remove": "Ihr Zwei-Faktor-Authentifizierungscode wurde erfolgreich entfernt",
+		"no_email_found": "Kein Benutzer mit dieser E-Mail gefunden",
+		"current_password_incorrect": "Aktuelles Passwort ist falsch",
+		"email_verified": "E-Mail bereits verifiziert, bitte einloggen",
+		"successfully_verified": "E-Mail erfolgreich verifiziert",
+		"verification_email_sent": "Wir haben eine Bestätigungs-E-Mail gesendet. Bitte verifizieren Sie Ihre E-Mail",
+		"verification_email_already_sent": "Wir haben bereits eine Bestätigungs-E-Mail gesendet. Bitte verifizieren Sie Ihre E-Mail",
+		"email_retry_1hour": "E-Mail bereits gesendet, bitte versuchen Sie es nach 1 Stunde erneut."
+	},
+	"user": {
+		"username_use": "Benutzername bereits in Verwendung!",
+		"username_not_allowed": "Dieser Benutzername ist nicht erlaubt",
+		"username_7daychange": "Der Benutzername kann nur alle 7 Tage geändert werden"
+	},
+	"notification": {},
+	"feeds": {},
+	"report": {
+		"already_reported_post": "Sie haben diesen Beitrag bereits gemeldet",
+		"already_reported_user": "Sie haben diesen Benutzer bereits gemeldet",
+		"already_reported_nft": "Sie haben dieses NFT bereits gemeldet",
+		"already_reported_collection": "Sie haben diese Sammlung bereits gemeldet"
+	},
+	"notifications": {
+		"reposted_your_post": "hat deinen Beitrag erneut gepostet",
+		"voted": "hat an deiner Umfrage teilgenommen",
+		"mentioned": "hat dich in einem Beitrag erwähnt",
+		"commented": "hat auf deinen Beitrag kommentiert",
+		"reacted": "hat auf deinen Beitrag reagiert",
+		"liked": "hat deinen Beitrag geliked",
+		"reacted_comment": "hat auf deinen Kommentar reagiert",
+		"comment_reply": "hat auf deinen Kommentar geantwortet",
+		"hashtag": "Jemand hat einen neuen Beitrag im Hashtag hinzugefügt",
+		"stage": "ist live. Mach jetzt mit!",
+		"following": "hat begonnen, dir zu folgen",
+		"followed_created_post": "dem du folgst, hat einen neuen Beitrag erstellt"
+	},
+	"messages": {
+		"applied": "Erfolgreich beworben"
+	}
+}
