@@ -2,7 +2,6 @@
 import {
     Controller,
     Get,
-    Query,
     Req,
     Res,
     UseGuards,
@@ -14,29 +13,18 @@ import {
     HttpStatus
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthGuard as JwtAuthGuard } from '../auth/auth.guard';
 import { FacebookAuthGuard } from './guards/facebook.auth.guard';
 import { TwitterAuthGuard } from './guards/twitter.auth.guard';
-import { LinkedinService } from '../social/linkedin.service';
 import { UsersService } from '../users/users.service';
-import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../shared/services/cloudinary.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { jwtConstants } from 'src/constants/jwt.constant';
-// import { auth, Client } from 'twitter-api-sdk';
 
-// const authClient = new auth.OAuth2User({
-//     client_id: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
-//     client_secret: 'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
-//     callback: 'http://localhost:3000/auth/twitter-auth-callback',
-//     scopes: ['tweet.read', 'users.read', 'offline.access']
-// });
 @Controller('auth')
 export class AuthController {
     constructor(
-        private readonly linkedinService: LinkedinService,
         private readonly userService: UsersService,
         private readonly cloud: CloudinaryService,
         private readonly jwtService: JwtService,
@@ -48,70 +36,6 @@ export class AuthController {
     async twitterAuth(@Req() req) {
         req.session.token = req.query.token;
     }
-
-    // @Get('twitter-auth')
-    // async twitter_Auth(@Req() req, @Res() res) {
-    //     try {
-    //         // console.log("call twitter");
-
-    //         // // const twitter = new Twitter({
-    //         // //     consumerKey: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
-    //         // //     consumerSecret:
-    //         // //         'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t'
-    //         // // });
-
-    //         // const twitterConfig: AuthClient = {
-    //         //     consumerKey: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
-    //         //     consumerSecret: 'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
-    //         //   };
-
-    //         //   const twitter = new Twitter(twitterConfig);
-
-    //         // const redirectURL = 'https://55b4-182-185-214-32.ngrok-free.app/';
-    //         // const requestToken = twitter.getRequestToken(redirectURL);
-
-    //         // // Store the request token in your session for later use
-    //         // req.session.twitterRequestToken = requestToken;
-
-    //         // // Redirect the user to the Twitter login page
-    //         // res.redirect(twitter.getAuthUrl(requestToken));
-
-    //         // const authClient = new auth.OAuth2User({
-    //         //     client_id: 'dGpXN2c3eDFqelM1VXM1eldjZTU6MTpjaQ',
-    //         //     client_secret:
-    //         //         'o9F4F-NjGeCe4Eh2I-QqvHZGBOzaOhz9fIa6_aVh32zTHLwi0t',
-    //         //     callback: 'https://55b4-182-185-214-32.ngrok-free.app/',
-    //         //     scopes: ['tweet.read', 'users.read', 'offline.access']
-    //         // });
-
-    //         const authUrl = await authClient.generateAuthURL({
-    //             code_challenge_method: 's256',
-    //             state: 'twitter-increaser-state',
-    //         });
-
-    //         console.log(authUrl, 'client');
-    //         res.redirect(authUrl);
-
-    //         // const reqAccessToken = await authClient.requestAccessToken(
-    //         //     'VndqdEpxZkQ0X1NIU1dkRElMRWlITWt5b2h0ZUJlSXB4YW9zb3puaW8wNzgtOjE2OTgxNTgyMjgzNzc6MTowOmFjOjE'
-    //         // );
-    //     } catch (error) {
-    //         console.log(error, 'error in twitter');
-    //     }
-    // }
-
-    // @Get('twitter-auth-callback')
-    // async twitter_Auth_callback(@Req() req, @Res() res) {
-    //     console.log('call twitter-auth-callback', req.query);
-
-    //     let token = req.query.code;
-    //     const reqAccessToken = await authClient.requestAccessToken(token);
-    //     const client = new Client(authClient);
-
-    //     const data = await client.users.findMyUser({"user.fields": ["id", "location", "name", "pinned_tweet_id", "profile_image_url"]});
-
-    //     console.log(reqAccessToken, 'reqAccessToken', data);
-    // }
 
     @Get('twitter/callback')
     @UseGuards(AuthGuard('twitter'))
@@ -251,56 +175,6 @@ export class AuthController {
         res.redirect(process.env.FRONT_BASE_URL);
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('linkedin')
-    async getLinkedInAuthUrl(@Req() req, @Res() res) {
-        try {
-            console.log(req.user);
-
-            const user = req.user;
-            const url = await this.linkedinService.getLinkedInAuthUrl(user._id);
-
-            req.session.userId = user._id;
-            res.json({ url: `${url}` });
-            // res.json({ url: `${url}?userId=${user?._id}` });
-        } catch (error) {
-            console.log('Linked in auth arror', error);
-        }
-    }
-
-    @Get('linkedin/callback')
-    async postOnLinkedIn(
-        @Query('code') code: string,
-        @Query('state') state: string,
-        @Req() req,
-        @Res() res
-    ) {
-        try {
-            const accessToken = await this.linkedinService.getAccessToken(code);
-            const userId = state;
-            if (accessToken) {
-                const user = await this.userService.userModel
-                    .findByIdAndUpdate(
-                        new Types.ObjectId(userId),
-                        {
-                            linkedAccessToken: accessToken,
-                            isLinkedInConnected: true
-                        },
-                        { new: true }
-                    )
-                    .exec();
-                user.settings.isLinkedInEnabled = true;
-                await user.save();
-            }
-            const redirectUrl = accessToken
-                ? `${process.env.FRONT_BASE_URL}?linkedin=true`
-                : `${process.env.FRONT_BASE_URL}`;
-            return res.redirect(redirectUrl);
-        } catch (error) {
-            console.log('Error in linkedin callback', error);
-        }
-    }
-
     @Post('upload')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -355,15 +229,8 @@ export class AuthController {
             await this.userService.kycVerifyCompleted(
                 verification.vendorData,
                 verification.code
-                // verification?.document
             );
             return res.status(200).send();
-            //  res.json({
-            //     message: 'user status changed.',
-            //     user,
-            //     status: HttpStatus.OK,
-            //     res
-            // });
         } catch (error) {
             return res.json({
                 message: 'Internal server Error.',
@@ -373,20 +240,4 @@ export class AuthController {
             });
         }
     }
-
-    // ------------ KYC VERIFICATION COMPLETED -------------
-
-    // @Get('apple')
-    // @UseGuards(AuthGuard('apple'))
-    // async appleAuth(@Req() req) {
-    //     console.log(req);
-    //     console.log('Apple login initiated');
-    // }
-
-    // @Get('apple/callback')
-    // @UseGuards(AuthGuard('apple'))
-    // async appleAuthCallback(@Req() req, @Res() res) {
-    //     // Handle successful authentication here (e.g., set a JWT)
-    //     res.redirect(process.env.FRONT_BASE_URL);
-    // }
 }

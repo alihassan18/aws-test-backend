@@ -1,18 +1,13 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { USERS } from 'src/constants/db.collections';
 import { UserDocument } from '../users/entities/user.entity';
 import { Model } from 'mongoose';
 import { ProfileInputAdmin, UsersDataOutput } from './dto/create-admin.input';
-import { PublicFeedsGateway } from '../gateways/public/public-feeds.gateway';
 
 @Injectable()
 export class AdminService {
-    constructor(
-        @InjectModel(USERS) readonly userModel: Model<UserDocument>,
-        @Inject(forwardRef(() => PublicFeedsGateway))
-        private publicFeedsGateway: PublicFeedsGateway
-    ) {}
+    constructor(@InjectModel(USERS) readonly userModel: Model<UserDocument>) {}
 
     async usersStats() {
         const usersDataOver = await this.userModel.aggregate([
@@ -715,9 +710,6 @@ export class AdminService {
         await this.userModel.findByIdAndUpdate(id, {
             $set: { isBlocked: status }
         });
-        if (status) {
-            this.publicFeedsGateway.emitBlockUserByAdmin(id);
-        }
         return { success: true };
     }
 
@@ -725,226 +717,8 @@ export class AdminService {
         await this.userModel.findByIdAndUpdate(id, {
             $set: { isBanned: status }
         });
-        if (status) {
-            this.publicFeedsGateway.emitBlockUserByAdmin(id);
-        }
 
         return { success: true };
-    }
-
-    // ------------------------------------------- AFFILIATE -----------------------------------------------------
-
-    async affiliateStats() {
-        const data = await this.userModel.aggregate([
-            {
-                $facet: {
-                    affiliatedUsersCount: [
-                        {
-                            $match: {
-                                affiliatedUser: true
-                            }
-                        },
-                        {
-                            $count: 'count'
-                        }
-                    ],
-                    referralUsers: [
-                        {
-                            $match: {
-                                referral: { $exists: true }
-                            }
-                        },
-                        {
-                            $count: 'count'
-                        }
-                    ]
-                }
-            },
-            {
-                $project: {
-                    affiliatedUsersCount: {
-                        $arrayElemAt: ['$affiliatedUsersCount.count', 0]
-                    },
-                    referralUsers: { $arrayElemAt: ['$referralUsers.count', 0] }
-                }
-            },
-            {
-                $lookup: {
-                    from: 'referralvideos',
-                    let: {},
-                    pipeline: [{ $count: 'referralVideos' }],
-                    as: 'referralVideos'
-                }
-            },
-            {
-                $project: {
-                    affiliatedUsersCount: 1,
-                    referralUsers: 1,
-                    referralVideos: {
-                        $arrayElemAt: ['$referralVideos.referralVideos', 0]
-                    }
-                }
-            }
-        ]);
-        return data[0];
-    }
-
-    async affiliateUsers(search?: string) {
-        const data = await this.userModel.aggregate([
-            {
-                $match: {
-                    affiliatedUser: true,
-                    $expr: {
-                        $cond: {
-                            if: { $eq: [search, ''] }, // Check if searchTerm is an empty string
-                            then: {},
-                            else: {
-                                $regexMatch: {
-                                    input: '$userName',
-                                    regex: search,
-                                    options: 'i' // 'i' for case-insensitive search
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    avatar: 1,
-                    userName: 1,
-                    followersCount: 1,
-                    followingCount: 1,
-                    isVerified: { $ifNull: ['$isVerified', false] },
-                    isBlocked: { $ifNull: ['$isBlocked', false] },
-                    isBanned: { $ifNull: ['$isBanned', false] },
-                    isSCC: { $ifNull: ['$isSCC', false] }
-                }
-            },
-            {
-                $lookup: {
-                    from: 'referrals',
-                    localField: '_id',
-                    foreignField: 'user',
-                    as: 'referralData'
-                }
-            },
-            {
-                $lookup: {
-                    from: 'referralvideos',
-                    let: { userId: '$_id' },
-                    pipeline: [
-                        {
-                            $project: {
-                                videoShared: {
-                                    $sum: [
-                                        {
-                                            $cond: [
-                                                { $in: ['$$userId', '$fb'] },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [
-                                                        '$$userId',
-                                                        '$whatsapp'
-                                                    ]
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [
-                                                        '$$userId',
-                                                        '$twitter'
-                                                    ]
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [
-                                                        '$$userId',
-                                                        '$linkedin'
-                                                    ]
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [
-                                                        '$$userId',
-                                                        '$instagram'
-                                                    ]
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: ['$$userId', '$tiktok']
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        },
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [
-                                                        '$$userId',
-                                                        '$youtube'
-                                                    ]
-                                                },
-                                                1,
-                                                0
-                                            ]
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    ],
-                    as: 'referralVideoData'
-                }
-            },
-            {
-                $project: {
-                    avatar: 1,
-                    userName: 1,
-                    followersCount: 1,
-                    followingCount: 1,
-                    isVerified: 1,
-                    isBlocked: 1,
-                    isBanned: 1,
-                    isSCC: 1,
-                    referralCount: { $arrayElemAt: ['$referralData.count', 0] },
-                    referralLevel: { $arrayElemAt: ['$referralData.level', 0] },
-                    commissionPercentage: {
-                        $arrayElemAt: ['$referralData.commissionPercentage', 0]
-                    },
-                    videoShared: {
-                        $arrayElemAt: ['$referralVideoData.videoShared', 0]
-                    }
-                }
-            }
-        ]);
-        return data;
     }
 
     async editProfileAdmin(id: string, data: ProfileInputAdmin) {

@@ -2,11 +2,6 @@ import { InputType, Field, ObjectType, Int } from '@nestjs/graphql';
 import mongoose from 'mongoose';
 import { User } from '../entities/user.entity';
 import { MinLength, MaxLength, Matches } from 'class-validator';
-import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
-import { HashtagCount } from 'src/modules/feeds/entities/hashcount.entity';
-import { Collection } from 'src/modules/collections/entities/collection.entity';
-import { Post } from 'src/modules/feeds/entities/post.entity';
-import { UserProfile } from 'src/modules/activities/dto/get-activities.dto';
 @InputType()
 export class CreateUserInput {
     @Field(() => String)
@@ -380,21 +375,6 @@ export class ProfileInput {
 }
 
 @ObjectType()
-export class SearchResult {
-    @Field(() => [UserProfile], { nullable: true })
-    users?: [UserProfile];
-
-    @Field(() => [Hashtag], { nullable: true })
-    hashtags?: [Hashtag];
-
-    @Field(() => [HashtagCount], { nullable: true })
-    hashtagCount?: [HashtagCount];
-
-    @Field(() => [Collection], { nullable: true })
-    collections?: [Collection];
-}
-
-@ObjectType()
 export class EditProfileResult {
     @Field(() => User, { nullable: true })
     users?: User;
@@ -405,38 +385,10 @@ export class EditProfileResult {
 export class CCSNfts7Day {
     @Field(() => String, { nullable: true })
     date?: string;
-    @Field(() => [Post], { nullable: true })
-    posts?: Post;
-}
-@ObjectType()
-export class ContentCreatorStats {
-    @Field(() => Number, { nullable: true })
-    days?: number;
-
-    @Field(() => Boolean, { nullable: true })
-    isdays?: boolean;
-
-    @Field(() => Number, { nullable: true })
-    followers?: number;
-
-    @Field(() => Boolean, { nullable: true })
-    isfollowers?: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    iscollection?: boolean;
-
-    @Field(() => Boolean, { nullable: true })
-    isNFTs?: boolean;
-
-    @Field(() => [CCSNfts7Day], { nullable: true })
-    nftsLast7Days?: [CCSNfts7Day];
 }
 
 @ObjectType()
 export class Leader {
-    @Field(() => UserProfile, { nullable: true })
-    user?: UserProfile;
-
     @Field(() => Int, { nullable: true })
     tokenContractCount?: number;
 }

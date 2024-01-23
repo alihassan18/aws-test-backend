@@ -5,8 +5,6 @@ import {
     UsersDataOverview,
     UsersDataOutput,
     SuccessPayload,
-    AffiliateStats,
-    AffiliateUsers,
     SingleUserGraphOutput,
     ProfileInputAdmin
     // AffiliateStats
@@ -85,24 +83,4 @@ export class AdminResolver {
     ): Promise<SuccessPayload> {
         return this.adminService.editProfileAdmin(id, data);
     }
-
-    // ------- Affiliate -------
-
-    @UseGuards(AdminGuard)
-    @Role('admin')
-    @Query(() => AffiliateStats)
-    async affiliateStats(): Promise<AffiliateStats> {
-        return this.adminService.affiliateStats();
-    }
-
-    @UseGuards(AdminGuard)
-    @Role('admin')
-    @Query(() => [AffiliateUsers])
-    async affiliateUsers(
-        @Args('search', { nullable: true }) search: string
-    ): Promise<AffiliateUsers[]> {
-        return this.adminService.affiliateUsers(search);
-    }
-
-    // --------- Reports ----------------
 }

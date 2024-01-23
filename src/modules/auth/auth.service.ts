@@ -22,30 +22,12 @@ import { emailRegex, verificationTypes } from 'src/constants/auth';
 import { VerificationService } from '../verification/verification.service';
 import { EmailService } from '../shared/services/email.service';
 import { OAuth2Client } from 'google-auth-library';
-import { ReferralService } from 'src/modules/referral/referral.service';
 import { CommonServices } from '../shared/services/common.service';
 import { generateRandomNumber } from 'src/helpers/common.helpers';
 import * as bcrypt from 'bcryptjs';
-import { TwitterStrategy } from './strategies/twitter.strategy';
 import { ERole } from 'src/constants/roles';
-import { IpAddressService } from '../ip-address/ip-address.service';
-import {
-    Referral,
-    ReferralDocument
-} from '../referral/entities/referral.entity';
-import {
-    Notification,
-    NotificationDocument
-} from '../notifications/entities/notification.entity';
-import {
-    ENotificationFromType,
-    NotificationType
-} from '../notifications/notifications.enum';
-import { ScoresService } from '../scores/scores.service';
-import * as speakeasy from 'speakeasy';
-import * as base32 from 'thirty-two';
+
 import { translate } from 'src/common/translations';
-import { SystemMessages } from '../notifications/entities/notifications.functions';
 
 @Injectable()
 export class AuthService extends CommonServices {
@@ -55,15 +37,7 @@ export class AuthService extends CommonServices {
         private userService: UsersService,
         private jwtService: JwtService,
         private verificationService: VerificationService,
-        private emailService: EmailService,
-        private referralService: ReferralService,
-        private ipAddressService: IpAddressService,
-        private readonly twitterStrategy: TwitterStrategy,
-        private scoresService: ScoresService,
-        @InjectModel(Referral.name)
-        readonly referralModel: Model<ReferralDocument>,
-        @InjectModel(Notification.name)
-        private readonly notificationModel: Model<NotificationDocument>
+        private emailService: EmailService
     ) {
         super();
     }
@@ -135,10 +109,7 @@ export class AuthService extends CommonServices {
     //     }
     // }
 
-    async verifyEmail(
-        _id: Types.ObjectId,
-        IpAddress: string
-    ): Promise<VerifyEmailOutput> {
+    async verifyEmail(_id: Types.ObjectId): Promise<VerifyEmailOutput> {
         const user = await this.userService.userModel.findOne({
             _id
         });
@@ -151,7 +122,7 @@ export class AuthService extends CommonServices {
         user.isEmailVerified = true;
         await user.save();
 
-        const result: LoginResult = await this.createJwt(user, IpAddress);
+        const result: LoginResult = await this.createJwt(user);
 
         return {
             message: translate('auth.successfully_verified'),
@@ -203,8 +174,7 @@ export class AuthService extends CommonServices {
     }
 
     async validateUserByPassword(
-        loginAttempt: LoginUserInput,
-        IpAddress: string
+        loginAttempt: LoginUserInput
     ): Promise<LoginResult | undefined> {
         // password protection
         /* Test Zack */
@@ -302,10 +272,7 @@ export class AuthService extends CommonServices {
                 };
             } else {
                 // If there is a successful match, generate a JWT for the user
-                const result: LoginResult = await this.createJwt(
-                    userToAttempt,
-                    IpAddress
-                );
+                const result: LoginResult = await this.createJwt(userToAttempt);
                 // userToAttempt.timestamp = new Date();
                 // userToAttempt.save();
                 // password protectio
@@ -359,17 +326,13 @@ export class AuthService extends CommonServices {
         return undefined;
     }
 
-    async createJwt(
-        u: User,
-        IpAddress?: string
-    ): Promise<{ user: User; access_token: string }> {
+    async createJwt(u: User): Promise<{ user: User; access_token: string }> {
         const user = {
             email: u.email,
             _id: u._id,
             twoFa: u?.settings?.twoFa,
             key: u.key
         };
-        if (IpAddress) await this.ipAddressService.create(u._id, IpAddress);
 
         const jwt = await this.jwtService.signAsync(user, {
             secret: jwtConstants.secret,
@@ -411,15 +374,12 @@ export class AuthService extends CommonServices {
             verifyStatus: u.verifyStatus,
             key: u.key,
             referral: u.referral,
-            wallets: u.wallets,
             source: u.source,
             country: u.country,
-            followingHashtags: u.followingHashtags,
             twitterId: u.twitterId,
             isLinkedInConnected: u.linkedAccessToken
                 ? true
                 : false /* u.isLinkedInConnected */,
-            followingCollections: u.followingCollections,
             backgroundTheme: u.backgroundTheme,
             blockedUsers: u.blockedUsers,
             affiliatedUser: u.affiliatedUser,
@@ -438,7 +398,7 @@ export class AuthService extends CommonServices {
         };
     }
 
-    async createUser(body, IpAddress): Promise<SignOutResult | undefined> {
+    async createUser(body): Promise<SignOutResult | undefined> {
         try {
             const isAlreadyUser = await this.userService.findOne({
                 $or: [
@@ -469,34 +429,9 @@ export class AuthService extends CommonServices {
                 ...(referral && { referral: referral?._id })
             });
 
-            const loggedIn = await this.createJwt(createUser, IpAddress);
-
-            // this.emailService.sendVerifyEmail(
-            //     body.email,
-            //     createUser._id,
-            //     loggedIn.access_token
-            // );
-
-            // password protection
-
-            await this.referralModel.create({
-                user: createUser?._id,
-                requested: true
-            });
-
-            if (referral) {
-                await this.referralService.add(referral?._id, createUser?._id);
-                const url = `${process.env.FRONT_BASE_URL}/invite`;
-                this.emailService.sendReferralEmail(
-                    referral.email,
-                    createUser?.firstName + ' ' + createUser?.lastName,
-                    url
-                );
-            }
+            const loggedIn = await this.createJwt(createUser);
 
             return {
-                // user: loggedIn,
-                // message: this.messages.verificationEmail,
                 access_token: loggedIn.access_token
             };
         } catch (error) {
@@ -586,13 +521,6 @@ export class AuthService extends CommonServices {
         if (password !== confirmPassword) {
             throw new Error(translate('auth.confirm_password'));
         }
-        // if (
-        //     !/(?=^.{8,}$)(?=.*\d)(?=.*[!$%^&()_+|~=`{}\[\]:";'<>?,.#@*-\/\\]*)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(
-        //         password
-        //     )
-        // ) {
-        //     throw new Err    or(`Password too weak`);
-        // }
 
         const user = await this.userService.findOne({ email: email });
         if (user) {
@@ -616,14 +544,6 @@ export class AuthService extends CommonServices {
                 await this.userService.findOneAndUpdate(user._id, {
                     password: pwd,
                     key: key
-                });
-
-                await this.notificationModel.create({
-                    type: NotificationType.SYSTEM,
-                    sender: ENotificationFromType.APP,
-                    // message: translate('auth.password_changed'),
-                    message: SystemMessages.password_changed,
-                    receiver: user._id
                 });
 
                 return { success: true };
@@ -671,10 +591,7 @@ export class AuthService extends CommonServices {
         return data;
     }
 
-    async googleLogin(
-        data: LoginGoogleInput,
-        IpAddress
-    ): Promise<LoginGoogleOutput> {
+    async googleLogin(data: LoginGoogleInput): Promise<LoginGoogleOutput> {
         const { token, referral: referralId } = data;
 
         let referral = null;
@@ -724,11 +641,6 @@ export class AuthService extends CommonServices {
                 isEmailVerified: true,
                 ...(referral && { referral })
             });
-
-            await this.referralModel.create({
-                user: user?._id,
-                requested: true
-            });
         }
 
         if (user && user.settings.twoFa) {
@@ -757,7 +669,7 @@ export class AuthService extends CommonServices {
                 twoFa: user?.settings?.twoFa
             };
         } else {
-            const loggedUser = await this.createJwt(user, IpAddress);
+            const loggedUser = await this.createJwt(user);
 
             if (loggedUser?.user?.isBlocked === true) {
                 // return {
@@ -833,16 +745,6 @@ export class AuthService extends CommonServices {
                         },
                         { new: true }
                     );
-                // user.settings.twoFa = !user.settings.twoFa;
-                // await user.save();
-                await this.notificationModel.create({
-                    type: NotificationType.SYSTEM,
-                    sender: ENotificationFromType.APP,
-                    message: updated.settings.twoFa
-                        ? SystemMessages.fa_successfully
-                        : SystemMessages.fa_successfully_remove,
-                    receiver: user._id
-                });
 
                 const result: LoginResult = await this.createJwt(updated);
 
@@ -864,14 +766,11 @@ export class AuthService extends CommonServices {
 
     // ------------------- 2FA LOGIN ------------------------
 
-    async verify2faLogin(
-        body: {
-            email: string;
-            code: string;
-            userId: Types.ObjectId;
-        },
-        IpAddress
-    ) {
+    async verify2faLogin(body: {
+        email: string;
+        code: string;
+        userId: Types.ObjectId;
+    }) {
         const { email, code, userId } = body;
 
         const response = await this.verifyCode({ email, code });
@@ -882,53 +781,11 @@ export class AuthService extends CommonServices {
                     threeFa: true
                 };
             } else {
-                const result: LoginResult = await this.createJwt(
-                    user,
-                    IpAddress
-                );
+                const result: LoginResult = await this.createJwt(user);
                 return result;
             }
         }
     }
-
-    // ------------------- 3FA LOGIN ------------------------
-
-    async verify3faLogin(
-        body: {
-            code: string;
-            userId: Types.ObjectId;
-        },
-        IpAddress
-    ) {
-        try {
-            const { code, userId } = body;
-
-            const user = await this.userService.userModel.findById(userId);
-            if (user.base32_secret) {
-                const secretBuffer = base32.decode(user.base32_secret);
-                const isVerified = await speakeasy.totp.verify({
-                    secret: secretBuffer,
-                    encoding: 'base32',
-                    token: code
-                });
-                if (isVerified) {
-                    const result: LoginResult = await this.createJwt(
-                        user,
-                        IpAddress
-                    );
-                    return result;
-                } else {
-                    throw new Error(translate('auth.code_unvalid'));
-                }
-            } else {
-                throw new Error('Base32 secret is not valid. Please try again');
-            }
-        } catch (error) {
-            throw new Error(translate('auth.code_unvalid'));
-        }
-    }
-
-    // --------------- DELETE ACCOUNT ---------------
 
     async deleteUserAccount(id: Types.ObjectId) {
         const user = await this.userService.userModel.findById(id);
@@ -1007,8 +864,7 @@ export class AuthService extends CommonServices {
     // --------- ADMIN --------------
 
     async validateAdminByPassword(
-        loginAttempt: LoginUserInput,
-        IpAddress
+        loginAttempt: LoginUserInput
     ): Promise<LoginResult | undefined> {
         // This will be used for the initial login
         let userToAttempt: UserDocument | undefined;
@@ -1097,10 +953,7 @@ export class AuthService extends CommonServices {
                 };
             } else {
                 // If there is a successful match, generate a JWT for the user
-                const result: LoginResult = await this.createJwt(
-                    userToAttempt,
-                    IpAddress
-                );
+                const result: LoginResult = await this.createJwt(userToAttempt);
                 // userToAttempt.timestamp = new Date();
                 // userToAttempt.save();
                 return result;
@@ -1138,7 +991,7 @@ export class AuthService extends CommonServices {
     }
 
     // password protection
-    async invitationCodeVerify(id, code, IpAddress) {
+    async invitationCodeVerify(id, code) {
         const IsAffiliatedUser = await this.userService.findOne({
             _id: id,
             affiliatedUser: true
@@ -1168,31 +1021,7 @@ export class AuthService extends CommonServices {
                     affiliatedUser: true
                 }
             );
-            const result: LoginResult = await this.createJwt(
-                createUser,
-                IpAddress
-            );
-
-            // 1,000 points per affiliate
-
-            await this.scoresService.createScore(referral._id, 'affiliate');
-
-            if (referral) {
-                await this.referralService.add(referral?._id, createUser?._id);
-                const url = `${process.env.FRONT_BASE_URL}/invite`;
-                this.emailService.sendReferralEmail(
-                    referral.email,
-                    createUser?.firstName + ' ' + createUser?.lastName,
-                    url
-                );
-
-                await this.notificationModel.create({
-                    type: NotificationType.SYSTEM,
-                    sender: ENotificationFromType.APP,
-                    message: `@${createUser.userName} has joined via invite code`,
-                    receiver: referral._id
-                });
-            }
+            const result: LoginResult = await this.createJwt(createUser);
 
             if (!result.user?.isEmailVerified) {
                 await this.emailService.sendVerifyEmail(

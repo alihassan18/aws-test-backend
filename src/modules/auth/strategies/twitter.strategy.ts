@@ -8,10 +8,6 @@ import { Model } from 'mongoose';
 import { Strategy, Profile } from 'passport-twitter';
 import { USERS } from 'src/constants/db.collections';
 import { jwtConstants } from 'src/constants/jwt.constant';
-import {
-    Referral,
-    ReferralDocument
-} from 'src/modules/referral/entities/referral.entity';
 import { UserDocument } from 'src/modules/users/entities/user.entity';
 
 interface Info {
@@ -22,8 +18,6 @@ interface Info {
 export class TwitterStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectModel(USERS) readonly userModel: Model<UserDocument>,
-        @InjectModel(Referral.name)
-        readonly referralModel: Model<ReferralDocument>,
         private readonly jwtService: JwtService
     ) {
         super({
@@ -104,10 +98,6 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     });
                     user.settings.isTwitterEnabled = true;
                     await user.save();
-                    await this.referralModel.create({
-                        user: user?._id,
-                        requested: true
-                    });
                 } else {
                     // Update user's access token and access secret if user already exists
                     user.twitterAccessToken = accessToken;
@@ -209,15 +199,12 @@ export class TwitterStrategy extends PassportStrategy(Strategy) {
                     verifyStatus: user.verifyStatus,
                     key: user.key,
                     referral: user.referral,
-                    wallets: user.wallets,
                     source: user.source,
                     country: user.country,
-                    followingHashtags: user.followingHashtags,
                     twitterId: user.twitterId,
                     isLinkedInConnected: user.linkedAccessToken
                         ? true
                         : false /* user.isLinkedInConnected */,
-                    followingCollections: user.followingCollections,
                     backgroundTheme: user.backgroundTheme,
                     blockedUsers: user.blockedUsers,
                     affiliatedUser: user.affiliatedUser,

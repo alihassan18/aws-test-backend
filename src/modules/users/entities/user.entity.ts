@@ -1,16 +1,12 @@
 import { Field, HideField, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import { Document } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
-import { COLLECTIONS } from 'src/constants/db.collections';
 import { ESource } from 'src/enums/user.enum';
 import { Schema as MongooseSchema } from 'mongoose';
 import { Settings } from './user-settings.entity';
 import { Types } from 'mongoose';
 import { jwtConstants } from 'src/constants/jwt.constant';
-import { Collection } from 'src/modules/collections/entities/collection.entity';
-import { Hashtag } from 'src/modules/feeds/entities/hashtag.entity';
-import { Wallet } from 'src/modules/users/entities/wallet.entity';
 import { FollowingTimestamps } from './user-following-timestamps.entity';
 import { FollowersTimestamps } from './user-followers-timestamps.entity';
 import { bannedUsernames } from '../dto/users.input';
@@ -198,20 +194,6 @@ export class User extends Document {
     @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
     following?: Types.ObjectId[];
 
-    @Field(() => [Collection], { nullable: true })
-    @Prop({
-        type: [{ type: Types.ObjectId, ref: COLLECTIONS }],
-        default: []
-    })
-    followingCollections?: Types.ObjectId[];
-
-    @Field(() => [Hashtag], { nullable: true })
-    @Prop({
-        type: [{ type: Types.ObjectId, ref: Hashtag.name }],
-        default: []
-    })
-    followingHashtags?: Types.ObjectId[];
-
     @Field(() => Number, { nullable: true })
     @Prop({
         type: Number,
@@ -230,10 +212,6 @@ export class User extends Document {
     @Field(() => [User], { nullable: true })
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
     blockedBy?: Types.ObjectId[];
-
-    @Field(() => [Wallet], { nullable: true })
-    @Prop({ type: mongoose.Types.ObjectId, ref: 'Wallet' })
-    wallets: Types.ObjectId[];
 
     @Prop({
         type: String,

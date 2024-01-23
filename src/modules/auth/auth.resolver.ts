@@ -31,13 +31,9 @@ export class AuthResolver extends CommonServices {
 
     @Mutation(() => LoginResult)
     async login(
-        @Args('user') user: LoginUserInput,
-        @IpAddress() IpAddress
+        @Args('user') user: LoginUserInput
     ): Promise<LoginResult | undefined> {
-        const result = await this.authService.validateUserByPassword(
-            user,
-            IpAddress
-        );
+        const result = await this.authService.validateUserByPassword(user);
 
         if (result) return result;
         throw new BadRequestException('Incorrect email or password');
@@ -45,10 +41,9 @@ export class AuthResolver extends CommonServices {
 
     @Mutation(() => SignOutResult)
     async signup(
-        @Args('data') data: SignInInput,
-        @IpAddress() IpAddress
+        @Args('data') data: SignInInput
     ): Promise<SignOutResult | undefined> {
-        const result = await this.authService.createUser(data, IpAddress);
+        const result = await this.authService.createUser(data);
         return result;
     }
 
@@ -68,10 +63,9 @@ export class AuthResolver extends CommonServices {
 
     @Mutation(() => LoginGoogleOutput)
     async loginByGoogle(
-        @Args('data') data: LoginGoogleInput,
-        @IpAddress() IpAddress
+        @Args('data') data: LoginGoogleInput
     ): Promise<LoginGoogleOutput> {
-        const user = await this.authService.googleLogin(data, IpAddress);
+        const user = await this.authService.googleLogin(data);
         if (user) return user;
         throw new BadRequestException('Could not send email with the provided');
     }
@@ -109,10 +103,7 @@ export class AuthResolver extends CommonServices {
         @Context() ctx: ContextProps,
         @IpAddress() IpAddress
     ): Promise<VerifyEmailOutput | undefined> {
-        const response = await this.authService.verifyEmail(
-            ctx.req.user._id,
-            IpAddress
-        );
+        const response = await this.authService.verifyEmail(ctx.req.user._id);
         if (response) return response;
         throw new BadRequestException('Could not send email with the provided');
     }
@@ -156,40 +147,14 @@ export class AuthResolver extends CommonServices {
         @Args('code') code: string,
         @IpAddress() IpAddress
     ): Promise<LoginResult | undefined> {
-        const response = await this.authService.verify2faLogin(
-            {
-                email: ctx.req.user.email,
-                code: code,
-                userId: ctx.req.user._id
-            },
-            IpAddress
-        );
+        const response = await this.authService.verify2faLogin({
+            email: ctx.req.user.email,
+            code: code,
+            userId: ctx.req.user._id
+        });
         if (response) return response;
         throw new BadRequestException('Could not send email with the provided');
     }
-
-    // --------- 3FA LOGIN -------------
-
-    @Mutation(() => LoginResult)
-    @UseGuards(AuthGuard)
-    async verify3faLogin(
-        @Context() ctx: ContextProps,
-        @Args('code') code: string,
-        @IpAddress() IpAddress
-    ): Promise<LoginResult | undefined> {
-        const response = await this.authService.verify3faLogin(
-            {
-                code: code,
-                userId: ctx.req.user._id
-            },
-            IpAddress
-        );
-
-        if (response) return response;
-        throw new BadRequestException(translate('auth.code_unvalid'));
-    }
-
-    // --------- DELETE ACCOUNT -------------
 
     @Mutation(() => VerifyEmailOutput)
     @UseGuards(AuthGuard)
@@ -238,10 +203,7 @@ export class AuthResolver extends CommonServices {
         @Args('user') user: LoginUserInput,
         @IpAddress() IpAddress
     ): Promise<LoginResult | undefined> {
-        const result = await this.authService.validateAdminByPassword(
-            user,
-            IpAddress
-        );
+        const result = await this.authService.validateAdminByPassword(user);
         if (result) return result;
         throw new BadRequestException('Incorrect email or password');
     }
@@ -257,8 +219,7 @@ export class AuthResolver extends CommonServices {
     ): Promise<LoginResult | undefined> {
         const response = await this.authService.invitationCodeVerify(
             ctx.req.user._id,
-            code,
-            IpAddress
+            code
         );
         if (response) return response;
         throw new BadRequestException(translate('auth.unvalid'));

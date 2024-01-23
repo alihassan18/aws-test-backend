@@ -5,53 +5,14 @@ import { VerificationService } from '../verification/verification.service';
 import { verificationTypes } from 'src/constants/auth';
 import { EmailService } from '../shared/services/email.service';
 import { FilterQuery, Model, Types } from 'mongoose';
-import { AppGateway } from 'src/app.gateway';
 import { generateRandomNumber } from 'src/helpers/common.helpers';
 import {
-    ContentCreatorStats,
     ProfileInput,
     SettingsInput,
     bannedUsernames
 } from './dto/users.input';
-import { COLLECTIONS, USERS } from 'src/constants/db.collections';
-import { Wallet, WalletDocument } from './entities/wallet.entity';
-import { HashtagsService } from '../feeds/hashtags.service';
-import { HashtagDocument } from '../feeds/entities/hashtag.entity';
-import { PublicUserGateway } from '../gateways/public/public-user.gateway';
-import { recoverMessageAddress } from 'viem';
-import { ScoresService } from '../scores/scores.service';
-import { Group, GroupDocument } from '../chat/entities/group.entity';
-import { Feed, FeedDocument } from '../feeds/entities/feed.entity';
-import {
-    Reaction,
-    ReactionDocument
-} from '../reactions/entities/reaction.entity';
-// import { countries } from 'src/constants/country.contants';
-import { HashtagCount } from '../feeds/entities/hashcount.entity';
-import { CollectionDocument } from '../collections/entities/collection.entity';
-import { Nft, NftDocument } from '../nfts/entities/nft.entity';
-import { SuccessPayload } from '../admin/dto/create-admin.input';
-import { CollectionsService } from '../collections/collections.service';
-import { generateOGImage } from 'src/helpers/linkPreviews';
-import { NftsService } from '../nfts/nfts.service';
-import {
-    Notification,
-    NotificationDocument
-} from '../notifications/entities/notification.entity';
-import {
-    ENotificationFromType,
-    NotificationType
-} from '../notifications/notifications.enum';
-import { Post, PostDocument } from '../feeds/entities/post.entity';
+import { USERS } from 'src/constants/db.collections';
 import { translate } from 'src/common/translations';
-import { SystemMessages } from '../notifications/entities/notifications.functions';
-// import { AuthService } from '../auth/auth.service';
-
-// import {
-//     ENotificationFromType,
-//     NotificationType
-// } from '../notifications/notifications.enum';
-// import { NotificationService } from '../notifications/notification.service';
 
 @Injectable()
 export class UsersService {
@@ -59,29 +20,8 @@ export class UsersService {
         // eslint-disable-next-line no-unused-vars
         @InjectModel(USERS)
         readonly userModel: Model<UserDocument>,
-        @InjectModel(COLLECTIONS)
-        private collectionModel: Model<CollectionDocument>,
-        @InjectModel(Wallet.name) private walletModel: Model<WalletDocument>,
-        @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
-        @InjectModel(Feed.name) private feedModel: Model<FeedDocument>,
-        @InjectModel(Reaction.name)
-        private reactionModel: Model<ReactionDocument>,
-        @InjectModel(Nft.name)
-        private tokenModel: Model<NftDocument>,
         private readonly verificationService: VerificationService,
-        private readonly emailService: EmailService,
-        private publicUserGateway: PublicUserGateway,
-        //private notificationService: NotificationService,
-        private readonly appGateway: AppGateway,
-        private readonly hashtagsService: HashtagsService,
-        private readonly scoresService: ScoresService,
-        private readonly collectionsService: CollectionsService,
-        private readonly nftService: NftsService,
-        // private readonly authService: AuthService,
-        @InjectModel(Notification.name)
-        private readonly notificationModel: Model<NotificationDocument>,
-        @InjectModel(Post.name)
-        private readonly postModel: Model<PostDocument>
+        private readonly emailService: EmailService
     ) {}
 
     public hideFields =
@@ -91,11 +31,6 @@ export class UsersService {
         return this.userModel.create(data);
     }
 
-    async findWalletsByUserId(
-        id: string | Types.ObjectId
-    ): Promise<WalletDocument[]> {
-        return this.walletModel.find({ userId: id }).exec();
-    }
     async findAll(
         query?: FilterQuery<UserDocument>,
         isSecure?: boolean
@@ -189,100 +124,6 @@ export class UsersService {
         return results;
     }
 
-    // ----------------- MOVED TO FEED SERVICES
-
-    // async follow(otherUser, userId) {
-    //     const following = await this.userModel
-    //         .findOne({ _id: otherUser })
-    //         .lean()
-    //         .exec();
-
-    //     const isFollower =
-    //         following?.followers?.filter((el) => el.toString() == userId)
-    //             .length > 0;
-    //     await this.scoresService.createScore(
-    //         otherUser,
-    //         isFollower ? 'unfollowers' : 'followers'
-    //     );
-    //     const newFollowersCount = isFollower
-    //         ? Number(following.followersCount || 0) - 1
-    //         : Number(following.followersCount || 0) + 1;
-
-    //     const followersTimestamps = {
-    //         by: userId,
-    //         createdAt: new Date()
-    //     };
-    //     await this.userModel
-    //         .findByIdAndUpdate(otherUser, {
-    //             [isFollower ? '$pull' : '$addToSet']: {
-    //                 followers: userId,
-    //                 followersTimestamps: isFollower
-    //                     ? { by: userId }
-    //                     : followersTimestamps
-    //             },
-    //             followersCount: newFollowersCount
-    //         })
-    //         .exec();
-
-    //     // this.publicUserGateway.emitUserUpdated(
-    //     //     { followersCount: newFollowersCount },
-    //     //     otherUser
-    //     // );
-    //     if (!isFollower) {
-    //         /* Notification */
-    //         // if (userId.toString() !== otherUser.toString()) {
-    //         //     this.notificationService.create({
-    //         //         type: NotificationType.COMMENT,
-    //         //         sender: ENotificationFromType.USER,
-    //         //         from: userId,
-    //         //         receiver: otherUser,
-    //         //     });
-    //         // }
-    //     }
-    //     const user = await this.userModel
-    //         .findOne({ _id: userId })
-    //         .lean()
-    //         .select({ password: 0, email: 0, key: 0 })
-    //         .exec();
-
-    //     const isFollowed =
-    //         user?.following?.filter((el) => el.toString() == otherUser).length >
-    //         0;
-    //     await this.scoresService.createScore(
-    //         userId,
-    //         isFollowed ? 'unfollow' : 'follow'
-    //     );
-
-    //     const followingTimestamps = {
-    //         by: new Types.ObjectId(otherUser),
-    //         createdAt: new Date()
-    //     };
-    //     const updatedUser = await this.userModel
-    //         .findByIdAndUpdate(
-    //             userId,
-    //             {
-    //                 [isFollowed ? '$pull' : '$addToSet']: {
-    //                     following: otherUser,
-    //                     followingTimestamps: isFollowed
-    //                         ? { by: new Types.ObjectId(otherUser) }
-    //                         : followingTimestamps
-    //                 },
-    //                 followingCount: isFollowed
-    //                     ? Number(user.followingCount || 0) - 1
-    //                     : Number(user.followingCount || 0) + 1
-    //             },
-    //             {
-    //                 new: true
-    //             }
-    //         )
-    //         .select({ password: 0, email: 0, key: 0 })
-    //         .populate('followers')
-    //         .populate('following')
-    //         .populate('followingHashtags');
-
-    //     return updatedUser;
-    // }
-
     async send2FaVerificationCode(
         userId: Types.ObjectId,
         email: string,
@@ -317,8 +158,7 @@ export class UsersService {
 
     async searchUsers(
         query: string,
-        loggedUserId?: Types.ObjectId,
-        groupId?: string
+        loggedUserId?: Types.ObjectId
     ): Promise<User[]> {
         const filter = { userName: { $regex: `${query}`, $options: 'i' } };
         if (loggedUserId) {
@@ -329,22 +169,7 @@ export class UsersService {
                 filter['_id'] = { $in: user.followers };
             }
         }
-        if (groupId) {
-            const group = await this.groupModel.findById(groupId).exec();
-            const users = [
-                ...group.admins,
-                ...group.members.map((item) => item.member)
-            ];
-            if (filter['_id']) {
-                filter['$and'] = [
-                    { _id: filter['_id'] },
-                    { _id: { $in: users } }
-                ];
-                delete filter['_id'];
-            } else {
-                filter['_id'] = { $in: users };
-            }
-        }
+
         const searchedUsers = await this.userModel.find(filter).limit(5).exec();
 
         return searchedUsers;
@@ -544,9 +369,6 @@ export class UsersService {
 
     async globalSearch(query: string): Promise<{
         users: UserDocument[];
-        hashtags: HashtagDocument[];
-        hashtagCount: HashtagCount[];
-        collections: CollectionDocument[];
     }> {
         const bannedUsers = await this.allBannedUsers();
 
@@ -637,131 +459,13 @@ export class UsersService {
             $limit: query == '' ? 3 : 6
         });
 
-        const [users, hashtags, hashtagCount, collections] = await Promise.all([
-            this.userModel.aggregate(aggregation),
-            this.hashtagsService.searchHashtags(query),
-            this.hashtagsService.findTopHashtagsQ(
-                query != '' ? -1 : 1,
-                query != '' ? -1 : 3,
-                query
-            ),
-            this.collectionModel.aggregate([
-                {
-                    $match: {
-                        ...(query && {
-                            name: { $regex: `^${query}`, $options: 'i' }
-                        })
-                        //   collectionViewsTimestamps: {
-                        //       $gte: previousDay
-                        //   }
-                    }
-                },
-                {
-                    $limit: 3
-                }
-            ])
+        const [users] = await Promise.all([
+            this.userModel.aggregate(aggregation)
         ]);
 
-        const collectionPayload = collections.map((c) => {
-            return {
-                ...c,
-                image: c.image ?? c.image,
-                chain: c.chain ?? c?.chainName,
-                contract: c.contract ?? c?.contract
-            };
-        });
-
         return {
-            users: users,
-            hashtags: hashtags,
-            hashtagCount: hashtagCount,
-            collections: collectionPayload
+            users: users
         };
-    }
-
-    async addWallet(
-        userId: Types.ObjectId,
-        signature: string
-    ): Promise<WalletDocument> {
-        const message =
-            'I acknowledge and agree to the terms & conditions and privacy policy of MintStargram.tech.';
-        const recoveredAddress = await recoverMessageAddress({
-            message,
-            signature: signature as `0x${string}`
-        });
-
-        // Check if the wallet already exists
-        const existingWallet = await this.walletModel
-            .findOne({ address: { $regex: new RegExp(recoveredAddress, 'i') } })
-            .exec();
-
-        if (existingWallet) {
-            // If the wallet already exists, update the data
-            existingWallet.userId = userId;
-            await existingWallet.save();
-            return existingWallet;
-        }
-
-        // Check if the user already has a primary wallet
-        const userPrimaryWallet = await this.walletModel
-            .findOne({ userId, isPrimary: true })
-            .exec();
-
-        const isPrimary = !userPrimaryWallet; // if user has no primary wallet, set the new one as primary
-
-        // If the wallet doesn't exist, create a new one
-        const newWallet = await this.walletModel.create({
-            userId,
-            address: recoveredAddress,
-            isPrimary
-        });
-
-        return newWallet;
-    }
-
-    async deleteWallet(
-        userId: Types.ObjectId,
-        walletId: string
-    ): Promise<WalletDocument> {
-        const wallet = await this.walletModel.findById(walletId).exec();
-        if (!wallet) {
-            throw new Error('This wallet is not exists.');
-        }
-        if (wallet.userId.toString() !== userId.toString()) {
-            throw new Error('You are not the owner of this address.');
-        }
-        return this.walletModel.findByIdAndDelete(walletId);
-    }
-
-    async setPrimaryWallet(
-        userId: Types.ObjectId,
-        walletId: Types.ObjectId
-    ): Promise<Wallet> {
-        // Set all wallets of the user to non-primary
-        await this.walletModel.updateMany(
-            { userId: userId },
-            { isPrimary: false }
-        );
-
-        // Set the selected wallet as primary
-        const updatedWallet = await this.walletModel.findByIdAndUpdate(
-            walletId,
-            { isPrimary: true },
-            { new: true }
-        );
-
-        return updatedWallet;
-    }
-
-    async getUserByWalletAddress(address: string): Promise<WalletDocument> {
-        return this.walletModel
-            .findOne({
-                address: {
-                    $regex: new RegExp(`^${address}$`, 'i')
-                }
-            })
-            .populate('userId')
-            .select('avatar userName');
     }
 
     async ownFollowersUsers(loggedUserId: Types.ObjectId): Promise<User[]> {
@@ -869,12 +573,6 @@ export class UsersService {
                     )
                     .select('userName isVerified verifyStatus email');
 
-                await this.notificationModel.create({
-                    type: NotificationType.SYSTEM,
-                    sender: ENotificationFromType.APP,
-                    message: SystemMessages.kyc_approved,
-                    receiver: results._id
-                });
                 return results;
             } else {
                 const results = await this.userModel
@@ -893,278 +591,6 @@ export class UsersService {
         }
     }
 
-    // -------------------- CONTENT CREATER -------------------
-
-    async contentCreatorStats(
-        userId: Types.ObjectId
-    ): Promise<ContentCreatorStats> {
-        const user = await this.findById(userId);
-        let daysSpent, nftsLast7DaysVar, isNFTs;
-
-        const wallets = await this.walletModel.find({ userId: userId });
-        // .populate('address');
-
-        const userAddress = wallets.map((x) => x.address);
-
-        const collections = await this.collectionModel.find({
-            owner: { $in: userAddress }
-        });
-
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        // const SevenDaysAgoInSeconds = Math.floor(sevenDaysAgo.getTime() / 1000);
-
-        // await this.tokenModel
-        //     .aggregate([
-        //         {
-        //             $match: {
-        //                 owner: { $in: userAddress },
-        //                 mintTimestamp: { $gte: SevenDaysAgoInSeconds }
-        //             }
-        //         },
-        //         {
-        //             $group: {
-        //                 _id: {
-        //                     year: {
-        //                         $year: { $add: [new Date(0), '$mintTimestamp'] }
-        //                     },
-        //                     month: {
-        //                         $month: {
-        //                             $add: [new Date(0), '$mintTimestamp']
-        //                         }
-        //                     },
-        //                     day: {
-        //                         $dayOfMonth: {
-        //                             $add: [new Date(0), '$mintTimestamp']
-        //                         }
-        //                     }
-        //                 },
-        //                 nfts: { $push: '$$ROOT' }
-        //             }
-        //         },
-        //         {
-        //             $project: {
-        //                 date: {
-        //                     $dateFromParts: {
-        //                         year: '$_id.year',
-        //                         month: '$_id.month',
-        //                         day: '$_id.day'
-        //                     }
-        //                 },
-        //                 nfts: 1
-        //             }
-        //         },
-        //         {
-        //             $sort: { date: -1 }
-        //         }
-        //     ])
-        //     .exec()
-        //     .then((result) => {
-        //         // Check if there's at least one NFT for each day in the last 7 days
-        //         const daysInLastWeek = Array.from({ length: 7 }, (_, i) => {
-        //             const day = new Date();
-        //             day.setDate(day.getDate() - i);
-        //             return day.toDateString(); // Converting to date string to ignore the time part for comparison
-        //         });
-
-        //         const nftsLast7Days = result.map((dayGroup) => {
-        //             return {
-        //                 date: dayGroup.date.toDateString(), // Converting to date string for comparison
-        //                 nfts: dayGroup.nfts
-        //             };
-        //         });
-
-        //         const isNFTPresentForLast7Days = daysInLastWeek.every((day) =>
-        //             nftsLast7Days.some((dayGroup) => dayGroup.date === day)
-        //         );
-        //         nftsLast7DaysVar = nftsLast7Days;
-        //         isNFTs = isNFTPresentForLast7Days;
-        //         console.log('NFTs in the last 7 days:', nftsLast7Days);
-        //         console.log(
-        //             'NFTs present for each day:',
-        //             isNFTPresentForLast7Days
-        //         );
-        //     })
-        //     .catch((err) => {
-        //         console.error('Error occurred:', err);
-        //     });
-        await this.postModel
-            .aggregate([
-                {
-                    $match: {
-                        author: userId,
-                        // createdAt: { $gte: SevenDaysAgoInSeconds },
-                        tokenData: { $exists: true, $ne: null },
-                        'tokenData.isMinted': true
-                    }
-                },
-                {
-                    $group: {
-                        _id: {
-                            year: { $year: '$createdAt' },
-                            month: { $month: '$createdAt' },
-                            day: { $dayOfMonth: '$createdAt' }
-                        },
-                        posts: { $push: '$$ROOT' }
-                    }
-                },
-                {
-                    $project: {
-                        date: {
-                            $dateFromParts: {
-                                year: '$_id.year',
-                                month: '$_id.month',
-                                day: '$_id.day'
-                            }
-                        },
-                        posts: 1
-                    }
-                },
-                {
-                    $sort: { date: -1 }
-                }
-            ])
-            .exec()
-            .then((result) => {
-                // Check if there's at least one post for each day in the last 7 days
-                const daysInLastWeek = Array.from({ length: 7 }, (_, i) => {
-                    const day = new Date();
-                    day.setDate(day.getDate() - i);
-                    return day.toDateString(); // Converting to date string to ignore the time part for comparison
-                });
-
-                const nftsLast7Days = result.map((dayGroup) => {
-                    return {
-                        date: dayGroup.date?.toDateString(), // Safely access 'date' and call 'toDateString()' if it exists
-                        posts: dayGroup.posts
-                    };
-                });
-
-                const isNFTPresentForLast7Days = daysInLastWeek.every((day) =>
-                    nftsLast7Days.some((dayGroup) => dayGroup.date === day)
-                );
-                nftsLast7DaysVar = nftsLast7Days;
-                isNFTs = isNFTPresentForLast7Days;
-            })
-            .catch((err) => {
-                console.error('Error occurred:', err);
-            });
-        if (user?.createdAt) {
-            const currentDate = new Date();
-            const createdAt = new Date(user.createdAt);
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const timeDifference = currentDate - createdAt;
-            daysSpent = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        } else {
-            daysSpent = 60;
-        }
-
-        console.log({ collections }, 'collections');
-
-        return {
-            isdays: daysSpent >= 7,
-            days: daysSpent,
-            followers: user.followers.length,
-            isfollowers: user.followers.length >= 100,
-            iscollection: collections.length >= 1,
-            isNFTs,
-            nftsLast7Days: nftsLast7DaysVar
-        };
-    }
-
-    async applyForSCCApprovel(userId: Types.ObjectId): Promise<SuccessPayload> {
-        const result = await this.contentCreatorStats(userId);
-        if (result) {
-            const { isdays, isfollowers, iscollection, nftsLast7Days } = result;
-            if (
-                isdays &&
-                isfollowers &&
-                iscollection &&
-                nftsLast7Days.length >= 7
-            ) {
-                await this.userModel.findByIdAndUpdate(userId, {
-                    $set: {
-                        scc_status: 'PENDING'
-                    }
-                });
-                return {
-                    message: translate('messages.applied'),
-                    success: true
-                };
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    async SCCApprovel(userId: Types.ObjectId) {
-        const result = await this.contentCreatorStats(userId);
-        if (result) {
-            const { isdays, isfollowers, iscollection, nftsLast7Days } = result;
-            if (
-                isdays &&
-                isfollowers &&
-                iscollection &&
-                nftsLast7Days.length >= 7
-            ) {
-                await this.userModel.findByIdAndUpdate(userId, {
-                    $set: {
-                        isSCC: true,
-                        scc_status: 'APPROVED'
-                    }
-                });
-                await this.notificationModel.create({
-                    type: NotificationType.SYSTEM,
-                    sender: ENotificationFromType.APP,
-                    message: SystemMessages.scc_approved,
-                    receiver: result[0]?._id
-                });
-                return {
-                    message: translate('messages.applied'),
-                    success: true
-                };
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    async SCCAppliedUsers() {
-        return this.userModel.find({ isSCC: false, scc_status: 'PENDING' });
-    }
-
-    async getLinkPreview(userName: string): Promise<{ link_preview: string }> {
-        const user = await this.userModel.findOne({ userName });
-        const name = `${user?.firstName} ${user?.lastName} (@${user?.userName})`;
-        const defaultAvatar =
-            'https://res.cloudinary.com/dq3jqnrem/image/upload/v1692805850/ymvgxht0vvmqfikqh5ib.jpg';
-
-        // const userStats = await this.nftService.userStats(user._id);
-
-        const preview = await generateOGImage(
-            'user',
-            name,
-            user?.avatar || defaultAvatar,
-            user?.bio || '',
-            '',
-            user?.followersCount || 0,
-            user?.followingCount || 0,
-            0, // minted value
-            0, // listed value
-            0, // bought value
-            0 // sold value
-        );
-        return { link_preview: preview };
-    }
-
-    // --------------- USERS SETTINGS -----------------
-
     async isUserSettingEnabled(
         id: string | Types.ObjectId,
         settingType: string
@@ -1178,61 +604,7 @@ export class UsersService {
         return !!isSettingEnabled;
     }
 
-    async getLeaders() {
-        try {
-            const leaders = await this.postModel
-                .aggregate([
-                    {
-                        $match: {
-                            'tokenData.isMinted': true,
-                            createdAt: {
-                                $gte: new Date(
-                                    new Date().setDate(new Date().getDate() - 7)
-                                )
-                            }
-                        }
-                    },
-                    {
-                        $group: {
-                            _id: '$author',
-                            tokenContractCount: {
-                                $sum: 1
-                            }
-                        }
-                    },
-                    {
-                        $sort: {
-                            tokenContractCount: -1
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: 'users',
-                            localField: '_id',
-                            foreignField: '_id',
-                            as: 'user'
-                        }
-                    },
-                    {
-                        $project: {
-                            _id: 1,
-                            tokenContractCount: 1,
-                            user: {
-                                $arrayElemAt: ['$user', 0]
-                            }
-                        }
-                    },
-                    {
-                        $limit: 5
-                    }
-                ])
-                .exec();
-
-            return leaders;
-        } catch (error) {
-            console.log(error);
-        }
+    async getUserPublicProfile(userName: string): Promise<UserDocument> {
+        return this.userModel.findOne({ userName });
     }
-
-    // ---------------- ONE SIGNAL KEYS ADD ------------------
 }
